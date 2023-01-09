@@ -1,0 +1,19 @@
+package cn.backpackerxl.jpkit.typeof;
+
+public class JBool extends JBase {
+    private final Boolean value;
+
+    public JBool(boolean value) {
+        this.value = value;
+    }
+
+    @Override
+    public String apply(String name) {
+        return String.format("%s %s", JBool.class.getName(), name);
+    }
+
+    @Override
+    public Boolean getValue() {
+        return value;
+    }
+}
