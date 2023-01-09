@@ -8,7 +8,7 @@ public class JSONTest {
 
     @Test
     public void start() {
-        System.out.println("hello jsonkit !!!");
+        System.out.println("hello jpkit !!!");
     }
 
     @Test
@@ -33,8 +33,13 @@ public class JSONTest {
         JDate date = new JDate(parse.getValue().get("time"), "yyyy-MM-dd HH:mm:SS");
 
         JShort code = new JShort(parse.getValue().get("code"));
+
+        JChar jChar = new JChar(parse.getValue().get("title"));
+
         System.out.println(code.getValue());
         System.out.println(date.getValue());
+        System.out.println(jChar.getValue());
+
         for (JBase jBase : number.getValue()) {
             System.out.println(jBase.getValue());
         }

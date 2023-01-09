@@ -3,7 +3,6 @@ package cn.zzwl.jpkit.parse;
 import cn.zzwl.jpkit.core.ITypeof;
 import cn.zzwl.jpkit.exception.JCharacterException;
 import cn.zzwl.jpkit.exception.JTypeofException;
-import cn.backpackerxl.jpkit.typeof.*;
 import cn.zzwl.jpkit.typeof.*;
 
 import java.util.*;
