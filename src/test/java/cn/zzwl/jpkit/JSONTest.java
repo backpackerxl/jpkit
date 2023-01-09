@@ -39,6 +39,7 @@ public class JSONTest {
         System.out.println(code.getValue());
         System.out.println(date.getValue());
         System.out.println(jChar.getValue());
+        System.out.println(number);
 
         for (JBase jBase : number.getValue()) {
             System.out.println(jBase.getValue());
