@@ -14,16 +14,16 @@ public class JSONTest {
     @Test
     public void parse() {
         String json = "{\n" +
-                "    \"title\":\"水旱防御决策指挥平台\",\n" +
+                "    \"title\":\"指挥平台\",\n" +
                 "    \"englishTitle\": \"FLOODS DISASTERS DEFENSE DECISION COMMAND SYSTEM\",\n" +
                 "    \"miniTitle\":\"防汛\",\n" +
                 "    \"url\":\"/scfx/\",\n" +
                 "    \"showCompanyInfo\": true,\n" +
-                "    \"filingNo\":\"蜀ICP备20023387号-2\",\n" +
-                "    \"maintenanceUnit\":\"智中物联技术有限公司\",\n" +
+                "    \"filingNo\":\"蜀ICP备2002458584号-2\",\n" +
+                "    \"maintenanceUnit\":\"人类技术有限公司\",\n" +
                 "    \"describe\":null,\n" +
                 "    \"arr\":[],\n" +
-                "    \"number\":[25,89.369,null, true,\"智中物联技术有限公司\",\"水旱防御决策指挥平台\"],\n" +
+                "    \"number\":[25,89.369,null, true,\"人类技术有限公司\",\"指挥平台\"],\n" +
                 "    \"code\": 569\n," +
                 "    \"time\": \"2023-1-9 18:00:00\"\n" +
                 "}";
