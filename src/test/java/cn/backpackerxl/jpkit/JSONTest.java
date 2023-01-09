@@ -34,7 +34,7 @@ public class JSONTest {
 
         JShort code = new JShort(parse.getValue().get("code"));
         System.out.println(code.getValue());
-//        System.out.println(date.getValue());
+        System.out.println(date.getValue());
         for (JBase jBase : number.getValue()) {
             System.out.println(jBase.getValue());
         }
