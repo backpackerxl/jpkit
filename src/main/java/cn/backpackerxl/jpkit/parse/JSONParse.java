@@ -5,10 +5,7 @@ import cn.backpackerxl.jpkit.exception.JCharacterException;
 import cn.backpackerxl.jpkit.exception.JTypeofException;
 import cn.backpackerxl.jpkit.typeof.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JSONParse {
     private int idx;
@@ -47,7 +44,7 @@ public class JSONParse {
         char next_char = this.get_next_char();
         switch (next_char) {
             case 'n':
-                return this.parse_null(next_char);
+                return this.parse_null();
             case 't':
             case 'f':
                 return this.parse_bool(next_char);
@@ -64,7 +61,7 @@ public class JSONParse {
             case '9':
                 return this.parse_number(next_char);
             case '"':
-                return this.parse_string(next_char);
+                return this.parse_string();
             case '{':
                 return this.parse_object();
             case '[':
@@ -119,9 +116,12 @@ public class JSONParse {
      *
      * @return <b>JString</b> 对象
      */
-    private JString parse_string(char ch) {
+    private JString parse_string() {
         StringBuilder s = new StringBuilder();
         while (true) {
+            if (idx == json_arr.length) {
+                throw new JCharacterException(String.format("the json character string error at %s defect '\"' the error occurs is %s", s.toString(), idx));
+            }
             char nextChar = this.json_arr[idx++];
             if (nextChar == '"') {
                 break;
@@ -136,13 +136,23 @@ public class JSONParse {
      *
      * @return <b>JBase</b> null 对象
      */
-    private JBase parse_null(char ch) {
+    private JBase parse_null() {
         if (this.json_arr.length < 4) {
             throw new JTypeofException(this.get_char_some(this.json_arr.length) + " is not a null, the error occurs is " + this.idx);
         }
         if (this.get_char_some(4).equals("null")) {
             this.idx = this.idx + 4;
-            return null;
+            return new JBase() {
+                @Override
+                public Object getValue() {
+                    return null;
+                }
+
+                @Override
+                public String apply(String name) {
+                    return null;
+                }
+            };
         } else {
             throw new JTypeofException(this.get_char_some(4) + " is not a null, the error occurs is " + this.idx);
         }
@@ -161,13 +171,14 @@ public class JSONParse {
         }
         this.idx--;
         while (true) {
-            list.add((JBase) this.parse());
+            JBase jBase = (JBase) this.parse();
+            list.add(jBase);
             ch = this.get_next_char();
             if (ch == ']') {
                 break;
             }
             if (ch != ',') {
-                throw new JCharacterException(ch + " should not appear here, it should be ',' the error occurs is " + this.idx);
+                throw new JCharacterException(String.format("the json character string error at [... %s ...] defect ',' the error occurs is %s", jBase.getValue(), this.idx));
             }
         }
         return new JArray(list);
@@ -213,6 +224,7 @@ public class JSONParse {
     private JObject parse_object() {
         Map<String, JBase> jsonObjectMap = new HashMap<>();
         char ch = this.get_next_char();
+        String cacheKey = "{";
         if (ch == '}') {
             return new JObject(jsonObjectMap);
         }
@@ -220,20 +232,22 @@ public class JSONParse {
         while (true) {
             ch = this.get_next_char();
             if (ch != '"') {
-                throw new JCharacterException(ch + " should not appear here, it should be '\"' the error occurs is " + this.idx);
+                throw new JCharacterException(String.format("the json character string error at {... \"%s\": %s, ...} following key defect '\"' the error occurs is %s", cacheKey, jsonObjectMap.get(cacheKey).getValue(), this.idx));
             }
-            String key = this.parse_string(ch).getValue();
+            String key = this.parse_string().getValue();
+            cacheKey = key;
             ch = this.get_next_char();
             if (ch != ':') {
-                throw new JCharacterException(ch + " should not appear here, it should be ':' the error occurs is " + this.idx);
+                throw new JCharacterException(String.format("the json character string error at {... \"%s\" ... } after defect ':' the error occurs is %s", key, this.idx));
             }
-            jsonObjectMap.put(key, (JBase) this.parse());
+            JBase jBase = (JBase) this.parse();
+            jsonObjectMap.put(key, jBase);
             ch = this.get_next_char();
             if (ch == '}') {
                 break;
             }
             if (ch != ',') {
-                throw new JCharacterException(ch + " should not appear here, it should be ',' the error occurs is " + this.idx);
+                throw new JCharacterException(String.format("the json character string error at {... \"%s\": %s ...} after defect ',' the error occurs is %s", key, jBase.getValue(), this.idx));
             }
         }
         return new JObject(jsonObjectMap);
@@ -266,5 +280,3 @@ public class JSONParse {
         }
     }
 }
-
-
