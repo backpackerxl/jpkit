@@ -1,11 +1,6 @@
-# jpkit
-> this is java json kit
-
-#### use
-```java
 package cn.zzwl.jpkit;
 
-import JSON;
+import cn.zzwl.jpkit.core.JSON;
 import cn.zzwl.jpkit.typeof.*;
 import org.junit.Test;
 
@@ -13,7 +8,7 @@ public class JSONTest {
 
     @Test
     public void start() {
-        System.out.println("hello jsonkit !!!");
+        System.out.println("hello jpkit !!!");
     }
 
     @Test
@@ -24,7 +19,7 @@ public class JSONTest {
                 "    \"miniTitle\":\"防汛\",\n" +
                 "    \"url\":\"/scfx/\",\n" +
                 "    \"showCompanyInfo\": true,\n" +
-                "    \"filingNo\":\"蜀ICP备20025899号-2\",\n" +
+                "    \"filingNo\":\"蜀ICP备2002458584号-2\",\n" +
                 "    \"maintenanceUnit\":\"人类技术有限公司\",\n" +
                 "    \"describe\":null,\n" +
                 "    \"arr\":[],\n" +
@@ -38,12 +33,15 @@ public class JSONTest {
         JDate date = new JDate(parse.getValue().get("time"), "yyyy-MM-dd HH:mm:SS");
 
         JShort code = new JShort(parse.getValue().get("code"));
+
+        JChar jChar = new JChar(parse.getValue().get("title"));
+
         System.out.println(code.getValue());
         System.out.println(date.getValue());
+        System.out.println(jChar.getValue());
+
         for (JBase jBase : number.getValue()) {
             System.out.println(jBase.getValue());
         }
     }
 }
-
-```
