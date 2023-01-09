@@ -1,4 +1,4 @@
-package cn.backpackerxl.jpkit.exception;
+package cn.zzwl.jpkit.exception;
 
 public class JTypeofException extends RuntimeException {
     public JTypeofException(String message) {

@@ -1,6 +1,6 @@
-package cn.backpackerxl.jpkit.core;
+package cn.zzwl.jpkit.core;
 
-import cn.backpackerxl.jpkit.parse.JSONParse;
+import cn.zzwl.jpkit.parse.JSONParse;
 
 public class JSON {
     private JSON() {

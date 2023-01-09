@@ -1,4 +1,4 @@
-package cn.backpackerxl.jpkit.typeof;
+package cn.zzwl.jpkit.typeof;
 
 public class JInteger extends JBase {
 

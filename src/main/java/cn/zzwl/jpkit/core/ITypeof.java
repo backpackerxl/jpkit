@@ -1,4 +1,4 @@
-package cn.backpackerxl.jpkit.core;
+package cn.zzwl.jpkit.core;
 
 public interface ITypeof<T> {
     T getValue();

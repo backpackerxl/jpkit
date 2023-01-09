@@ -1,4 +1,4 @@
-package cn.backpackerxl.jpkit.typeof;
+package cn.zzwl.jpkit.typeof;
 
 public class JBool extends JBase {
     private final Boolean value;

@@ -1,7 +1,7 @@
-package cn.backpackerxl.jpkit;
+package cn.zzwl.jpkit;
 
-import cn.backpackerxl.jpkit.core.JSON;
-import cn.backpackerxl.jpkit.typeof.*;
+import cn.zzwl.jpkit.core.JSON;
+import cn.zzwl.jpkit.typeof.*;
 import org.junit.Test;
 
 public class JSONTest {

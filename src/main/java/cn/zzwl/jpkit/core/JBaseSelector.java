@@ -1,6 +1,6 @@
-package cn.backpackerxl.jpkit.core;
+package cn.zzwl.jpkit.core;
 
-import cn.backpackerxl.jpkit.typeof.JBase;
+import cn.zzwl.jpkit.typeof.JBase;
 
 import java.util.HashMap;
 import java.util.Map;

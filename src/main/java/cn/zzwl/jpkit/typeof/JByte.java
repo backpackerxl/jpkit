@@ -1,6 +1,6 @@
-package cn.backpackerxl.jpkit.typeof;
+package cn.zzwl.jpkit.typeof;
 
-import cn.backpackerxl.jpkit.exception.JTypeofException;
+import cn.zzwl.jpkit.exception.JTypeofException;
 
 public class JByte extends JBase {
 
