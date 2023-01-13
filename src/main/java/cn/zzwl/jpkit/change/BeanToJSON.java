@@ -11,22 +11,10 @@ public class BeanToJSON<B> {
     }
 
     public String basicStringify() {
-        return String.format("{%s}", StringUtil.substringByNumber(ReflectUtil.doBeanByField(bean, (type, name, obj) -> {
-            if (type.getTypeName().equals(String.class.getTypeName())) {
-                return String.format("\"%s\": \"%s\",", name, obj);
-            } else {
-                return String.format("\"%s\": %s,", name, obj);
-            }
-        }), 1));
+        return String.format("{%s}", StringUtil.substringByNumber(ReflectUtil.doBeanByField(bean, (name, obj) -> String.format("\"%s\": %s,", name, obj)), 1));
     }
 
     public String prettyStringify() {
-        return String.format("{\n%s\n}", StringUtil.substringByNumber(ReflectUtil.doBeanByField(bean, (type, name, obj) -> {
-            if (type.getTypeName().equals(String.class.getTypeName())) {
-                return String.format("  \"%s\": \"%s\",\n", name, obj);
-            } else {
-                return String.format("  \"%s\": %s,\n", name, obj);
-            }
-        }), 2));
+        return String.format("{\n%s\n}", StringUtil.substringByNumber(ReflectUtil.doBeanByField(bean, (name, obj) -> String.format("  \"%s\": %s,\n", name, obj)), 2));
     }
 }

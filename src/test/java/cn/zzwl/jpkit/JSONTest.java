@@ -7,6 +7,7 @@ import cn.zzwl.jpkit.vo.User;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 
 public class JSONTest {
 
@@ -49,6 +50,7 @@ public class JSONTest {
             System.out.println(jBase.getValue());
         }
     }
+
     @Test
     public void testString() throws NoSuchFieldException {
         Field field = User.class.getDeclaredField("admin");
@@ -56,12 +58,12 @@ public class JSONTest {
     }
 
     @Test
-    public void testStringify(){
-        User zzwl = new User(1L, "zzwl", 300, true);
+    public void testStringify() {
+        Integer[] nums = new Integer[]{4545, 2121, 3636};
+        String[] ss = new String[]{"zz", "xx", "ww"};
+        User zzwl = new User(1L, "zzwl", 300, true, new Date(), nums, ss);
         String s = JSON.stringify(zzwl);
         System.out.println(s);
-
-        String s1 = JSON.prettyStringify(zzwl);
-        System.out.println(s1);
+        System.out.println(zzwl);
     }
 }
