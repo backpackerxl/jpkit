@@ -2,6 +2,7 @@ package cn.zzwl.jpkit.core;
 
 import cn.zzwl.jpkit.typeof.JBase;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -9,7 +10,8 @@ import java.util.Objects;
 public class JBaseSelector {
     private final static Map<String, JBase> jBaseMap = new HashMap<>();
 
-    static {
+        static {
+//        Method[] declaredMethods = JBase.class.getDeclaredMethods();
 //        jBaseMap.put(Integer.class.getName(), new JInteger(value));
 //        jBaseMap.put(Long.class.getName(), new JLong(value));
 //        jBaseMap.put(String.class.getName(), new JString(value));

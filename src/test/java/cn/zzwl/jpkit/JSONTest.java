@@ -2,7 +2,11 @@ package cn.zzwl.jpkit;
 
 import cn.zzwl.jpkit.core.JSON;
 import cn.zzwl.jpkit.typeof.*;
+import cn.zzwl.jpkit.utils.StringUtil;
+import cn.zzwl.jpkit.vo.User;
 import org.junit.Test;
+
+import java.lang.reflect.Field;
 
 public class JSONTest {
 
@@ -44,5 +48,20 @@ public class JSONTest {
         for (JBase jBase : number.getValue()) {
             System.out.println(jBase.getValue());
         }
+    }
+    @Test
+    public void testString() throws NoSuchFieldException {
+        Field field = User.class.getDeclaredField("admin");
+        System.out.println(StringUtil.getMethodNameByFieldType(field.getType(), field.getName()));
+    }
+
+    @Test
+    public void testStringify(){
+        User zzwl = new User(1L, "zzwl", 300, true);
+        String s = JSON.stringify(zzwl);
+        System.out.println(s);
+
+        String s1 = JSON.prettyStringify(zzwl);
+        System.out.println(s1);
     }
 }
