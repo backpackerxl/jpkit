@@ -2,11 +2,12 @@
 > this is java json kit
 
 #### use
+
 ```java
 package cn.zzwl.jpkit;
 
 import JSON;
-import cn.zzwl.jpkit.typeof.*;
+import com.zzwl.jpkit.typeof.*;
 import org.junit.Test;
 
 public class JSONTest {
