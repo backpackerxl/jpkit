@@ -13,9 +13,23 @@ import java.util.Date;
 import java.util.Objects;
 
 public class ReflectUtil {
+
+    private static boolean isPretty = false;
+
     private ReflectUtil() {
     }
 
+    public static void setIsPretty(boolean isPretty) {
+        ReflectUtil.isPretty = isPretty;
+    }
+
+    /**
+     * 利用反射处理自定义对象的JSON字符串化
+     *
+     * @param obj      待处理对象
+     * @param callBack 回调函数
+     * @return 半成品JSON字符串
+     */
     public static String doBeanByField(Object obj, CallBack callBack) {
         StringBuilder s = new StringBuilder();
         Field[] fields = obj.getClass().getDeclaredFields();
@@ -43,6 +57,13 @@ public class ReflectUtil {
         return s.toString();
     }
 
+    /**
+     * 通过对象的get方法获取属性值
+     *
+     * @param obj   对象
+     * @param field 字段
+     * @return 字段值
+     */
     private static FieldBean getValueByMethod(Object obj, Field field) {
         try {
             Method method = obj.getClass().getDeclaredMethod(StringUtil.getMethodNameByFieldType(field.getType(), field.getName()));
@@ -69,6 +90,13 @@ public class ReflectUtil {
         }
     }
 
+    /**
+     * 通过反射,破坏对象的属性的私有性获取属性值
+     *
+     * @param obj   对象
+     * @param field 字段
+     * @return 字段值
+     */
     private static FieldBean getValueByField(Object obj, Field field) {
         try {
             field.setAccessible(true);
@@ -86,6 +114,13 @@ public class ReflectUtil {
         }
     }
 
+    /**
+     * 特殊字段的特殊处理方式
+     *
+     * @param field 字段
+     * @param o     对象
+     * @return 字段值
+     */
     private static Object getObject(Field field, Object o) {
         if (field.isAnnotationPresent(JDateFormat.class) && field.getType().getTypeName().equals(Date.class.getTypeName())) {
             JDateFormat jDateFormat = field.getDeclaredAnnotation(JDateFormat.class);
@@ -98,7 +133,7 @@ public class ReflectUtil {
         } else if (field.getType().getTypeName().equals(Date.class.getTypeName()) || field.getType().getTypeName().equals(String.class.getTypeName())) {
             o = String.format("\"%s\"", o.toString());
         } else if (ArrayUtil.isArray(o)) {
-            o = ArrayUtil.compileArray(o);
+            o = ArrayUtil.compileArray(o, isPretty, 2);
         }
         return o;
     }

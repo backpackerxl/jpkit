@@ -13,6 +13,13 @@ public class StringUtil {
     private StringUtil() {
     }
 
+    /**
+     * 获取对应字段对应的get方法
+     *
+     * @param type 类型
+     * @param name 字段名称
+     * @return 方法名
+     */
     public static String getMethodNameByFieldType(Type type, String name) {
         String typeName = type.getTypeName();
         if (typeName.equals(JBool.BOOLEAN)) {
@@ -22,7 +29,28 @@ public class StringUtil {
         }
     }
 
+    /**
+     * 截取字符串后几个字母
+     *
+     * @param target 目标字符串
+     * @param num    截取数
+     * @return 截取后的字符串
+     */
     public static String substringByNumber(String target, int num) {
         return target.substring(0, target.length() - num);
+    }
+
+    /**
+     * 填充相应的空白字符
+     *
+     * @param num 空白字符数量
+     * @return 空白占位符字符串
+     */
+    public static String getWhiteByNumber(int num) {
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < num; i++) {
+            s.append(" ");
+        }
+        return s.toString();
     }
 }

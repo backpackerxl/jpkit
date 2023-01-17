@@ -41,7 +41,7 @@ public class JSONParse {
     /**
      * 解析json字符串
      *
-     * @return <b>JSONObject</b>对象
+     * @return <b>ITypeof<Object></b>对象
      */
     public ITypeof<Object> parse() {
         char next_char = this.get_next_char();

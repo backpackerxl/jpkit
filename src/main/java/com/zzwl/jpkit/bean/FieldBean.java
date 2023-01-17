@@ -2,8 +2,8 @@ package com.zzwl.jpkit.bean;
 
 
 public class FieldBean {
-    private String name;
-    private Object obj;
+    private final String name;
+    private final Object obj;
 
     public FieldBean(String name, Object obj) {
         this.name = name;

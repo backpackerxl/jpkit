@@ -9,6 +9,12 @@ public class ArrayUtil {
     private ArrayUtil() {
     }
 
+    /**
+     * 判断对象是否为数组
+     *
+     * @param obj 未知对象
+     * @return 是否为数组
+     */
     public static boolean isArray(Object obj) {
         return obj instanceof int[] || obj instanceof Object[] || obj instanceof long[] || obj instanceof byte[] || obj instanceof char[] || obj instanceof boolean[] || obj instanceof short[] || obj instanceof double[] || obj instanceof float[];
     }
@@ -27,87 +33,156 @@ public class ArrayUtil {
      * @param o 将数组值转化为JSON值
      * @return JSON字符串值
      */
-    public static String compileArray(Object o) {
-        if (o instanceof int[]) {
+    public static String compileArray(Object o, boolean isPretty, int idx) {
+        StringBuilder s = new StringBuilder("[");
+
+        String white = StringUtil.getWhiteByNumber(idx + 2);
+
+        if (isPretty) {
+            s.append("\n");
+        }
+        if (o instanceof int[] && !isPretty) {
             return Arrays.toString((int[]) o);
-        } else if (o instanceof String[]) {
-            return buildArray((String[]) o);
-        } else if (o instanceof char[]) {
-            return buildArray((char[]) o);
-        } else if (o instanceof long[]) {
+        }
+
+        if (o instanceof long[] && !isPretty) {
             return Arrays.toString((long[]) o);
-        } else if (o instanceof byte[]) {
-            return Arrays.toString((byte[]) o);
-        } else if (o instanceof short[]) {
+        }
+
+        if (o instanceof short[] && !isPretty) {
             return Arrays.toString((short[]) o);
-        } else if (o instanceof boolean[]) {
+        }
+
+        if (o instanceof byte[] && !isPretty) {
+            return Arrays.toString((byte[]) o);
+        }
+
+        if (o instanceof char[] && !isPretty) {
+            char[] nums = (char[]) o;
+            for (char num : nums) {
+                s.append("\"").append(num).append("\"").append(",");
+            }
+            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 1), "]");
+        }
+
+        if (o instanceof boolean[] && !isPretty) {
             return Arrays.toString((boolean[]) o);
-        } else if (o instanceof double[]) {
+        }
+
+        if (o instanceof double[] && !isPretty) {
             return Arrays.toString((double[]) o);
-        } else if (o instanceof float[]) {
+        }
+
+        if (o instanceof float[] && !isPretty) {
             return Arrays.toString((float[]) o);
-        } else if (o instanceof Integer[]) {
-            return Arrays.toString((Integer[]) o);
-        } else if (o instanceof Long[]) {
-            return Arrays.toString((Long[]) o);
-        } else if (o instanceof Byte[]) {
-            return Arrays.toString((Byte[]) o);
-        } else if (o instanceof Boolean[]) {
-            return Arrays.toString((Boolean[]) o);
-        } else if (o instanceof Short[]) {
-            return Arrays.toString((Short[]) o);
-        } else if (o instanceof Double[]) {
-            return Arrays.toString((Double[]) o);
-        } else if (o instanceof Float[]) {
-            return Arrays.toString((Float[]) o);
-        } else if (o instanceof Object[]) {
-            return buildArray((Object[]) o);
         }
-        return "";
+
+
+        if (o instanceof int[]) {
+            int[] nums = (int[]) o;
+            for (int i : nums) {
+                s.append(white).append(i).append(",\n");
+            }
+            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+        }
+
+        if (o instanceof long[]) {
+            long[] nums = (long[]) o;
+            for (long i : nums) {
+                s.append(white).append(i).append(",\n");
+            }
+            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+        }
+
+        if (o instanceof short[]) {
+            short[] nums = (short[]) o;
+            for (short i : nums) {
+                s.append(white).append(i).append(",\n");
+            }
+            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+        }
+
+        if (o instanceof double[]) {
+            double[] nums = (double[]) o;
+            for (double i : nums) {
+                s.append(white).append(i).append(",\n");
+            }
+            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+        }
+
+        if (o instanceof float[]) {
+            float[] nums = (float[]) o;
+            for (float i : nums) {
+                s.append(white).append(i).append(",\n");
+            }
+            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+        }
+
+        if (o instanceof byte[]) {
+            byte[] nums = (byte[]) o;
+            for (byte i : nums) {
+                s.append(white).append(i).append(",\n");
+            }
+            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+        }
+
+        if (o instanceof char[]) {
+            char[] nums = (char[]) o;
+            for (char i : nums) {
+                s.append(white).append("\"").append(i).append("\",\n");
+            }
+            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+        }
+
+        if (o instanceof boolean[]) {
+            boolean[] nums = (boolean[]) o;
+            for (boolean i : nums) {
+                s.append(white).append(i).append(",\n");
+            }
+            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+        }
+
+        try {
+            assert o instanceof Object[];
+            Object[] objects = (Object[]) o;
+
+            for (Object object : objects) {
+                if (isPretty) {
+                    if (object instanceof String || object instanceof Character) {
+                        s.append(white).append("\"").append(object).append("\",\n");
+                    } else if (isBaseArray(object)) {
+                        s.append(white).append(object).append(",\n");
+                    } else {
+                        s.append(white).append(JSON.stringify(object).pretty()).append(",\n");
+                    }
+                } else {
+                    if (object instanceof String || object instanceof Character) {
+                        s.append("\"").append(object).append("\",");
+                    } else if (isBaseArray(object)) {
+                        s.append(object).append(",");
+                    } else {
+                        s.append(JSON.stringify(object).terse()).append(",");
+                    }
+                }
+            }
+            if (isPretty) {
+                return String.format("%s\n%s%s", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(idx), "]");
+            } else {
+                return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 1), "]");
+            }
+        } catch (Exception e) {
+            throw new ClassCastException(String.format("%s can't cast array", o));
+        }
     }
 
     /**
-     * 处理String[]
+     * 判断是否为基础类型数组
      *
-     * @param obs String[]类型
-     * @return JSON字符串
+     * @param object 数据
+     * @return 是或否
      */
-    private static String buildArray(String[] obs) {
-        StringBuilder out = new StringBuilder();
-        for (String obj : obs) {
-            out.append("\"").append(obj).append("\"").append(",");
-        }
-        String s = out.toString();
-        return s.length() == 0 ? "[]" : String.format("[%s]", StringUtil.substringByNumber(s, 1));
+    public static boolean isBaseArray(Object object) {
+        return object instanceof Integer || object instanceof Boolean || object instanceof Long || object instanceof Short || object instanceof Byte || object instanceof Double || object instanceof Float;
     }
 
-    /**
-     * 处理char[]
-     *
-     * @param obs char[]类型
-     * @return JSON字符串
-     */
-    private static String buildArray(char[] obs) {
-        StringBuilder out = new StringBuilder();
-        for (char obj : obs) {
-            out.append("\"").append(obj).append("\"").append(",");
-        }
-        String s = out.toString();
-        return s.length() == 0 ? "[]" : String.format("[%s]", StringUtil.substringByNumber(s, 1));
-    }
-
-    /**
-     * 处理Object[]
-     *
-     * @param obs Object[]类型
-     * @return JSON字符串
-     */
-    private static String buildArray(Object[] obs) {
-        StringBuilder out = new StringBuilder();
-        for (Object obj : obs) {
-            out.append(JSON.stringify(obj)).append(",");
-        }
-        String s = out.toString();
-        return s.length() == 0 ? "[]" : String.format("[%s]", StringUtil.substringByNumber(s, 1));
-    }
 }
