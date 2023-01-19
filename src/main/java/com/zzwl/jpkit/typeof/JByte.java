@@ -24,4 +24,9 @@ public class JByte extends JBase {
     public String apply(String name) {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 }

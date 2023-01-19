@@ -17,4 +17,9 @@ public class JInteger extends JBase {
     public Integer getValue() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 }

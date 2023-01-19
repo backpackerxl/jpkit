@@ -4,6 +4,8 @@ import com.zzwl.jpkit.anno.JDateFormat;
 import com.zzwl.jpkit.anno.JIgnore;
 import com.zzwl.jpkit.anno.JRename;
 import com.zzwl.jpkit.bean.FieldBean;
+import com.zzwl.jpkit.typeof.JBase;
+import com.zzwl.jpkit.typeof.JString;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

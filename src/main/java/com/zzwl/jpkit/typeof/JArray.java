@@ -1,21 +1,28 @@
 package com.zzwl.jpkit.typeof;
 
+import com.zzwl.jpkit.core.JSON;
+
 import java.util.List;
 
 public class JArray extends JBase {
-    private final List<JBase> jBases;
+    private final List<JBase> value;
 
-    public JArray(List<JBase> jBases) {
-        this.jBases = jBases;
+    public JArray(List<JBase> value) {
+        this.value = value;
     }
 
     @Override
     public List<JBase> getValue() {
-        return jBases;
+        return value;
     }
 
     @Override
     public String apply(String name) {
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return JSON.stringify(value).terse();
     }
 }

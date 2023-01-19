@@ -24,4 +24,9 @@ public class JFloat extends JBase {
     public String apply(String name) {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 }

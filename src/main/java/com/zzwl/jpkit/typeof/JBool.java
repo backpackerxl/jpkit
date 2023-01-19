@@ -17,4 +17,9 @@ public class JBool extends JBase {
     public Boolean getValue() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 }

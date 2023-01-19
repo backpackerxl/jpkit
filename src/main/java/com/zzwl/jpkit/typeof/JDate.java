@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class JDate extends JBase {
-    private Date value;
+    private final Date value;
     public final static String YYYY_MM_DD = "YYYY-MM-DD";
     public final static String MM_DD = "MM-DD";
     public final static String YYYY_MM = "YYYY-MM";
@@ -42,5 +42,10 @@ public class JDate extends JBase {
     @Override
     public String apply(String name) {
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("\"%s\"", value.toString());
     }
 }

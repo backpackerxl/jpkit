@@ -24,4 +24,9 @@ public class JChar extends JBase {
     public String apply(String name) {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return String.format("\"%s\"", value);
+    }
 }

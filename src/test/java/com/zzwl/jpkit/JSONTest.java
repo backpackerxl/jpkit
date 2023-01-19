@@ -1,12 +1,15 @@
 package com.zzwl.jpkit;
 
+import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.core.JSON;
+import com.zzwl.jpkit.network.NetUtil;
 import com.zzwl.jpkit.typeof.*;
 import com.zzwl.jpkit.utils.StringUtil;
 import com.zzwl.jpkit.vo.User;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
 import java.util.*;
 
 public class JSONTest {
@@ -18,20 +21,7 @@ public class JSONTest {
 
     @Test
     public void parse() {
-        String json = "{\n" +
-                "    \"title\":\"指挥平台\",\n" +
-                "    \"englishTitle\": \"FLOODS DISASTERS DEFENSE DECISION COMMAND SYSTEM\",\n" +
-                "    \"miniTitle\":\"防汛\",\n" +
-                "    \"url\":\"/scfx/\",\n" +
-                "    \"showCompanyInfo\": true,\n" +
-                "    \"filingNo\":\"蜀ICP备2002458584号-2\",\n" +
-                "    \"maintenanceUnit\":\"人类技术有限公司\",\n" +
-                "    \"describe\":null,\n" +
-                "    \"arr\":[],\n" +
-                "    \"number\":[25,89.369,null, true,\"人类技术有限公司\",\"指挥平台\"],\n" +
-                "    \"code\": 569\n," +
-                "    \"time\": \"2023-1-9 18:00:00\"\n" +
-                "}";
+        String json = "{\n" + "    \"title\":\"指挥平台\",\n" + "    \"englishTitle\": \"FLOODS DISASTERS DEFENSE DECISION COMMAND SYSTEM\",\n" + "    \"miniTitle\":\"防汛\",\n" + "    \"url\":\"/scfx/\",\n" + "    \"showCompanyInfo\": true,\n" + "    \"filingNo\":\"蜀ICP备2002458584号-2\",\n" + "    \"maintenanceUnit\":\"人类技术有限公司\",\n" + "    \"describe\":null,\n" + "    \"arr\":[],\n" + "    \"number\":[25,89.369,null, true,\"人类技术有限公司\",\"指挥平台\"],\n" + "    \"code\": 569\n," + "    \"time\": \"2023-1-9 18:00:00\"\n" + "}";
         JObject parse = (JObject) JSON.parse(json);
         JArray number = (JArray) parse.getValue().get("number");
 
@@ -115,5 +105,38 @@ public class JSONTest {
         map.put("isPublish", false);
         map.put("isCopy", true);
         System.out.println(JSON.stringify(map).pretty());
+    }
+
+    @Test
+    public void testListAndMap() {
+        List<User> users = new ArrayList<>();
+
+        users.add(new User(1L, "zzwl", 300, true, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
+        users.add(new User(2L, "zzwl", 400, false, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
+        users.add(new User(3L, "zzwl", 500, true, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
+        users.add(new User(4L, "zzwl", 600, false, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
+        users.add(new User(5L, "zzwl", 700, false, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
+
+        System.out.println(JSON.stringify(users).terse());
+        System.out.println(JSON.stringify(users).pretty());
+
+    }
+
+    @Test
+    public void testSave() {
+        User user = new User(1L, "zzwl_plus", 400, true, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"});
+//        JSON.stringify(user).save("D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json");
+
+
+        String url = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
+        String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json";
+
+        JBase net = (JBase) JSON.load(url);
+        JBase net_local = (JBase) JSON.load(local);
+
+        System.out.println(JSON.stringify(net.getValue()).pretty());
+        System.out.println("===================================");
+        System.out.println(JSON.stringify(net_local.getValue()).pretty());
+
     }
 }

@@ -1,6 +1,8 @@
 package com.zzwl.jpkit.core;
 
 import com.zzwl.jpkit.conversion.BToJSON;
+import com.zzwl.jpkit.file.FileUtil;
+import com.zzwl.jpkit.network.NetUtil;
 import com.zzwl.jpkit.parse.JSONParse;
 
 public class JSON {
@@ -70,5 +72,25 @@ public class JSON {
      */
     public static ITypeof<Object> parse(String json) {
         return new JSONParse(json).parse();
+    }
+
+    /**
+     * 加载json文件
+     * <blockquote><pre>
+     *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
+     *     String network = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
+     *     JBase load_local = JSON.load(local);
+     *     JBase load_net = JSON.load(network);
+     * </pre></blockquote>
+     *
+     * @param path 路径
+     * @return <b>ITypeof<Object></b>
+     */
+    public static ITypeof<Object> load(String path) {
+        if (path.startsWith(NetUtil.HTTP) || path.startsWith(NetUtil.HTTPS)) {
+            return new JSONParse(NetUtil.getJSON(path)).parse();
+        } else {
+            return new JSONParse(FileUtil.getJSON(path)).parse();
+        }
     }
 }

@@ -1,5 +1,10 @@
 package com.zzwl.jpkit.core;
 
+/**
+ * 解析返回类型
+ *
+ * @param <T> 解析类型
+ */
 public interface ITypeof<T> {
     /**
      * 返回对应的值
