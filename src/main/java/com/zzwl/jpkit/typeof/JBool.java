@@ -1,5 +1,7 @@
 package com.zzwl.jpkit.typeof;
 
+import java.lang.reflect.Field;
+
 public class JBool extends JBase {
     private final Boolean value;
     public final static String BOOLEAN = "boolean";
@@ -9,13 +11,13 @@ public class JBool extends JBase {
     }
 
     @Override
-    public String apply(String name) {
-        return String.format("%s %s", JBool.class.getName(), name);
+    public Boolean getValue() {
+        return value;
     }
 
     @Override
-    public Boolean getValue() {
-        return value;
+    public void apply(Object obj, Field field, JBase jBase) {
+
     }
 
     @Override

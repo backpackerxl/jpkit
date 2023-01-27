@@ -4,8 +4,7 @@ import com.zzwl.jpkit.anno.JDateFormat;
 import com.zzwl.jpkit.anno.JIgnore;
 import com.zzwl.jpkit.anno.JRename;
 import com.zzwl.jpkit.bean.FieldBean;
-import com.zzwl.jpkit.typeof.JBase;
-import com.zzwl.jpkit.typeof.JString;
+import com.zzwl.jpkit.conversion.BToJSON;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -13,6 +12,7 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class ReflectUtil {
 
@@ -56,6 +56,10 @@ public class ReflectUtil {
                 }
             }
         }
+        if (isPretty) {
+            // 恢复缩进
+            BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
+        }
         return s.toString();
     }
 
@@ -68,7 +72,7 @@ public class ReflectUtil {
      */
     private static FieldBean getValueByMethod(Object obj, Field field) {
         try {
-            Method method = obj.getClass().getDeclaredMethod(StringUtil.getMethodNameByFieldType(field.getType(), field.getName()));
+            Method method = obj.getClass().getDeclaredMethod(StringUtil.getMethodNameByFieldType(StringUtil.basicGetPrefix, field.getType(), field.getName()));
             if (!method.isAnnotationPresent(JIgnore.class)) {
                 Object o = method.invoke(obj);
                 o = getObject(field, o);
@@ -135,8 +139,69 @@ public class ReflectUtil {
         } else if (field.getType().getTypeName().equals(Date.class.getTypeName()) || field.getType().getTypeName().equals(String.class.getTypeName())) {
             o = String.format("\"%s\"", o.toString());
         } else if (ArrayUtil.isArray(o)) {
-            o = ArrayUtil.compileArray(o, isPretty, 2);
+            o = ArrayUtil.compileArray(o, isPretty);
         }
         return o;
+    }
+
+    public static void setValueByMethod(Object obj, Field field, Object value) {
+        try {
+            Class<?> type = field.getType();
+            Method method = obj.getClass().getDeclaredMethod(StringUtil.getMethodNameByFieldType(StringUtil.basicSetPrefix, type, field.getName()), type);
+            if (!method.isAnnotationPresent(JIgnore.class)) {
+                method.invoke(obj, value);
+            }
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            // log set error
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static FieldBean setValueByMethod(Object obj, Field field) {
+        try {
+            Method method = obj.getClass().getDeclaredMethod(StringUtil.getMethodNameByFieldType(StringUtil.basicGetPrefix, field.getType(), field.getName()));
+            if (!method.isAnnotationPresent(JIgnore.class)) {
+                if (method.isAnnotationPresent(JRename.class)) {
+                    JRename rename = method.getDeclaredAnnotation(JRename.class);
+                    return new FieldBean(rename.value(), null);
+                } else {
+                    if (field.isAnnotationPresent(JRename.class)) {
+                        JRename rename = field.getDeclaredAnnotation(JRename.class);
+                        return new FieldBean(rename.value(), null);
+                    } else {
+                        return new FieldBean(field.getName(), null);
+                    }
+                }
+            } else {
+                return new FieldBean("continue", null);
+            }
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void setBeanByField(Object obj, Function<String, Object> func) {
+        Field[] fields = obj.getClass().getDeclaredFields();
+        boolean tag = false;
+        for (Field field : fields) {
+            if (!field.isAnnotationPresent(JIgnore.class)) {
+                FieldBean fieldBean = setValueByMethod(obj, field);
+                // 利用反射先通过方法设置属性值
+                if (!fieldBean.getName().equals("continue")) {
+                    setValueByMethod(obj, field, func.apply(fieldBean.getName()));
+                } else {
+                    tag = true;
+                }
+                // 若利用方法设置不到属性值，就利用属性设置但此方法会打破属性的私有性
+                if (tag) {
+                    try {
+                        field.setAccessible(true);
+                        field.set(obj, func.apply(fieldBean.getName()));
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
     }
 }

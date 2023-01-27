@@ -1,5 +1,7 @@
 package com.zzwl.jpkit.typeof;
 
+import java.lang.reflect.Field;
+
 public class JInteger extends JBase {
 
     private final Integer value;
@@ -9,13 +11,13 @@ public class JInteger extends JBase {
     }
 
     @Override
-    public String apply(String name) {
-        return String.format("%s %s", JInteger.class.getName(), name);
+    public Integer getValue() {
+        return value;
     }
 
     @Override
-    public Integer getValue() {
-        return value;
+    public void apply(Object obj, Field field, JBase jBase) {
+
     }
 
     @Override

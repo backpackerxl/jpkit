@@ -5,6 +5,7 @@ import com.zzwl.jpkit.exception.JCharacterException;
 import com.zzwl.jpkit.exception.JTypeofException;
 import com.zzwl.jpkit.typeof.*;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -123,7 +124,7 @@ public class JSONParse {
         StringBuilder s = new StringBuilder();
         while (true) {
             if (idx == json_arr.length) {
-                throw new JCharacterException(String.format("the json character string error at %s defect '\"' the error occurs is %s", s.toString(), idx));
+                throw new JCharacterException(String.format("the json character string error at %s defect '\"' the error occurs is %s", s, idx));
             }
             char nextChar = this.json_arr[idx++];
             if (nextChar == '"') {
@@ -152,8 +153,8 @@ public class JSONParse {
                 }
 
                 @Override
-                public String apply(String name) {
-                    return null;
+                public void apply(Object obj, Field field, JBase jBase) {
+
                 }
             };
         } else {

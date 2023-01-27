@@ -1,5 +1,7 @@
 package com.zzwl.jpkit.typeof;
 
+import java.lang.reflect.Field;
+
 public class JDouble extends JBase {
     private final Double value;
 
@@ -13,8 +15,8 @@ public class JDouble extends JBase {
     }
 
     @Override
-    public String apply(String name) {
-        return null;
+    public void apply(Object obj, Field field, JBase jBase) {
+
     }
 
     @Override

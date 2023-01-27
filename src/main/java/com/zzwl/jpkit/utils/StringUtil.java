@@ -1,5 +1,6 @@
 package com.zzwl.jpkit.utils;
 
+import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.typeof.JBool;
 
 import java.lang.reflect.Type;
@@ -7,7 +8,8 @@ import java.lang.reflect.Type;
 public class StringUtil {
 
     private final static String boolPrefix = "is";
-    private final static String basicPrefix = "get";
+    public final static String basicGetPrefix = "get";
+    public final static String basicSetPrefix = "set";
 
 
     private StringUtil() {
@@ -20,12 +22,16 @@ public class StringUtil {
      * @param name 字段名称
      * @return 方法名
      */
-    public static String getMethodNameByFieldType(Type type, String name) {
+    public static String getMethodNameByFieldType(String prefix, Type type, String name) {
         String typeName = type.getTypeName();
+        String format = String.format("%s%s%s", prefix, name.substring(0, 1).toUpperCase(), name.substring(1));
         if (typeName.equals(JBool.BOOLEAN)) {
+            if (prefix.equals(basicSetPrefix)) {
+                return format;
+            }
             return String.format("%s%s%s", boolPrefix, name.substring(0, 1).toUpperCase(), name.substring(1));
         } else {
-            return String.format("%s%s%s", basicPrefix, name.substring(0, 1).toUpperCase(), name.substring(1));
+            return format;
         }
     }
 
@@ -49,7 +55,7 @@ public class StringUtil {
     public static String getWhiteByNumber(int num) {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < num; i++) {
-            s.append(" ");
+            s.append(BToJSON.getTabCharacter());
         }
         return s.toString();
     }

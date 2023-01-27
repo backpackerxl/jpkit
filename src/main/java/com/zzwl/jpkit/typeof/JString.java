@@ -1,5 +1,7 @@
 package com.zzwl.jpkit.typeof;
 
+import java.lang.reflect.Field;
+
 public class JString extends JBase {
     private final String value;
 
@@ -7,9 +9,16 @@ public class JString extends JBase {
         this.value = value;
     }
 
+    private final static JString bean = new JString("");
+
+
+    public static JString getBean() {
+        return bean;
+    }
+
     @Override
-    public String apply(String name) {
-        return String.format("%s %s", JString.class.getName(), name);
+    public void apply(Object obj, Field field, JBase jBase) {
+
     }
 
     @Override

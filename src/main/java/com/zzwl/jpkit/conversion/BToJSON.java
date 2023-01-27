@@ -12,11 +12,42 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class BToJSON<B> {
+public final class BToJSON<B> {
+    // 需要转化为json字符串的java bean
     private final B bean;
+    // 转化json过程中的全局缩进单位存储量, 默认第一行和最后一行不缩进, 可通过set方法配置
+    private static Integer tab = 0;
+    // 转化json过程中的单位缩进长度, 可通过set方法配置, 默认为2个单位长度
+    private static Integer beforeTab = 2;
+    // 转化json过程中的缩进填充字符, 可通过set方法配置, 默认为空格
+    private static char tabCharacter = ' ';
 
     public BToJSON(B bean) {
         this.bean = bean;
+    }
+
+    public static Integer getTab() {
+        return tab;
+    }
+
+    public static void setTab(Integer tab) {
+        BToJSON.tab = tab;
+    }
+
+    public static Integer getBeforeTab() {
+        return beforeTab;
+    }
+
+    public static void setBeforeTab(Integer beforeTab) {
+        BToJSON.beforeTab = beforeTab;
+    }
+
+    public static char getTabCharacter() {
+        return tabCharacter;
+    }
+
+    public static void setTabCharacter(char tabCharacter) {
+        BToJSON.tabCharacter = tabCharacter;
     }
 
     /**
@@ -28,22 +59,30 @@ public class BToJSON<B> {
      * @return JSON字符串
      */
     public String terse() {
+        // 当格式化json字符串方法调用后, 再调用紧凑型json字符串方法会导致紧凑型json字符串方法输出样式错乱,
+        // 因此必须重置ReflectUtil::isPretty变量
+        ReflectUtil.setIsPretty(false);
+        // 处理空对象
         if (Objects.isNull(bean)) {
             return "null";
         }
-
-        if (ArrayUtil.isArray(bean)) {
-            return ArrayUtil.compileArray(bean, false, -1);
+        // 处理JBase对象
+        if (bean instanceof JBase) {
+            return JSON.stringify(((JBase) bean).getValue()).terse();
         }
-
+        // 处理数组对象
+        if (ArrayUtil.isArray(bean)) {
+            return ArrayUtil.compileArray(bean, false);
+        }
+        // 处理基础数据类型, 除 Date, String, char
         if (JBase.isBase(bean)) {
             return bean.toString();
         }
-
+        // 处理特殊类型
         if (bean instanceof String || bean instanceof Character || bean instanceof Date) {
             return String.format("\"%s\"", bean);
         }
-
+        // 处理 List
         if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(List.class.getTypeName()))) {
             StringBuilder s = new StringBuilder();
             List<B> bs = (List<B>) bean;
@@ -55,6 +94,7 @@ public class BToJSON<B> {
             }
             return String.format("[%s]", StringUtil.substringByNumber(s.toString(), 1));
         }
+        // 处理 Map
         if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(Map.class.getTypeName()))) {
             StringBuilder s = new StringBuilder();
             Map<String, B> bs = (Map<String, B>) bean;
@@ -66,7 +106,66 @@ public class BToJSON<B> {
             }
             return String.format("{%s}", StringUtil.substringByNumber(s.toString(), 1));
         }
+        // 处理普通类型
         return String.format("{%s}", StringUtil.substringByNumber(ReflectUtil.doBeanByField(bean, (name, obj) -> String.format("\"%s\":%s,", name, obj)), 1));
+    }
+
+    /**
+     * 紧凑型JSON字符串, 按量转化
+     * <blockquote><pre>
+     *     // 返回第一条数据的json字符串
+     *     System.out.println(JSON.stringify(obj).terse(1));
+     *     // 当limit为负数或者超过数据存储量时返回所有数据的json字符串
+     * </pre></blockquote>
+     *
+     * @param limit 返回条数
+     * @return JSON字符串
+     */
+    public String terse(int limit) {
+        // 处理 List
+        // 当格式化json字符串方法调用后, 再调用紧凑型json字符串方法会导致紧凑型json字符串方法输出样式错乱,
+        // 因此必须重置ReflectUtil::isPretty变量
+        ReflectUtil.setIsPretty(false);
+        if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(List.class.getTypeName()))) {
+            StringBuilder s = new StringBuilder();
+            List<B> bs = (List<B>) bean;
+            if (bs.size() == 0) {
+                return "[]";
+            }
+            if (bs.size() <= limit || limit <= 0) {
+                return terse();
+            }
+            int i = 0;
+            for (B b : bs) {
+                if (i == limit) {
+                    break;
+                }
+                s.append(JSON.stringify(b).terse()).append(",");
+                i++;
+            }
+            return String.format("[%s]", StringUtil.substringByNumber(s.toString(), 1));
+        }
+        // 处理 Map
+        if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(Map.class.getTypeName()))) {
+            StringBuilder s = new StringBuilder();
+            Map<String, B> bs = (Map<String, B>) bean;
+            if (bs.size() == 0) {
+                return "{}";
+            }
+            if (bs.size() <= limit || limit <= 0) {
+                return terse();
+            }
+            int i = 0;
+            for (String key : bs.keySet()) {
+                if (i == limit) {
+                    break;
+                }
+                s.append("\"").append(key).append("\":").append(JSON.stringify(bs.get(key)).terse()).append(",");
+                i++;
+            }
+            return String.format("{%s}", StringUtil.substringByNumber(s.toString(), 1));
+        }
+        return terse();
     }
 
     /**
@@ -78,31 +177,113 @@ public class BToJSON<B> {
      * @return JSON字符串
      */
     public String pretty() {
+        // 处理空对象
         if (Objects.isNull(bean)) {
             return "null";
         }
-
-        if (ArrayUtil.isArray(bean)) {
-            return ArrayUtil.compileArray(bean, true, 1);
+        // 处理JBase对象
+        if (bean instanceof JBase) {
+            return JSON.stringify(((JBase) bean).getValue()).pretty();
         }
-
+        // 处理数组对象
+        if (ArrayUtil.isArray(bean)) {
+            return ArrayUtil.compileArray(bean, true);
+        }
+        // 处理基础数据类型,除 String, char, Date
         if (JBase.isBase(bean)) {
             return bean.toString();
         }
-
+        // 处理特殊类型
         if (bean instanceof String || bean instanceof Character || bean instanceof Date) {
             return String.format("\"%s\"", bean);
         }
+        // 处理 List 类型
         if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(List.class.getTypeName()))) {
             StringBuilder s = new StringBuilder();
             List<B> bs = (List<B>) bean;
             if (bs.size() == 0) {
                 return "[]";
             }
+            s.append("[\n");
+            ReflectUtil.setIsPretty(true);
+            // 设置缩进
+            setTab(getTab() + getBeforeTab());
+            // 获取缩进
+            String white = StringUtil.getWhiteByNumber(getTab());
             for (B b : bs) {
-                s.append("  ").append(JSON.stringify(b).pretty()).append(",\n");
+                s.append(white).append(JSON.stringify(b).pretty()).append(",\n");
             }
-            return String.format("[\n%s\n]", StringUtil.substringByNumber(s.toString(), 2));
+            // 将缩进恢复
+            setTab(getTab() - getBeforeTab());
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab()));
+        }
+        // 处理 Map 类型
+        if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(Map.class.getTypeName()))) {
+            StringBuilder s = new StringBuilder();
+            Map<String, B> bs = (Map<String, B>) bean;
+            if (bs.size() == 0) {
+                return "{}";
+            }
+            s.append("{\n");
+            ReflectUtil.setIsPretty(true);
+            // 设置缩进
+            setTab(getTab() + getBeforeTab());
+            // 获取缩进
+            String white = StringUtil.getWhiteByNumber(getTab());
+            for (String key : bs.keySet()) {
+                s.append(white).append(key).append("\": ").append(JSON.stringify(bs.get(key)).pretty()).append(",\n");
+            }
+            // 将缩进恢复
+            setTab(getTab() - getBeforeTab());
+            return String.format("%s\n%s}", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab()));
+        }
+        // 处理普通类型
+        ReflectUtil.setIsPretty(true);
+        // 设置缩进
+        setTab(getTab() + getBeforeTab());
+        String white = StringUtil.getWhiteByNumber(getTab());
+        return String.format("{\n%s\n%s}", StringUtil.substringByNumber(ReflectUtil.doBeanByField(bean, (name, obj) -> String.format("%s\"%s\": %s,\n", white, name, obj)), 2), StringUtil.getWhiteByNumber(getTab()));
+    }
+
+    /**
+     * 格式化JSON字符串, 按量转化
+     * <blockquote><pre>
+     *     // 返回第一条数据的格式化json字符串
+     *     System.out.println(JSON.stringify(obj).pretty(1));
+     *     // 当limit为负数或者超过数据存储量时返回所有数据的格式化json字符串
+     * </pre></blockquote>
+     *
+     * @param limit 返回条数
+     * @return JSON字符串
+     */
+    public String pretty(int limit) {
+        tab = 0;
+        if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(List.class.getTypeName()))) {
+            StringBuilder s = new StringBuilder();
+            List<B> bs = (List<B>) bean;
+            if (bs.size() == 0) {
+                return "[]";
+            }
+            s.append("[\n");
+            ReflectUtil.setIsPretty(true);
+            // 设置缩进
+            setTab(getTab() + getBeforeTab());
+            // 获取缩进
+            String white = StringUtil.getWhiteByNumber(getTab());
+            if (bs.size() <= limit || limit <= 0) {
+                return pretty();
+            }
+            int i = 0;
+            for (B b : bs) {
+                if (i == limit) {
+                    break;
+                }
+                s.append(white).append(JSON.stringify(b).pretty()).append(",\n");
+                i++;
+            }
+            // 将缩进恢复
+            setTab(getTab() - getBeforeTab());
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab()));
         }
         if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(Map.class.getTypeName()))) {
             StringBuilder s = new StringBuilder();
@@ -110,35 +291,83 @@ public class BToJSON<B> {
             if (bs.size() == 0) {
                 return "{}";
             }
-            for (String key : bs.keySet()) {
-                s.append("  \"").append(key).append("\": ").append(JSON.stringify(bs.get(key)).pretty()).append(",\n");
+            s.append("{\n");
+            ReflectUtil.setIsPretty(true);
+            // 设置缩进
+            setTab(getTab() + getBeforeTab());
+            // 获取缩进
+            String white = StringUtil.getWhiteByNumber(getTab());
+            if (bs.size() <= limit || limit <= 0) {
+                return terse();
             }
-            return String.format("{\n%s\n}", StringUtil.substringByNumber(s.toString(), 2));
+            int i = 0;
+            for (String key : bs.keySet()) {
+                if (i == limit) {
+                    break;
+                }
+                s.append(white).append(key).append("\": ").append(JSON.stringify(bs.get(key)).pretty()).append(",\n");
+                i++;
+            }
+            // 将缩进恢复
+            setTab(getTab() - getBeforeTab());
+            return String.format("%s\n%s}", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab()));
         }
-        ReflectUtil.setIsPretty(true);
-        return String.format("{\n%s\n}", StringUtil.substringByNumber(
-                ReflectUtil.doBeanByField(
-                        bean,
-                        (name, obj) -> String.format("  \"%s\": %s,\n", name, obj)
-                ), 2));
+        return pretty();
     }
 
     /**
      * 保存json文件
      * <blockquote><pre>
-     *     JSON.stringify(user).save("D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json");
+     *     // 当 savePretty 为true时保存为格式化的json, 反之则为紧凑型json
+     *     JSON.stringify(user).save("D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json", false);
      * </pre></blockquote>
      *
-     * @param p 路径
+     * @param p      路径
+     * @param pretty 是否格式化
      */
-    public void save(String p) {
+    public void save(String p, boolean pretty) {
         Path path = Paths.get(p);
         try {
             if (Files.exists(path)) {
                 Files.delete(path);
             }
             Files.createFile(path);
-            Files.write(path, terse().getBytes());
+            byte[] bytes = terse().getBytes();
+            if (pretty) {
+                bytes = pretty().getBytes();
+                tab = 0;
+            }
+            Files.write(path, bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 按量保存json文件
+     * <blockquote><pre>
+     *     // 当 savePretty 为true时保存为格式化的json, 反之则为紧凑型json
+     *     // 保存第一条
+     *     JSON.stringify(user).save("D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json", false, 1);
+     * </pre></blockquote>
+     *
+     * @param p      路径
+     * @param pretty 是否格式化
+     * @param limit  保存条数
+     */
+    public void save(String p, boolean pretty, int limit) {
+        Path path = Paths.get(p);
+        try {
+            if (Files.exists(path)) {
+                Files.delete(path);
+            }
+            Files.createFile(path);
+            byte[] bytes = terse(limit).getBytes();
+            if (pretty) {
+                bytes = pretty(limit).getBytes();
+                tab = 0;
+            }
+            Files.write(path, bytes);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

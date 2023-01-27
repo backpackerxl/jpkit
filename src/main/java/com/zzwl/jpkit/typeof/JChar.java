@@ -2,6 +2,8 @@ package com.zzwl.jpkit.typeof;
 
 import com.zzwl.jpkit.exception.JTypeofException;
 
+import java.lang.reflect.Field;
+
 public class JChar extends JBase {
 
     private final Character value;
@@ -21,8 +23,8 @@ public class JChar extends JBase {
     }
 
     @Override
-    public String apply(String name) {
-        return null;
+    public void apply(Object obj, Field field, JBase jBase) {
+
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.zzwl.jpkit.typeof;
 
+import java.lang.reflect.Field;
+
 public class JLong extends JBase {
     private final Long value;
 
@@ -8,13 +10,13 @@ public class JLong extends JBase {
     }
 
     @Override
-    public String apply(String name) {
-        return String.format("%s %s", JLong.class.getName(), name);
+    public Long getValue() {
+        return value;
     }
 
     @Override
-    public Long getValue() {
-        return value;
+    public void apply(Object obj, Field field, JBase jBase) {
+
     }
 
     @Override

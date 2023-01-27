@@ -1,5 +1,6 @@
 package com.zzwl.jpkit.utils;
 
+import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.core.JSON;
 
 import java.lang.reflect.Field;
@@ -33,12 +34,15 @@ public class ArrayUtil {
      * @param o 将数组值转化为JSON值
      * @return JSON字符串值
      */
-    public static String compileArray(Object o, boolean isPretty, int idx) {
+    public static String compileArray(Object o, boolean isPretty) {
         StringBuilder s = new StringBuilder("[");
+        String white = "";
 
-        String white = StringUtil.getWhiteByNumber(idx + 2);
-
+        // 若为美化输出json字符串
         if (isPretty) {
+            // 设置缩进
+            BToJSON.setTab(BToJSON.getTab() + BToJSON.getBeforeTab());
+            white = StringUtil.getWhiteByNumber(BToJSON.getTab());
             s.append("\n");
         }
         if (o instanceof int[] && !isPretty) {
@@ -83,7 +87,8 @@ public class ArrayUtil {
             for (int i : nums) {
                 s.append(white).append(i).append(",\n");
             }
-            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+            BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
         }
 
         if (o instanceof long[]) {
@@ -91,7 +96,8 @@ public class ArrayUtil {
             for (long i : nums) {
                 s.append(white).append(i).append(",\n");
             }
-            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+            BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
         }
 
         if (o instanceof short[]) {
@@ -99,7 +105,8 @@ public class ArrayUtil {
             for (short i : nums) {
                 s.append(white).append(i).append(",\n");
             }
-            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+            BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
         }
 
         if (o instanceof double[]) {
@@ -107,7 +114,8 @@ public class ArrayUtil {
             for (double i : nums) {
                 s.append(white).append(i).append(",\n");
             }
-            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+            BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
         }
 
         if (o instanceof float[]) {
@@ -115,7 +123,8 @@ public class ArrayUtil {
             for (float i : nums) {
                 s.append(white).append(i).append(",\n");
             }
-            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+            BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
         }
 
         if (o instanceof byte[]) {
@@ -123,7 +132,8 @@ public class ArrayUtil {
             for (byte i : nums) {
                 s.append(white).append(i).append(",\n");
             }
-            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+            BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
         }
 
         if (o instanceof char[]) {
@@ -131,7 +141,8 @@ public class ArrayUtil {
             for (char i : nums) {
                 s.append(white).append("\"").append(i).append("\",\n");
             }
-            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+            BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
         }
 
         if (o instanceof boolean[]) {
@@ -139,13 +150,13 @@ public class ArrayUtil {
             for (boolean i : nums) {
                 s.append(white).append(i).append(",\n");
             }
-            return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 2), "\n]");
+            BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
         }
 
         try {
             assert o instanceof Object[];
             Object[] objects = (Object[]) o;
-
             for (Object object : objects) {
                 if (isPretty) {
                     if (object instanceof String || object instanceof Character) {
@@ -166,7 +177,9 @@ public class ArrayUtil {
                 }
             }
             if (isPretty) {
-                return String.format("%s\n%s%s", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(idx), "]");
+                // 恢复缩进
+                BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
+                return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
             } else {
                 return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 1), "]");
             }
