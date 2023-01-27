@@ -1,0 +1,44 @@
+[
+	{
+		"username": "zzwl",
+		"user_code": 300,
+		"admin": true,
+		"create_time": "2023-01-27",
+		"nums": [
+			789,
+			526
+		],
+		"strings": [
+			"gg",
+			"hh"
+		]
+	},
+	{
+		"username": "zzwl",
+		"user_code": 400,
+		"admin": false,
+		"create_time": "2023-01-27",
+		"nums": [
+			789,
+			526
+		],
+		"strings": [
+			"gg",
+			"hh"
+		]
+	},
+	{
+		"username": "zzwl",
+		"user_code": 500,
+		"admin": true,
+		"create_time": "2023-01-27",
+		"nums": [
+			789,
+			526
+		],
+		"strings": [
+			"gg",
+			"hh"
+		]
+	}
+]
