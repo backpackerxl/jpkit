@@ -2,6 +2,9 @@ package com.zzwl.jpkit.utils;
 
 import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.core.JSON;
+import com.zzwl.jpkit.typeof.JBase;
+import com.zzwl.jpkit.typeof.JInteger;
+import com.zzwl.jpkit.typeof.JString;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -9,6 +12,9 @@ import java.util.Arrays;
 public class ArrayUtil {
     private ArrayUtil() {
     }
+
+    private final static String INTEGER_ARR = Integer[].class.getTypeName();
+    private final static String STRING_ARR = String[].class.getTypeName();
 
     /**
      * 判断对象是否为数组
@@ -24,7 +30,7 @@ public class ArrayUtil {
         return field.getType().getTypeName().contains("[]");
     }
 
-    public static boolean isBasicArray(Field field) {
+    public static boolean isBaseArray(Field field) {
         return field.getType().getTypeName().contains("[]") && !field.getType().getTypeName().contains("java.lang") && !field.getType().getTypeName().contains("java.util");
     }
 
@@ -198,4 +204,19 @@ public class ArrayUtil {
         return object instanceof Integer || object instanceof Boolean || object instanceof Long || object instanceof Short || object instanceof Byte || object instanceof Double || object instanceof Float;
     }
 
+    /**
+     * List 转 Array
+     *
+     * @param jBase 转换源
+     * @return 转化后的包装类型数组
+     */
+    public static Object getArr(JBase jBase, Field field) {
+        String typeName = field.getType().getTypeName();
+        if (typeName.equals(INTEGER_ARR)) {
+            return JInteger.getArr(jBase);
+        } else if (typeName.equals(STRING_ARR)){
+            return JString.getArr(jBase);
+        }
+        return null;
+    }
 }

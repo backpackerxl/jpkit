@@ -9,6 +9,8 @@ import com.zzwl.jpkit.vo.User;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class JSONTest {
@@ -166,31 +168,29 @@ public class JSONTest {
     }
 
     @Test
-    public void testINIParse() {
-
+    public void testDate() throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(JDate.YYYY_MM_DD);
+        Date parse = simpleDateFormat.parse("2023-1-27");
+        System.out.println(parse);
     }
 
 
     @Test
     public void testObjectParse() {
-        String json = "{\n" +
-                "\t\"username\": \"zzwl\",\n" +
-                "\t\"user_code\": 300,\n" +
-                "\t\"admin\": true,\n" +
-                "\t\"create_time\": \"2023-01-27\",\n" +
-                "\t\"nums\": [\n" +
-                "\t\t789,\n" +
-                "\t\t526\n" +
-                "\t],\n" +
-                "\t\"strings\": [\n" +
-                "\t\t\"gg\",\n" +
-                "\t\t\"hh\"\n" +
-                "\t]\n" +
-                "}";
+        String json = "{\n" + "\t\"username\": \"zzwl\",\n" + "\t\"user_code\": 300,\n" + "\t\"admin\": true,\n" + "\t\"create_time\": \"2023-01-27\",\n" + "\t\"nums\": [\n" + "\t\t789,\n" + "\t\t526\n" + "\t],\n" + "\t\"strings\": [\n" + "\t\t\"gg\",\n" + "\t\t\"hh\"\n" + "\t]\n" + "}";
 
         User user = JSON.parse(json, User.class);
 
         System.out.println(json);
         System.out.println(user);
+    }
+
+    @Test
+    public void testArr() throws NoSuchFieldException {
+        Field nums = User.class.getDeclaredField("nums");
+
+        String typeName = nums.getType().getTypeName();
+        String name = Integer[].class.getTypeName();
+        System.out.println(typeName + "===>" + name);
     }
 }

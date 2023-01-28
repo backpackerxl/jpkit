@@ -8,10 +8,10 @@ import java.util.Date;
 
 public class JDate extends JBase {
     private final Date value;
-    public final static String YYYY_MM_DD = "YYYY-MM-DD";
-    public final static String MM_DD = "MM-DD";
-    public final static String YYYY_MM = "YYYY-MM";
-    public final static String YYYY_MM_DD_HH_MM_SS = "YYYY-MM-DD HH:mm:ss";
+    public final static String YYYY_MM_DD = "yyyy-MM-dd";
+    public final static String MM_DD = "MM-dd";
+    public final static String YYYY_MM = "yyyy-MM";
+    public final static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     public final static String HH_MM_SS = "HH:mm:ss";
     public final static String HH_MM = "HH:mm";
 

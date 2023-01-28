@@ -5,6 +5,8 @@ import com.zzwl.jpkit.anno.JIgnore;
 import com.zzwl.jpkit.anno.JRename;
 import com.zzwl.jpkit.bean.FieldBean;
 import com.zzwl.jpkit.conversion.BToJSON;
+import com.zzwl.jpkit.typeof.JBase;
+import com.zzwl.jpkit.typeof.JDate;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -180,7 +182,7 @@ public class ReflectUtil {
         }
     }
 
-    public static void setBeanByField(Object obj, Function<String, Object> func) {
+    public static void setBeanByField(Object obj, Function<String, JBase> func) {
         Field[] fields = obj.getClass().getDeclaredFields();
         boolean tag = false;
         for (Field field : fields) {
@@ -188,7 +190,8 @@ public class ReflectUtil {
                 FieldBean fieldBean = setValueByMethod(obj, field);
                 // 利用反射先通过方法设置属性值
                 if (!fieldBean.getName().equals("continue")) {
-                    setValueByMethod(obj, field, func.apply(fieldBean.getName()));
+                    JBase jBase = func.apply(fieldBean.getName());
+                    setValueByMethod(obj, field, getValue(jBase, field));
                 } else {
                     tag = true;
                 }
@@ -203,5 +206,27 @@ public class ReflectUtil {
                 }
             }
         }
+    }
+
+    private static Object getValue(JBase jBase, Field field) {
+        Object obj = null;
+        if (field.getType().getName().equals(Date.class.getName())) {
+            if (field.isAnnotationPresent(JDateFormat.class)) {
+                JDateFormat format = field.getDeclaredAnnotation(JDateFormat.class);
+                if (format.value().equals("#")) {
+                    obj = new JDate(jBase).getValue();
+                } else {
+                    obj = new JDate(jBase, format.value()).getValue();
+                }
+            }
+        } else if (ArrayUtil.isArray(field)) {
+            // Integer[] ...
+            obj = ArrayUtil.getArr(jBase, field);
+        } else if (ArrayUtil.isBaseArray(field)) {
+            // int[] long[] ...
+        } else {
+            obj = jBase.getValue();
+        }
+        return obj;
     }
 }

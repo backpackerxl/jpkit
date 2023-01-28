@@ -15,13 +15,13 @@ public class User {
     private String name;
     private Integer code;
     private Boolean admin;
-    @JIgnore
+    //    @JIgnore
     @JRename("create_time")
     @JDateFormat(JDate.YYYY_MM_DD)
     private Date date;
-    @JIgnore
+//    @JIgnore
     private Integer[] nums;
-    @JIgnore
+//    @JIgnore
     private String[] strings;
 
     public User() {

@@ -7,7 +7,6 @@ import com.zzwl.jpkit.utils.ReflectUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Ref;
 
 public class ObjectParse {
     private final JBase jBase;
@@ -26,7 +25,7 @@ public class ObjectParse {
     public <B> B parse(Class<B> clazz) {
         Object bean = createBean(clazz);
         JObject jo = (JObject) this.jBase;
-        ReflectUtil.setBeanByField(bean, (name) -> jo.getValue().get(name).getValue());
+        ReflectUtil.setBeanByField(bean, (name) -> jo.getValue().get(name));
         return (B) bean;
     }
 
