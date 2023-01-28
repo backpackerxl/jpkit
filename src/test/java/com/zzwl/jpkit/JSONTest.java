@@ -177,7 +177,7 @@ public class JSONTest {
 
     @Test
     public void testObjectParse() {
-        String json = "{\n" + "\t\"username\": \"zzwl\",\n" + "\t\"user_code\": 300,\n" + "\t\"admin\": true,\n" + "\t\"create_time\": \"2023-01-27\",\n" + "\t\"nums\": [\n" + "\t\t789,\n" + "\t\t526\n" + "\t],\n" + "\t\"strings\": [\n" + "\t\t\"gg\",\n" + "\t\t\"hh\"\n" + "\t]\n" + "}";
+        String json = "{\n" + "\t\"ints\": [25,89,45,42],\n" + "\t\"username\": \"zzwl\",\n" + "\t\"user_code\": 300,\n" + "\t\"admin\": true,\n" + "\t\"create_time\": \"2023-01-27\",\n" + "\t\"nums\": [\n" + "\t\t789,\n" + "\t\t526\n" + "\t],\n" + "\t\"strings\": [\n" + "\t\t\"gg\",\n" + "\t\t\"hh\"\n" + "\t]\n" + "}";
 
         User user = JSON.parse(json, User.class);
 

@@ -2,18 +2,23 @@ package com.zzwl.jpkit.utils;
 
 import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.core.JSON;
+import com.zzwl.jpkit.exception.JTypeofException;
+import com.zzwl.jpkit.typeof.JArray;
 import com.zzwl.jpkit.typeof.JBase;
 import com.zzwl.jpkit.typeof.JInteger;
 import com.zzwl.jpkit.typeof.JString;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
 
 public class ArrayUtil {
     private ArrayUtil() {
     }
 
     private final static String INTEGER_ARR = Integer[].class.getTypeName();
+    private final static String INT_ARR = int[].class.getTypeName();
     private final static String STRING_ARR = String[].class.getTypeName();
 
     /**
@@ -214,9 +219,23 @@ public class ArrayUtil {
         String typeName = field.getType().getTypeName();
         if (typeName.equals(INTEGER_ARR)) {
             return JInteger.getArr(jBase);
-        } else if (typeName.equals(STRING_ARR)){
+        } else if (typeName.equals(INT_ARR)) {
+            return JInteger.getIntArr(jBase);
+        } else if (typeName.equals(STRING_ARR)) {
             return JString.getArr(jBase);
         }
         return null;
+    }
+
+
+    public static Object doArrayByJArray(JBase jBase, Function<List<JBase>, Object> func) {
+        try {
+            JArray jArray = (JArray) jBase;
+            List<JBase> value = jArray.getValue();
+            return func.apply(value);
+        } catch (Exception e) {
+            // log: error the source not cast array
+            throw new JTypeofException("error the source not cast array, because " + e.getMessage());
+        }
     }
 }

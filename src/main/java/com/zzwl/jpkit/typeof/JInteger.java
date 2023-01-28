@@ -1,6 +1,7 @@
 package com.zzwl.jpkit.typeof;
 
 import com.zzwl.jpkit.exception.JTypeofException;
+import com.zzwl.jpkit.utils.ArrayUtil;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -20,18 +21,29 @@ public class JInteger extends JBase {
      * @return Integer[]
      */
     public static Integer[] getArr(JBase jBase) {
-        try {
-            JArray jArray = (JArray) jBase;
-            List<JBase> value = jArray.getValue();
+        return (Integer[]) ArrayUtil.doArrayByJArray(jBase, (value) -> {
             Integer[] res = new Integer[value.size()];
             for (int i = 0; i < value.size(); i++) {
                 res[i] = ((JInteger) value.get(i)).getValue();
             }
             return res;
-        } catch (Exception e) {
-            // log: error the source not cast array
-            throw new JTypeofException("error the source not cast array, because " + e.getMessage());
-        }
+        });
+    }
+
+    /**
+     * JArray to int[]
+     *
+     * @param jBase 数据源
+     * @return int[]
+     */
+    public static int[] getIntArr(JBase jBase) {
+        return (int[]) ArrayUtil.doArrayByJArray(jBase, (value) -> {
+            int[] res = new int[value.size()];
+            for (int i = 0; i < value.size(); i++) {
+                res[i] = ((JInteger) value.get(i)).getValue();
+            }
+            return res;
+        });
     }
 
     @Override

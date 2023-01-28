@@ -1,6 +1,7 @@
 package com.zzwl.jpkit.typeof;
 
 import com.zzwl.jpkit.exception.JTypeofException;
+import com.zzwl.jpkit.utils.ArrayUtil;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -19,18 +20,13 @@ public class JString extends JBase {
      * @return String[]
      */
     public static String[] getArr(JBase jBase) {
-        try {
-            JArray jArray = (JArray) jBase;
-            List<JBase> value = jArray.getValue();
+        return (String[]) ArrayUtil.doArrayByJArray(jBase, (value) -> {
             String[] res = new String[value.size()];
             for (int i = 0; i < value.size(); i++) {
                 res[i] = ((JString) value.get(i)).getValue();
             }
             return res;
-        } catch (Exception e) {
-            // log: error the source not cast array
-            throw new JTypeofException("error the source not cast array, because " + e.getMessage());
-        }
+        });
     }
 
     @Override
