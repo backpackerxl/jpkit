@@ -231,7 +231,7 @@ public final class BToJSON<B> {
             // 获取缩进
             String white = StringUtil.getWhiteByNumber(getTab());
             for (String key : bs.keySet()) {
-                s.append(white).append(key).append("\": ").append(JSON.stringify(bs.get(key)).pretty()).append(",\n");
+                s.append(white).append("\"").append(key).append("\": ").append(JSON.stringify(bs.get(key)).pretty()).append(",\n");
             }
             // 将缩进恢复
             setTab(getTab() - getBeforeTab());
@@ -257,7 +257,6 @@ public final class BToJSON<B> {
      * @return JSON字符串
      */
     public String pretty(int limit) {
-        tab = 0;
         if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(List.class.getTypeName()))) {
             StringBuilder s = new StringBuilder();
             List<B> bs = (List<B>) bean;
@@ -278,7 +277,8 @@ public final class BToJSON<B> {
                 if (i == limit) {
                     break;
                 }
-                s.append(white).append(JSON.stringify(b).pretty()).append(",\n");
+                String pretty = JSON.stringify(b).pretty();
+                s.append(white).append(pretty).append(",\n");
                 i++;
             }
             // 将缩进恢复
@@ -305,7 +305,7 @@ public final class BToJSON<B> {
                 if (i == limit) {
                     break;
                 }
-                s.append(white).append(key).append("\": ").append(JSON.stringify(bs.get(key)).pretty()).append(",\n");
+                s.append(white).append("\"").append(key).append("\": ").append(JSON.stringify(bs.get(key)).pretty()).append(",\n");
                 i++;
             }
             // 将缩进恢复

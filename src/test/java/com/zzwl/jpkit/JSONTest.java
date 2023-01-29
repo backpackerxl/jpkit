@@ -109,7 +109,7 @@ public class JSONTest {
     @Test
     public void testListAndMap() {
         List<User> users = new ArrayList<>();
-        String path = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json";
+        String path = "D:\\zz_deploy\\jpkit\\src\\main\\resources\\db.json";
 
         users.add(new User(1L, "zzwl", 300, true, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
         users.add(new User(2L, "zzwl", 400, false, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
@@ -119,9 +119,10 @@ public class JSONTest {
 
         JSON.setTabLength(1);
         JSON.setTabCharacter('\t');
-        JSON.stringify(users).save(path, true, 3);
+        JSON.stringify(users).save(path, true, 1);
 
         System.out.println(JSON.stringify(users).terse(1));
+        System.out.println(JSON.stringify(users).pretty(1));
         System.out.println(JSON.stringify(users).pretty(1));
     }
 
@@ -132,14 +133,15 @@ public class JSONTest {
 
 
         String url = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
-        String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json";
+        String local = "D:\\zz_deploy\\jpkit\\src\\main\\resources\\db.json";
 
 //        JBase net = (JBase) JSON.load(url);
         JBase net_local = (JBase) JSON.load(local);
 
 //        System.out.println(JSON.stringify(net).terse());
         System.out.println("===================================");
-        System.out.println(JSON.stringify(net_local).pretty());
+        String js = JSON.stringify(net_local).pretty();
+        System.out.println(js);
 
     }
 
