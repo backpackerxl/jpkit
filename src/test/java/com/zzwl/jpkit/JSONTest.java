@@ -9,6 +9,7 @@ import com.zzwl.jpkit.vo.User;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -133,7 +134,7 @@ public class JSONTest {
 
 
         String url = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
-        String local = "D:\\zz_deploy\\jpkit\\src\\main\\resources\\db.json";
+        String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json";
 
 //        JBase net = (JBase) JSON.load(url);
         JBase net_local = (JBase) JSON.load(local);
@@ -194,5 +195,10 @@ public class JSONTest {
         String typeName = nums.getType().getTypeName();
         String name = Integer[].class.getTypeName();
         System.out.println(typeName + "===>" + name);
+    }
+
+    @Test
+    public void testMethod() {
+        System.out.println(EuTypeof.getInstance("java.lang.Integer[]"));
     }
 }

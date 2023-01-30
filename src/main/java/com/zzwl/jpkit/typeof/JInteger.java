@@ -18,10 +18,10 @@ public class JInteger extends JBase {
      * JArray to Integer[]
      *
      * @param jBase 数据源
-     * @return Integer[]
+     * @return Object
      */
-    public static Integer[] getArr(JBase jBase) {
-        return (Integer[]) ArrayUtil.doArrayByJArray(jBase, (value) -> {
+    public static Object getArr(JBase jBase) {
+        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             Integer[] res = new Integer[value.size()];
             for (int i = 0; i < value.size(); i++) {
                 res[i] = ((JInteger) value.get(i)).getValue();
@@ -34,10 +34,10 @@ public class JInteger extends JBase {
      * JArray to int[]
      *
      * @param jBase 数据源
-     * @return int[]
+     * @return Object
      */
-    public static int[] getIntArr(JBase jBase) {
-        return (int[]) ArrayUtil.doArrayByJArray(jBase, (value) -> {
+    public static Object get_Arr(JBase jBase) {
+        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             int[] res = new int[value.size()];
             for (int i = 0; i < value.size(); i++) {
                 res[i] = ((JInteger) value.get(i)).getValue();

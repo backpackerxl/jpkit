@@ -1,6 +1,6 @@
 package com.zzwl.jpkit.vo;
 
-import com.zzwl.jpkit.anno.JDateFormat;
+import com.zzwl.jpkit.anno.JFormat;
 import com.zzwl.jpkit.anno.JIgnore;
 import com.zzwl.jpkit.anno.JRename;
 import com.zzwl.jpkit.core.JSON;
@@ -17,7 +17,7 @@ public class User {
     private Boolean admin;
     //    @JIgnore
     @JRename("create_time")
-    @JDateFormat(JDate.YYYY_MM_DD)
+    @JFormat(JDate.YYYY_MM_DD)
     private Date date;
 //    @JIgnore
     private Integer[] nums;

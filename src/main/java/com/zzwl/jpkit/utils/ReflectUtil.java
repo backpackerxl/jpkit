@@ -1,6 +1,6 @@
 package com.zzwl.jpkit.utils;
 
-import com.zzwl.jpkit.anno.JDateFormat;
+import com.zzwl.jpkit.anno.JFormat;
 import com.zzwl.jpkit.anno.JIgnore;
 import com.zzwl.jpkit.anno.JRename;
 import com.zzwl.jpkit.bean.FieldBean;
@@ -130,8 +130,8 @@ public class ReflectUtil {
      * @return 字段值
      */
     private static Object getObject(Field field, Object o) {
-        if (field.isAnnotationPresent(JDateFormat.class) && field.getType().getTypeName().equals(Date.class.getTypeName())) {
-            JDateFormat jDateFormat = field.getDeclaredAnnotation(JDateFormat.class);
+        if (field.isAnnotationPresent(JFormat.class) && field.getType().getTypeName().equals(Date.class.getTypeName())) {
+            JFormat jDateFormat = field.getDeclaredAnnotation(JFormat.class);
             if (jDateFormat.value().equals("#")) {
                 o = ((Date) o).getTime();
             } else {
@@ -211,8 +211,8 @@ public class ReflectUtil {
     private static Object getValue(JBase jBase, Field field) {
         Object obj = null;
         if (field.getType().getName().equals(Date.class.getName())) {
-            if (field.isAnnotationPresent(JDateFormat.class)) {
-                JDateFormat format = field.getDeclaredAnnotation(JDateFormat.class);
+            if (field.isAnnotationPresent(JFormat.class)) {
+                JFormat format = field.getDeclaredAnnotation(JFormat.class);
                 if (format.value().equals("#")) {
                     obj = new JDate(jBase).getValue();
                 } else {

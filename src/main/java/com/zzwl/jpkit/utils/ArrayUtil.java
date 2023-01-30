@@ -1,16 +1,13 @@
 package com.zzwl.jpkit.utils;
 
+import com.zzwl.jpkit.anno.JFormat;
 import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.exception.JTypeofException;
-import com.zzwl.jpkit.typeof.JArray;
-import com.zzwl.jpkit.typeof.JBase;
-import com.zzwl.jpkit.typeof.JInteger;
-import com.zzwl.jpkit.typeof.JString;
+import com.zzwl.jpkit.typeof.*;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 public class ArrayUtil {
@@ -19,6 +16,22 @@ public class ArrayUtil {
 
     private final static String INTEGER_ARR = Integer[].class.getTypeName();
     private final static String INT_ARR = int[].class.getTypeName();
+    private final static String SHORT_ARR = Short[].class.getTypeName();
+    private final static String SHORT__ARR = short[].class.getTypeName();
+    private final static String BYTE_ARR = Byte[].class.getTypeName();
+    private final static String BYTE__ARR = byte[].class.getTypeName();
+    private final static String LONG_ARR = Long[].class.getTypeName();
+    private final static String LONG__ARR = long[].class.getTypeName();
+    private final static String DOUBLE_ARR = Double[].class.getTypeName();
+    private final static String DOUBLE__ARR = double[].class.getTypeName();
+    private final static String FLOAT_ARR = Float[].class.getTypeName();
+    private final static String FLOAT__ARR = float[].class.getTypeName();
+    private final static String CHARACTER_ARR = Character[].class.getTypeName();
+    private final static String CHARACTER__ARR = char[].class.getTypeName();
+    private final static String BOOLEAN_ARR = Boolean[].class.getTypeName();
+    private final static String BOOLEAN__ARR = boolean[].class.getTypeName();
+    private final static String OBJECT_ARR = Object[].class.getTypeName();
+    private final static String Date_ARR = Date[].class.getTypeName();
     private final static String STRING_ARR = String[].class.getTypeName();
 
     /**
@@ -216,15 +229,61 @@ public class ArrayUtil {
      * @return 转化后的包装类型数组
      */
     public static Object getArr(JBase jBase, Field field) {
-        String typeName = field.getType().getTypeName();
-        if (typeName.equals(INTEGER_ARR)) {
-            return JInteger.getArr(jBase);
-        } else if (typeName.equals(INT_ARR)) {
-            return JInteger.getIntArr(jBase);
-        } else if (typeName.equals(STRING_ARR)) {
-            return JString.getArr(jBase);
+        EuTypeof instance = EuTypeof.getInstance(field.getType().getTypeName());
+        if (Objects.isNull(instance)) {
+            return null;
         }
-        return null;
+        switch (instance) {
+            case INT_ARR:
+                return JInteger.get_Arr(jBase);
+            case INTEGER_ARR:
+                return JInteger.getArr(jBase);
+            case SHORT_ARR:
+                return JShort.getArr(jBase);
+            case SHORT__ARR:
+                return JShort.get_Arr(jBase);
+            case LONG_ARR:
+                return JLong.getArr(jBase);
+            case LONG__ARR:
+                return JLong.get_Arr(jBase);
+            case FLOAT__ARR:
+                return JFloat.get_Arr(jBase);
+            case FLOAT_ARR:
+                return JFloat.getArr(jBase);
+            case DOUBLE_ARR:
+                return JDouble.getArr(jBase);
+            case DOUBLE__ARR:
+                return JDouble.get_Arr(jBase);
+            case CHARACTER_ARR:
+                return JChar.getArr(jBase);
+            case CHARACTER__ARR:
+                return JChar.get_Arr(jBase);
+            case BYTE_ARR:
+                return JByte.getArr(jBase);
+            case BYTE__ARR:
+                return JByte.get_Arr(jBase);
+            case BOOLEAN_ARR:
+                return JBool.getArr(jBase);
+            case BOOLEAN__ARR:
+                return JBool.get_Arr(jBase);
+            case DATE_ARR:
+                if (field.isAnnotationPresent(JFormat.class)) {
+                    JFormat jDateFormat = field.getDeclaredAnnotation(JFormat.class);
+                    if (jDateFormat.value().equals("#")) {
+                        return JDate.getArr(jBase);
+                    } else {
+                        return JDate.getArr(jBase, jDateFormat.value());
+                    }
+                } else {
+                    return JDate.getArr(jBase);
+                }
+            case OBJECT_ARR:
+                return JObject.getArr(jBase);
+            case STRING_ARR:
+                return JString.getArr(jBase);
+            default:
+                return null;
+        }
     }
 
 

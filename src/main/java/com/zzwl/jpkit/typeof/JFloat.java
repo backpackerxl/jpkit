@@ -1,6 +1,7 @@
 package com.zzwl.jpkit.typeof;
 
 import com.zzwl.jpkit.exception.JTypeofException;
+import com.zzwl.jpkit.utils.ArrayUtil;
 
 import java.lang.reflect.Field;
 
@@ -20,6 +21,38 @@ public class JFloat extends JBase {
     @Override
     public Float getValue() {
         return value;
+    }
+
+    /**
+     * JArray to Float[]
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object getArr(JBase jBase) {
+        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
+            Float[] res = new Float[value.size()];
+            for (int i = 0; i < value.size(); i++) {
+                res[i] = new JFloat(value.get(i)).getValue();
+            }
+            return res;
+        });
+    }
+
+    /**
+     * JArray to float[]
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object get_Arr(JBase jBase) {
+        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
+            float[] res = new float[value.size()];
+            for (int i = 0; i < value.size(); i++) {
+                res[i] = new JFloat(value.get(i)).getValue();
+            }
+            return res;
+        });
     }
 
     @Override

@@ -1,10 +1,8 @@
 package com.zzwl.jpkit.typeof;
 
-import com.zzwl.jpkit.exception.JTypeofException;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
 import java.lang.reflect.Field;
-import java.util.List;
 
 public class JString extends JBase {
     private final String value;
@@ -17,10 +15,10 @@ public class JString extends JBase {
      * JArray to String[]
      *
      * @param jBase 数据源
-     * @return String[]
+     * @return Object
      */
-    public static String[] getArr(JBase jBase) {
-        return (String[]) ArrayUtil.doArrayByJArray(jBase, (value) -> {
+    public static Object getArr(JBase jBase) {
+        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             String[] res = new String[value.size()];
             for (int i = 0; i < value.size(); i++) {
                 res[i] = ((JString) value.get(i)).getValue();

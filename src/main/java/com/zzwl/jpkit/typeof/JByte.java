@@ -1,6 +1,7 @@
 package com.zzwl.jpkit.typeof;
 
 import com.zzwl.jpkit.exception.JTypeofException;
+import com.zzwl.jpkit.utils.ArrayUtil;
 
 import java.lang.reflect.Field;
 
@@ -20,6 +21,38 @@ public class JByte extends JBase {
     @Override
     public Byte getValue() {
         return value;
+    }
+
+    /**
+     * JArray to Byte[]
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object getArr(JBase jBase) {
+        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
+            Byte[] res = new Byte[value.size()];
+            for (int i = 0; i < value.size(); i++) {
+                res[i] = new JByte(value.get(i)).getValue();
+            }
+            return res;
+        });
+    }
+
+    /**
+     * JArray to byte[]
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object get_Arr(JBase jBase) {
+        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
+            byte[] res = new byte[value.size()];
+            for (int i = 0; i < value.size(); i++) {
+                res[i] = new JByte(value.get(i)).getValue();
+            }
+            return res;
+        });
     }
 
     @Override

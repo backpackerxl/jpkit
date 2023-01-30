@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-public @interface JDateFormat {
+public @interface JFormat {
     /**
      * 可以传递符合格式日期样式
      * 默认为时间戳
