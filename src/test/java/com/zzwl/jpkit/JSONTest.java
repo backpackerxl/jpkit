@@ -150,10 +150,13 @@ public class JSONTest {
 //        JBase net = (JBase) JSON.load(url);
         JBase net_local = (JBase) JSON.load(local);
 
-//        System.out.println(JSON.stringify(net).terse());
+//        System.out.println(JSON.stringify(net).pretty());
         System.out.println("===================================");
         String js = JSON.stringify(net_local).pretty();
         System.out.println(js);
+
+        List<User> us = JSON.loadList(local, User.class);
+        System.out.println(us);
 
     }
 

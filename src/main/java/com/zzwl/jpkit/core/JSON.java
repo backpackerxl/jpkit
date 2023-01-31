@@ -119,7 +119,11 @@ public class JSON {
      * @return JSON字符串转化成的Java对象
      */
     public static <B> B parse(String json, Class<B> clazz) {
-        return parse(parse(json), clazz);
+        ITypeof<Object> typeof = parse(json);
+        if (typeof instanceof JArray) {
+            throw new RuntimeException("load error, please use JSON.parseList(String json, Class<B> clazz)");
+        }
+        return parse(typeof, clazz);
     }
 
     /**
@@ -151,6 +155,9 @@ public class JSON {
      * @return 解析好的对象
      */
     public static <B> B parse(ITypeof<Object> typeof, Class<B> clazz) {
+        if (typeof instanceof JArray) {
+            throw new RuntimeException("load error, please use JSON.parseList(String json, Class<B> clazz)");
+        }
         return new ObjectParse(typeof).parse(clazz);
     }
 
@@ -201,8 +208,12 @@ public class JSON {
      * @return 解析好的对象
      */
     public static <B> List<B> parseList(String json, Class<B> clazz) {
+        ITypeof<Object> parse = parse(json);
+        if (parse instanceof JObject) {
+            throw new RuntimeException("load error, please use JSON.parseMap(String json, Class<B> clazz)");
+        }
         List<B> list = new ArrayList<>();
-        JArray arr = (JArray) parse(json);
+        JArray arr = (JArray) parse;
         for (JBase jBase : arr.getValue()) {
             list.add(parse(jBase, clazz));
         }
@@ -260,8 +271,12 @@ public class JSON {
      * @return 解析好的Map
      */
     public static <B> Map<String, B> parseMap(String json, Class<B> clazz) {
+        ITypeof<Object> parse = parse(json);
+        if (parse instanceof JArray) {
+            throw new RuntimeException("load error, please use JSON.parseList(String json, Class<B> clazz)");
+        }
         Map<String, B> map = new HashMap<>();
-        JObject jo = (JObject) parse(json);
+        JObject jo = (JObject) parse;
         Map<String, JBase> value = jo.getValue();
         for (String s : value.keySet()) {
             map.put(s, parse(value.get(s), clazz));
@@ -303,7 +318,11 @@ public class JSON {
      * @return 转化后的类型
      */
     public static <B> B load(String path, Class<B> clazz) {
-        return parse(load(path), clazz);
+        ITypeof<Object> load = load(path);
+        if (load instanceof JArray) {
+            throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
+        }
+        return parse(load, clazz);
     }
 
     /**
@@ -320,8 +339,12 @@ public class JSON {
      * @return 转化后的List
      */
     public static <B> List<B> loadList(String path, Class<B> clazz) {
+        ITypeof<Object> load = load(path);
+        if (load instanceof JObject) {
+            throw new RuntimeException("load error, please use JSON.load(path, Class<B> clazz)");
+        }
         List<B> list = new ArrayList<>();
-        JArray arr = (JArray) load(path);
+        JArray arr = (JArray) load;
         for (JBase jBase : arr.getValue()) {
             list.add(parse(jBase, clazz));
         }
@@ -342,8 +365,12 @@ public class JSON {
      * @return 转化后的Map
      */
     public static <B> Map<String, B> loadMap(String path, Class<B> clazz) {
+        ITypeof<Object> load = load(path);
+        if (load instanceof JArray) {
+            throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
+        }
         Map<String, B> map = new HashMap<>();
-        JObject jo = (JObject) load(path);
+        JObject jo = (JObject) load;
         Map<String, JBase> value = jo.getValue();
         for (String s : value.keySet()) {
             map.put(s, parse(value.get(s), clazz));
