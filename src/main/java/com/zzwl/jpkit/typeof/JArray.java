@@ -2,7 +2,6 @@ package com.zzwl.jpkit.typeof;
 
 import com.zzwl.jpkit.core.JSON;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 public class JArray extends JBase {

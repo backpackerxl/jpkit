@@ -3,7 +3,6 @@ package com.zzwl.jpkit.typeof;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

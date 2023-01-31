@@ -1,6 +1,5 @@
 package com.zzwl.jpkit;
 
-import com.zzwl.jpkit.core.INI;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.typeof.*;
 import com.zzwl.jpkit.utils.StringUtil;
@@ -9,6 +8,7 @@ import com.zzwl.jpkit.vo.User;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -161,30 +161,6 @@ public class JSONTest {
     }
 
     @Test
-    public void testINI() {
-        INI bToINI = new INI();
-
-        Map<String, JBase> map = bToINI.getINIPool();
-        map.put("name", new JString("hy"));
-        map.put("server", new JString(INI.NOTE));
-        map.put("num", new JInteger(123456));
-        map.put("bool", new JBool(true));
-        map.put("client", new JString(INI.NOTE));
-        map.put("double", new JDouble(12.56));
-
-        JDouble jDouble = (JDouble) map.get("double");
-
-        System.out.println(jDouble.getValue());
-        System.out.println(bToINI.stringify());
-        System.out.println("======================");
-
-        MySQL mySQL = new MySQL("5.7.32", 34, 25.65, true, INI.NOTE);
-
-        String s = bToINI.stringify(mySQL);
-        System.out.println(s);
-    }
-
-    @Test
     public void testDate() throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(JDate.YYYY_MM_DD);
         Date parse = simpleDateFormat.parse("2023-1-27");
@@ -194,34 +170,7 @@ public class JSONTest {
 
     @Test
     public void testObjectParse() {
-        String json = "{\n" +
-                "  \"id\": \"1\",\n" +
-                "  \"username\": \"zzwl\",\n" +
-                "  \"user_code\": 300,\n" +
-                "  \"admin\": true,\n" +
-                "  \"create_time\": \"2023-01-31\",\n" +
-                "  \"nums\": [\n" +
-                "    4545,\n" +
-                "    2121,\n" +
-                "    3636\n" +
-                "  ],\n" +
-                "  \"strings\": [\n" +
-                "    \"zz\",\n" +
-                "    \"xx\",\n" +
-                "    \"ww\"\n" +
-                "  ],\n" +
-                "  \"ints\": null,\n" +
-                "  \"longs\": [\n" +
-                "    \"5164161651651165151\",\n" +
-                "    \"56156151655616556\",\n" +
-                "    \"165156516156156\"\n" +
-                "  ],\n" +
-                "  \"longList\": [\n" +
-                "    \"1651465163113313131\",\n" +
-                "    \"165146516423313131\",\n" +
-                "    \"165146516453313131\"\n" +
-                "  ]\n" +
-                "}";
+        String json = "{\n" + "  \"id\": \"1\",\n" + "  \"username\": \"zzwl\",\n" + "  \"user_code\": 300,\n" + "  \"admin\": true,\n" + "  \"create_time\": \"2023-01-31\",\n" + "  \"nums\": [\n" + "    4545,\n" + "    2121,\n" + "    3636\n" + "  ],\n" + "  \"strings\": [\n" + "    \"zz\",\n" + "    \"xx\",\n" + "    \"ww\"\n" + "  ],\n" + "  \"ints\": null,\n" + "  \"longs\": [\n" + "    \"5164161651651165151\",\n" + "    \"56156151655616556\",\n" + "    \"165156516156156\"\n" + "  ],\n" + "  \"longList\": [\n" + "    \"1651465163113313131\",\n" + "    \"165146516423313131\",\n" + "    \"165146516453313131\"\n" + "  ]\n" + "}";
 //        JObject parse = (JObject) JSON.parse(json);
 //        System.out.println(parse);
         User user = JSON.parse(json, User.class);
@@ -234,71 +183,39 @@ public class JSONTest {
 
         String typeName = nums.getType().getTypeName();
         String name = Integer[].class.getTypeName();
+        String name_ = Integer.class.getTypeName();
         System.out.println(typeName + "===>" + name);
+        System.out.println(name_);
     }
 
     @Test
     public void testParseList() {
 
-        String list = "[\n" +
-                "\t{\n" +
-                "\t\t\"id\": \"1004207420089456666\",\n" +
-                "\t\t\"username\": \"zzwl\",\n" +
-                "\t\t\"user_code\": 300,\n" +
-                "\t\t\"admin\": true,\n" +
-                "\t\t\"create_time\": \"2023-01-31\",\n" +
-                "\t\t\"nums\": [\n" +
-                "\t\t\t789,\n" +
-                "\t\t\t526\n" +
-                "\t\t],\n" +
-                "\t\t\"strings\": [\n" +
-                "\t\t\t\"gg\",\n" +
-                "\t\t\t\"hh\"\n" +
-                "\t\t],\n" +
-                "\t\t\"ints\": null,\n" +
-                "\t\t\"longs\": null,\n" +
-                "\t\t\"longList\": null\n" +
-                "\t},\n" +
-                "\t{\n" +
-                "\t\t\"id\": \"2\",\n" +
-                "\t\t\"username\": \"zzwl\",\n" +
-                "\t\t\"user_code\": 400,\n" +
-                "\t\t\"admin\": false,\n" +
-                "\t\t\"create_time\": \"2023-01-31\",\n" +
-                "\t\t\"nums\": [\n" +
-                "\t\t\t789,\n" +
-                "\t\t\t526\n" +
-                "\t\t],\n" +
-                "\t\t\"strings\": [\n" +
-                "\t\t\t\"gg\",\n" +
-                "\t\t\t\"hh\"\n" +
-                "\t\t],\n" +
-                "\t\t\"ints\": null,\n" +
-                "\t\t\"longs\": null,\n" +
-                "\t\t\"longList\": null\n" +
-                "\t},\n" +
-                "\t{\n" +
-                "\t\t\"id\": \"3\",\n" +
-                "\t\t\"username\": \"zzwl\",\n" +
-                "\t\t\"user_code\": 500,\n" +
-                "\t\t\"admin\": true,\n" +
-                "\t\t\"create_time\": \"2023-01-31\",\n" +
-                "\t\t\"nums\": [\n" +
-                "\t\t\t789,\n" +
-                "\t\t\t526\n" +
-                "\t\t],\n" +
-                "\t\t\"strings\": [\n" +
-                "\t\t\t\"gg\",\n" +
-                "\t\t\t\"hh\"\n" +
-                "\t\t],\n" +
-                "\t\t\"ints\": null,\n" +
-                "\t\t\"longs\": null,\n" +
-                "\t\t\"longList\": null\n" +
-                "\t}\n" +
-                "]";
+        String list = "[\n" + "\t{\n" + "\t\t\"id\": \"1004207420089456666\",\n" + "\t\t\"username\": \"zzwl\",\n" + "\t\t\"user_code\": 300,\n" + "\t\t\"admin\": true,\n" + "\t\t\"create_time\": \"2023-01-31\",\n" + "\t\t\"nums\": [\n" + "\t\t\t789,\n" + "\t\t\t526\n" + "\t\t],\n" + "\t\t\"strings\": [\n" + "\t\t\t\"gg\",\n" + "\t\t\t\"hh\"\n" + "\t\t],\n" + "\t\t\"ints\": null,\n" + "\t\t\"longs\": null,\n" + "\t\t\"longList\": null\n" + "\t},\n" + "\t{\n" + "\t\t\"id\": \"2\",\n" + "\t\t\"username\": \"zzwl\",\n" + "\t\t\"user_code\": 400,\n" + "\t\t\"admin\": false,\n" + "\t\t\"create_time\": \"2023-01-31\",\n" + "\t\t\"nums\": [\n" + "\t\t\t789,\n" + "\t\t\t526\n" + "\t\t],\n" + "\t\t\"strings\": [\n" + "\t\t\t\"gg\",\n" + "\t\t\t\"hh\"\n" + "\t\t],\n" + "\t\t\"ints\": null,\n" + "\t\t\"longs\": null,\n" + "\t\t\"longList\": null\n" + "\t},\n" + "\t{\n" + "\t\t\"id\": \"3\",\n" + "\t\t\"username\": \"zzwl\",\n" + "\t\t\"user_code\": 500,\n" + "\t\t\"admin\": true,\n" + "\t\t\"create_time\": \"2023-01-31\",\n" + "\t\t\"nums\": [\n" + "\t\t\t789,\n" + "\t\t\t526\n" + "\t\t],\n" + "\t\t\"strings\": [\n" + "\t\t\t\"gg\",\n" + "\t\t\t\"hh\"\n" + "\t\t],\n" + "\t\t\"ints\": null,\n" + "\t\t\"longs\": null,\n" + "\t\t\"longList\": null\n" + "\t}\n" + "]";
 
         List<User> users = JSON.parseList(list, User.class);
 
         System.out.println(JSON.stringify(users).pretty());
+    }
+
+    @Test
+    public void testSubStringify() {
+        MySQL mySQL = new MySQL("mysql", "5.7.35", new BigDecimal("0.25689"));
+
+        List<BigDecimal> bigDecimals = new ArrayList<>();
+        bigDecimals.add(new BigDecimal("0.1"));
+        bigDecimals.add(new BigDecimal("0.1566"));
+        bigDecimals.add(new BigDecimal("0.2568"));
+        bigDecimals.add(new BigDecimal("0.84894"));
+
+        mySQL.setBigDecimals(bigDecimals);
+        System.out.println(mySQL);
+    }
+
+    @Test
+    public void testSubParse() {
+        String json = "{\n" + "  \"server\": \"mysql\",\n" + "  \"version\": \"5.7.35\",\n" + "  \"bigDecimal\": 0.25689\n" + "}";
+        MySQL parse = JSON.parse(json, MySQL.class);
+        System.out.println(parse);
     }
 }

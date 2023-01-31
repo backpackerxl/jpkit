@@ -29,10 +29,6 @@ public class ArrayUtil {
         return field.getType().getTypeName().contains("[]");
     }
 
-    public static boolean isBaseArray(Field field) {
-        return field.getType().getTypeName().contains("[]") && !field.getType().getTypeName().contains("java.lang") && !field.getType().getTypeName().contains("java.util");
-    }
-
     /**
      * 处理数组的情况
      *
@@ -295,7 +291,7 @@ public class ArrayUtil {
             return null;
         }
         JCollectType jCollectType = field.getDeclaredAnnotation(JCollectType.class);
-        EuTypeof instance = EuTypeof.getInstance(jCollectType.type().getTypeName());
+        EuTypeof instance = EuTypeof.getInstance(String.format("%s%s", jCollectType.type().getTypeName(), "[]"));
         if (Objects.isNull(instance)) {
             return null;
         }
@@ -348,7 +344,7 @@ public class ArrayUtil {
             return null;
         }
         JCollectType jCollectType = field.getDeclaredAnnotation(JCollectType.class);
-        EuTypeof instance = EuTypeof.getInstance(jCollectType.type().getTypeName());
+        EuTypeof instance = EuTypeof.getInstance(String.format("%s%s", jCollectType.type().getTypeName(), "[]"));
         if (Objects.isNull(instance)) {
             return null;
         }
@@ -389,6 +385,13 @@ public class ArrayUtil {
         }
     }
 
+    /**
+     * 处理数组和List的通用回调方法
+     *
+     * @param jBase 数据源
+     * @param func  回调函数
+     * @return 结果
+     */
     public static Object doArrayByJArray(JBase jBase, Function<List<JBase>, Object> func) {
         try {
             JArray jArray = (JArray) jBase;
@@ -400,6 +403,13 @@ public class ArrayUtil {
         }
     }
 
+    /**
+     * 处理Map的通用回调方法
+     *
+     * @param jBase 数据源
+     * @param func  回调函数
+     * @return 结果
+     */
     public static Object doMapByJObject(JBase jBase, Function<Map<String, JBase>, Object> func) {
         try {
             JObject jObject = (JObject) jBase;

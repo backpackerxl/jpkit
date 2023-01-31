@@ -1,23 +1,44 @@
 package com.zzwl.jpkit.vo;
 
+import com.zzwl.jpkit.anno.JFieldConfig;
 import com.zzwl.jpkit.anno.JRename;
+import com.zzwl.jpkit.core.JSON;
+import com.zzwl.jpkit.plugs.BigDecimalPlug;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+@JFieldConfig(type = {BigDecimal.class}, target = BigDecimalPlug.class)
 public class MySQL {
     @JRename("server")
     private String serverName;
     private String version;
-    private Integer count;
-    private Double num;
-    private boolean isActive;
+    private BigDecimal bigDecimal;
+    private List<BigDecimal> bigDecimals;
 
-    public MySQL(){}
+    public MySQL() {
+    }
 
-    public MySQL(String version, Integer count, Double num, boolean isActive, String serverName) {
-        this.version = version;
-        this.count = count;
-        this.num = num;
-        this.isActive = isActive;
+    public MySQL(String serverName, String version, BigDecimal bigDecimal) {
         this.serverName = serverName;
+        this.version = version;
+        this.bigDecimal = bigDecimal;
+    }
+
+    public List<BigDecimal> getBigDecimals() {
+        return bigDecimals;
+    }
+
+    public void setBigDecimals(List<BigDecimal> bigDecimals) {
+        this.bigDecimals = bigDecimals;
+    }
+
+    public BigDecimal getBigDecimal() {
+        return bigDecimal;
+    }
+
+    public void setBigDecimal(BigDecimal bigDecimal) {
+        this.bigDecimal = bigDecimal;
     }
 
     public String getVersion() {
@@ -26,30 +47,6 @@ public class MySQL {
 
     public void setVersion(String version) {
         this.version = version;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    public Double getNum() {
-        return num;
-    }
-
-    public void setNum(Double num) {
-        this.num = num;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
     }
 
     public String getServerName() {
@@ -62,12 +59,6 @@ public class MySQL {
 
     @Override
     public String toString() {
-        return "MySQL{" +
-                "version='" + version + '\'' +
-                ", count=" + count +
-                ", num=" + num +
-                ", isActive=" + isActive +
-                ", serverName='" + serverName + '\'' +
-                '}';
+        return JSON.stringify(this).pretty();
     }
 }

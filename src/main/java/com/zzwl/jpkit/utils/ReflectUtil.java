@@ -7,6 +7,8 @@ import com.zzwl.jpkit.anno.JRename;
 import com.zzwl.jpkit.bean.FieldBean;
 import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.core.JSON;
+import com.zzwl.jpkit.parse.ObjectParse;
+import com.zzwl.jpkit.plugs.BasePlug;
 import com.zzwl.jpkit.typeof.JBase;
 import com.zzwl.jpkit.typeof.JDate;
 import com.zzwl.jpkit.typeof.JString;
@@ -139,7 +141,7 @@ public class ReflectUtil {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(jDateFormat.value());
                 o = String.format("\"%s\"", simpleDateFormat.format(o));
             }
-        } else if (typeName.equals(Date.class.getTypeName()) || typeName.equals(String.class.getTypeName())) {
+        } else if (typeName.equals(Character.class.getTypeName()) || typeName.equals(Date.class.getTypeName()) || typeName.equals(String.class.getTypeName())) {
             o = String.format("\"%s\"", o.toString());
         } else if (ArrayUtil.isArray(o)) {
             o = ArrayUtil.compileArray(o, isPretty, (typeName.equals(Long[].class.getTypeName()) || typeName.equals(long[].class.getTypeName())) && field.isAnnotationPresent(JFString.class));
@@ -246,7 +248,9 @@ public class ReflectUtil {
 
     private static Object getValue(JBase jBase, Field field) {
         Object obj = null;
-        String typeName = field.getType().getName();
+        Class<?> type = field.getType();
+        String typeName = type.getName();
+        List<Class<?>> classes = ObjectParse.getClasses();
         if (typeName.equals(Date.class.getName())) {
             if (field.isAnnotationPresent(JFormat.class)) {
                 JFormat format = field.getDeclaredAnnotation(JFormat.class);
@@ -260,13 +264,43 @@ public class ReflectUtil {
             obj = Long.valueOf(((JString) jBase).getValue());
         } else if (ArrayUtil.isArray(field)) {
             // Integer[] ...
-            obj = ArrayUtil.getArr(jBase, field);
+            if (classes.contains(type)) {
+                obj = getObj(jBase, BasePlug.GET_ARR);
+            } else {
+                obj = ArrayUtil.getArr(jBase, field);
+            }
         } else if (typeName.equals(List.class.getTypeName())) {
-            obj = ArrayUtil.getList(jBase, field);
+            // List
+            if (classes.contains(type)) {
+                obj = getObj(jBase, BasePlug.GET_LIST);
+            } else {
+                obj = ArrayUtil.getList(jBase, field);
+            }
         } else if (typeName.equals(Map.class.getTypeName())) {
-            obj = ArrayUtil.getMap(jBase, field);
+            // Map
+            if (classes.contains(type)) {
+                obj = getObj(jBase, BasePlug.GET_MAP);
+            } else {
+                obj = ArrayUtil.getMap(jBase, field);
+            }
+        } else if (classes.contains(type)) {
+            // Object
+            obj = getObj(jBase, BasePlug.GET_OBJECT);
         } else {
             obj = jBase.getValue();
+        }
+        return obj;
+    }
+
+    private static Object getObj(JBase jBase, String name) {
+        Object obj;
+        try {
+            Object target = ObjectParse.getTarget();
+            Method method = target.getClass().getDeclaredMethod(name, JBase.class);
+            obj = method.invoke(target, jBase);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            // log :失败
+            throw new RuntimeException(e);
         }
         return obj;
     }

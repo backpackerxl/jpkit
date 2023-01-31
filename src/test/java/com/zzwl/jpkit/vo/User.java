@@ -31,7 +31,7 @@ public class User {
     @JFString
     private long[] longs;
     @JFString(type = Long.class) // 将Long 类型转JSON时当字符串进行处理
-    @JCollectType(type = Long[].class) // 标记List的泛型类型
+    @JCollectType(type = Long.class) // 标记List的泛型类型
     private List<Long> longList;
 
     public int[] getInts() {
