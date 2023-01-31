@@ -18,11 +18,6 @@ public class JArray extends JBase {
     }
 
     @Override
-    public void apply(Object obj, Field field, JBase jBase) {
-
-    }
-
-    @Override
     public String toString() {
         return JSON.stringify(value).terse();
     }

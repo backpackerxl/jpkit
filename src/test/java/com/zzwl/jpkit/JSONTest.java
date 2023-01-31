@@ -9,7 +9,6 @@ import com.zzwl.jpkit.vo.User;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -54,9 +53,20 @@ public class JSONTest {
         Integer[] nums = new Integer[]{4545, 2121, 3636};
         String[] ss = new String[]{"zz", "xx", "ww"};
         User zzwl = new User(1L, "zzwl", 300, true, new Date(), nums, ss);
+        long[] longs = new long[]{5164161651651165151L, 56156151655616556L, 165156516156156L};
+        zzwl.setLongs(longs);
+        List<Long> list = new ArrayList<>();
+        list.add(1651465163113313131L);
+        list.add(165146516423313131L);
+        list.add(165146516453313131L);
+        zzwl.setLongList(list);
+        JSON.setLongToString(true);
+        System.out.println(JSON.stringify(list).pretty());
+        System.out.println("=================");
         String s = JSON.stringify(zzwl).terse();
         System.out.println(s);
         System.out.println(zzwl);
+
     }
 
     @Test
@@ -110,9 +120,9 @@ public class JSONTest {
     @Test
     public void testListAndMap() {
         List<User> users = new ArrayList<>();
-        String path = "D:\\zz_deploy\\jpkit\\src\\main\\resources\\db.json";
+        String path = "src\\main\\resources\\db.json";
 
-        users.add(new User(1L, "zzwl", 300, true, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
+        users.add(new User(1004207420089456666L, "zzwl", 300, true, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
         users.add(new User(2L, "zzwl", 400, false, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
         users.add(new User(3L, "zzwl", 500, true, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
         users.add(new User(4L, "zzwl", 600, false, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
@@ -120,11 +130,12 @@ public class JSONTest {
 
         JSON.setTabLength(1);
         JSON.setTabCharacter('\t');
-        JSON.stringify(users).save(path, true, 1);
+        JSON.stringify(users).save(path, 1);
 
         System.out.println(JSON.stringify(users).terse(1));
         System.out.println(JSON.stringify(users).pretty(1));
-        System.out.println(JSON.stringify(users).pretty(1));
+        System.out.println("=================================================");
+        System.out.println(JSON.stringify(users).pretty(3));
     }
 
     @Test
@@ -134,7 +145,7 @@ public class JSONTest {
 
 
         String url = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
-        String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json";
+        String local = "src\\main\\resources\\db.json";
 
 //        JBase net = (JBase) JSON.load(url);
         JBase net_local = (JBase) JSON.load(local);
@@ -180,11 +191,37 @@ public class JSONTest {
 
     @Test
     public void testObjectParse() {
-        String json = "{\n" + "\t\"ints\": [25,89,45,42],\n" + "\t\"username\": \"zzwl\",\n" + "\t\"user_code\": 300,\n" + "\t\"admin\": true,\n" + "\t\"create_time\": \"2023-01-27\",\n" + "\t\"nums\": [\n" + "\t\t789,\n" + "\t\t526\n" + "\t],\n" + "\t\"strings\": [\n" + "\t\t\"gg\",\n" + "\t\t\"hh\"\n" + "\t]\n" + "}";
-
+        String json = "{\n" +
+                "  \"id\": \"1\",\n" +
+                "  \"username\": \"zzwl\",\n" +
+                "  \"user_code\": 300,\n" +
+                "  \"admin\": true,\n" +
+                "  \"create_time\": \"2023-01-31\",\n" +
+                "  \"nums\": [\n" +
+                "    4545,\n" +
+                "    2121,\n" +
+                "    3636\n" +
+                "  ],\n" +
+                "  \"strings\": [\n" +
+                "    \"zz\",\n" +
+                "    \"xx\",\n" +
+                "    \"ww\"\n" +
+                "  ],\n" +
+                "  \"ints\": null,\n" +
+                "  \"longs\": [\n" +
+                "    \"5164161651651165151\",\n" +
+                "    \"56156151655616556\",\n" +
+                "    \"165156516156156\"\n" +
+                "  ],\n" +
+                "  \"longList\": [\n" +
+                "    \"1651465163113313131\",\n" +
+                "    \"165146516423313131\",\n" +
+                "    \"165146516453313131\"\n" +
+                "  ]\n" +
+                "}";
+//        JObject parse = (JObject) JSON.parse(json);
+//        System.out.println(parse);
         User user = JSON.parse(json, User.class);
-
-        System.out.println(json);
         System.out.println(user);
     }
 
@@ -198,7 +235,67 @@ public class JSONTest {
     }
 
     @Test
-    public void testMethod() {
-        System.out.println(EuTypeof.getInstance("java.lang.Integer[]"));
+    public void testParseList() {
+
+        String list = "[\n" +
+                "\t{\n" +
+                "\t\t\"id\": \"1004207420089456666\",\n" +
+                "\t\t\"username\": \"zzwl\",\n" +
+                "\t\t\"user_code\": 300,\n" +
+                "\t\t\"admin\": true,\n" +
+                "\t\t\"create_time\": \"2023-01-31\",\n" +
+                "\t\t\"nums\": [\n" +
+                "\t\t\t789,\n" +
+                "\t\t\t526\n" +
+                "\t\t],\n" +
+                "\t\t\"strings\": [\n" +
+                "\t\t\t\"gg\",\n" +
+                "\t\t\t\"hh\"\n" +
+                "\t\t],\n" +
+                "\t\t\"ints\": null,\n" +
+                "\t\t\"longs\": null,\n" +
+                "\t\t\"longList\": null\n" +
+                "\t},\n" +
+                "\t{\n" +
+                "\t\t\"id\": \"2\",\n" +
+                "\t\t\"username\": \"zzwl\",\n" +
+                "\t\t\"user_code\": 400,\n" +
+                "\t\t\"admin\": false,\n" +
+                "\t\t\"create_time\": \"2023-01-31\",\n" +
+                "\t\t\"nums\": [\n" +
+                "\t\t\t789,\n" +
+                "\t\t\t526\n" +
+                "\t\t],\n" +
+                "\t\t\"strings\": [\n" +
+                "\t\t\t\"gg\",\n" +
+                "\t\t\t\"hh\"\n" +
+                "\t\t],\n" +
+                "\t\t\"ints\": null,\n" +
+                "\t\t\"longs\": null,\n" +
+                "\t\t\"longList\": null\n" +
+                "\t},\n" +
+                "\t{\n" +
+                "\t\t\"id\": \"3\",\n" +
+                "\t\t\"username\": \"zzwl\",\n" +
+                "\t\t\"user_code\": 500,\n" +
+                "\t\t\"admin\": true,\n" +
+                "\t\t\"create_time\": \"2023-01-31\",\n" +
+                "\t\t\"nums\": [\n" +
+                "\t\t\t789,\n" +
+                "\t\t\t526\n" +
+                "\t\t],\n" +
+                "\t\t\"strings\": [\n" +
+                "\t\t\t\"gg\",\n" +
+                "\t\t\t\"hh\"\n" +
+                "\t\t],\n" +
+                "\t\t\"ints\": null,\n" +
+                "\t\t\"longs\": null,\n" +
+                "\t\t\"longList\": null\n" +
+                "\t}\n" +
+                "]";
+
+        List<User> users = JSON.parseList(list, User.class);
+
+        System.out.println(JSON.stringify(users).pretty());
     }
 }

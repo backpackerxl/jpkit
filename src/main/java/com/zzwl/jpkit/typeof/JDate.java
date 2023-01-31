@@ -5,7 +5,7 @@ import com.zzwl.jpkit.utils.ArrayUtil;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 public class JDate extends JBase {
     private final Date value;
@@ -68,14 +68,73 @@ public class JDate extends JBase {
         });
     }
 
-    @Override
-    public Date getValue() {
-        return value;
+    /**
+     * List<JBase> 转 List<Date>
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object getList(JBase jBase) {
+        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
+            List<Date> res = new ArrayList<>(value.size());
+            for (JBase base : value) {
+                res.add(new JDate(base).getValue());
+            }
+            return res;
+        });
+    }
+
+    /**
+     * List<JBase> 转 List<Date>
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object getList(JBase jBase, String style) {
+        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
+            List<Date> res = new ArrayList<>(value.size());
+            for (JBase base : value) {
+                res.add(new JDate(base, style).getValue());
+            }
+            return res;
+        });
+    }
+
+    /**
+     * Map<String, JBase> 转 Map<String,Date>
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object getMap(JBase jBase) {
+        return ArrayUtil.doMapByJObject(jBase, (value) -> {
+            Map<String, Date> res = new HashMap<>(value.size());
+            for (String base : value.keySet()) {
+                res.put(base, new JDate(value.get(base)).getValue());
+            }
+            return res;
+        });
+    }
+
+    /**
+     * Map<String, JBase> 转 Map<String,Date>
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object getMap(JBase jBase, String style) {
+        return ArrayUtil.doMapByJObject(jBase, (value) -> {
+            Map<String, Date> res = new HashMap<>(value.size());
+            for (String base : value.keySet()) {
+                res.put(base, new JDate(value.get(base), style).getValue());
+            }
+            return res;
+        });
     }
 
     @Override
-    public void apply(Object obj, Field field, JBase jBase) {
-
+    public Date getValue() {
+        return value;
     }
 
     @Override

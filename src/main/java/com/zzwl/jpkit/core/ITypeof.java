@@ -16,6 +16,4 @@ public interface ITypeof<T> {
      * @return 对应值
      */
     T getValue();
-
-    void apply(Object obj, Field field, JBase jBase);
 }

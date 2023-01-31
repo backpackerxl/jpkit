@@ -21,6 +21,7 @@ public final class BToJSON<B> {
     private static Integer beforeTab = 2;
     // 转化json过程中的缩进填充字符, 可通过set方法配置, 默认为空格
     private static char tabCharacter = ' ';
+    private static boolean longToStr = false;
 
     public BToJSON(B bean) {
         this.bean = bean;
@@ -50,6 +51,10 @@ public final class BToJSON<B> {
         BToJSON.tabCharacter = tabCharacter;
     }
 
+    public static void setLongToStr(boolean longToStr) {
+        BToJSON.longToStr = longToStr;
+    }
+
     /**
      * 紧凑型JSON字符串
      * <blockquote><pre>
@@ -72,7 +77,7 @@ public final class BToJSON<B> {
         }
         // 处理数组对象
         if (ArrayUtil.isArray(bean)) {
-            return ArrayUtil.compileArray(bean, false);
+            return ArrayUtil.compileArray(bean, false, false);
         }
         // 处理基础数据类型, 除 Date, String, char
         if (JBase.isBase(bean)) {
@@ -89,9 +94,17 @@ public final class BToJSON<B> {
             if (bs.size() == 0) {
                 return "[]";
             }
-            for (B b : bs) {
-                s.append(JSON.stringify(b).terse()).append(",");
+            if (longToStr) {
+                for (B b : bs) {
+                    s.append("\"").append(JSON.stringify(b).terse()).append("\",");
+                }
+            } else {
+                for (B b : bs) {
+                    s.append(JSON.stringify(b).terse()).append(",");
+                }
             }
+            // 关闭Long to String
+            setLongToStr(false);
             return String.format("[%s]", StringUtil.substringByNumber(s.toString(), 1));
         }
         // 处理 Map
@@ -101,9 +114,17 @@ public final class BToJSON<B> {
             if (bs.size() == 0) {
                 return "{}";
             }
-            for (String key : bs.keySet()) {
-                s.append("\"").append(key).append("\":").append(JSON.stringify(bs.get(key)).terse()).append(",");
+            if (longToStr) {
+                for (String key : bs.keySet()) {
+                    s.append("\"").append(key).append("\":\"").append(JSON.stringify(bs.get(key)).terse()).append("\",");
+                }
+            } else {
+                for (String key : bs.keySet()) {
+                    s.append("\"").append(key).append("\":").append(JSON.stringify(bs.get(key)).terse()).append(",");
+                }
             }
+            // 关闭Long to String
+            setLongToStr(false);
             return String.format("{%s}", StringUtil.substringByNumber(s.toString(), 1));
         }
         // 处理普通类型
@@ -136,13 +157,25 @@ public final class BToJSON<B> {
                 return terse();
             }
             int i = 0;
-            for (B b : bs) {
-                if (i == limit) {
-                    break;
+            if (longToStr) {
+                for (B b : bs) {
+                    if (i == limit) {
+                        break;
+                    }
+                    s.append("\"").append(JSON.stringify(b).terse()).append("\",");
+                    i++;
                 }
-                s.append(JSON.stringify(b).terse()).append(",");
-                i++;
+            } else {
+                for (B b : bs) {
+                    if (i == limit) {
+                        break;
+                    }
+                    s.append(JSON.stringify(b).terse()).append(",");
+                    i++;
+                }
             }
+            // 关闭Long to String
+            setLongToStr(false);
             return String.format("[%s]", StringUtil.substringByNumber(s.toString(), 1));
         }
         // 处理 Map
@@ -156,13 +189,25 @@ public final class BToJSON<B> {
                 return terse();
             }
             int i = 0;
-            for (String key : bs.keySet()) {
-                if (i == limit) {
-                    break;
+            if (longToStr) {
+                for (String key : bs.keySet()) {
+                    if (i == limit) {
+                        break;
+                    }
+                    s.append("\"").append(key).append("\":\"").append(JSON.stringify(bs.get(key)).terse()).append("\",");
+                    i++;
                 }
-                s.append("\"").append(key).append("\":").append(JSON.stringify(bs.get(key)).terse()).append(",");
-                i++;
+            } else {
+                for (String key : bs.keySet()) {
+                    if (i == limit) {
+                        break;
+                    }
+                    s.append("\"").append(key).append("\":").append(JSON.stringify(bs.get(key)).terse()).append(",");
+                    i++;
+                }
             }
+            // 关闭Long to String
+            setLongToStr(false);
             return String.format("{%s}", StringUtil.substringByNumber(s.toString(), 1));
         }
         return terse();
@@ -187,7 +232,7 @@ public final class BToJSON<B> {
         }
         // 处理数组对象
         if (ArrayUtil.isArray(bean)) {
-            return ArrayUtil.compileArray(bean, true);
+            return ArrayUtil.compileArray(bean, true, false);
         }
         // 处理基础数据类型,除 String, char, Date
         if (JBase.isBase(bean)) {
@@ -210,9 +255,17 @@ public final class BToJSON<B> {
             setTab(getTab() + getBeforeTab());
             // 获取缩进
             String white = StringUtil.getWhiteByNumber(getTab());
-            for (B b : bs) {
-                s.append(white).append(JSON.stringify(b).pretty()).append(",\n");
+            if (longToStr) {
+                for (B b : bs) {
+                    s.append(white).append("\"").append(JSON.stringify(b).pretty()).append("\",\n");
+                }
+            } else {
+                for (B b : bs) {
+                    s.append(white).append(JSON.stringify(b).pretty()).append(",\n");
+                }
             }
+            // 关闭Long to String
+            setLongToStr(false);
             // 将缩进恢复
             setTab(getTab() - getBeforeTab());
             return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab()));
@@ -230,9 +283,17 @@ public final class BToJSON<B> {
             setTab(getTab() + getBeforeTab());
             // 获取缩进
             String white = StringUtil.getWhiteByNumber(getTab());
-            for (String key : bs.keySet()) {
-                s.append(white).append("\"").append(key).append("\": ").append(JSON.stringify(bs.get(key)).pretty()).append(",\n");
+            if (longToStr) {
+                for (String key : bs.keySet()) {
+                    s.append(white).append("\"").append(key).append("\": \"").append(JSON.stringify(bs.get(key)).pretty()).append("\",\n");
+                }
+            } else {
+                for (String key : bs.keySet()) {
+                    s.append(white).append("\"").append(key).append("\": ").append(JSON.stringify(bs.get(key)).pretty()).append(",\n");
+                }
             }
+            // 关闭Long to String
+            setLongToStr(false);
             // 将缩进恢复
             setTab(getTab() - getBeforeTab());
             return String.format("%s\n%s}", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab()));
@@ -273,14 +334,27 @@ public final class BToJSON<B> {
                 return pretty();
             }
             int i = 0;
-            for (B b : bs) {
-                if (i == limit) {
-                    break;
+            if (longToStr) {
+                for (B b : bs) {
+                    if (i == limit) {
+                        break;
+                    }
+                    String pretty = JSON.stringify(b).pretty();
+                    s.append(white).append("\"").append(pretty).append("\",\n");
+                    i++;
                 }
-                String pretty = JSON.stringify(b).pretty();
-                s.append(white).append(pretty).append(",\n");
-                i++;
+            } else {
+                for (B b : bs) {
+                    if (i == limit) {
+                        break;
+                    }
+                    String pretty = JSON.stringify(b).pretty();
+                    s.append(white).append(pretty).append(",\n");
+                    i++;
+                }
             }
+            // 关闭Long to String
+            setLongToStr(false);
             // 将缩进恢复
             setTab(getTab() - getBeforeTab());
             return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab()));
@@ -301,13 +375,25 @@ public final class BToJSON<B> {
                 return terse();
             }
             int i = 0;
-            for (String key : bs.keySet()) {
-                if (i == limit) {
-                    break;
+            if (longToStr) {
+                for (String key : bs.keySet()) {
+                    if (i == limit) {
+                        break;
+                    }
+                    s.append(white).append("\"").append(key).append("\": \"").append(JSON.stringify(bs.get(key)).pretty()).append("\",\n");
+                    i++;
                 }
-                s.append(white).append("\"").append(key).append("\": ").append(JSON.stringify(bs.get(key)).pretty()).append(",\n");
-                i++;
+            } else {
+                for (String key : bs.keySet()) {
+                    if (i == limit) {
+                        break;
+                    }
+                    s.append(white).append("\"").append(key).append("\": ").append(JSON.stringify(bs.get(key)).pretty()).append(",\n");
+                    i++;
+                }
             }
+            // 关闭Long to String
+            setLongToStr(false);
             // 将缩进恢复
             setTab(getTab() - getBeforeTab());
             return String.format("%s\n%s}", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab()));
@@ -344,6 +430,19 @@ public final class BToJSON<B> {
     }
 
     /**
+     * 保存json文件
+     * <blockquote><pre>
+     *     // 默认格式化保存
+     *     JSON.stringify(user).save("D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json");
+     * </pre></blockquote>
+     *
+     * @param p 路径
+     */
+    public void save(String p) {
+        save(p, true);
+    }
+
+    /**
      * 按量保存json文件
      * <blockquote><pre>
      *     // 当 savePretty 为true时保存为格式化的json, 反之则为紧凑型json
@@ -371,5 +470,20 @@ public final class BToJSON<B> {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * 按量保存json文件
+     * <blockquote><pre>
+     *     // 默认格式化保存
+     *     // 保存第一条
+     *     JSON.stringify(user).save("D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json", 1);
+     * </pre></blockquote>
+     *
+     * @param p     路径
+     * @param limit 保存条数
+     */
+    public void save(String p, int limit) {
+        save(p, true, limit);
     }
 }

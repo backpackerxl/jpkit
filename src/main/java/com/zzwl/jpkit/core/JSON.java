@@ -378,4 +378,18 @@ public class JSON {
     public static void setTabCharacter(char tabCharacter) {
         BToJSON.setTabCharacter(tabCharacter);
     }
+
+
+    /**
+     * 设置Long类型的Map或List以字符串输出
+     * <blockquote><pre>
+     *     // 设置以字符串形式输出
+     *     JSON.setLongToString(true);
+     * </pre></blockquote>
+     *
+     * @param longToStr 是否以字符串形式输出， 默认为 false
+     */
+    public static void setLongToString(boolean longToStr) {
+        BToJSON.setLongToStr(longToStr);
+    }
 }

@@ -1,5 +1,6 @@
 package com.zzwl.jpkit.utils;
 
+import com.zzwl.jpkit.anno.JCollectType;
 import com.zzwl.jpkit.anno.JFormat;
 import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.core.JSON;
@@ -13,26 +14,6 @@ import java.util.function.Function;
 public class ArrayUtil {
     private ArrayUtil() {
     }
-
-    private final static String INTEGER_ARR = Integer[].class.getTypeName();
-    private final static String INT_ARR = int[].class.getTypeName();
-    private final static String SHORT_ARR = Short[].class.getTypeName();
-    private final static String SHORT__ARR = short[].class.getTypeName();
-    private final static String BYTE_ARR = Byte[].class.getTypeName();
-    private final static String BYTE__ARR = byte[].class.getTypeName();
-    private final static String LONG_ARR = Long[].class.getTypeName();
-    private final static String LONG__ARR = long[].class.getTypeName();
-    private final static String DOUBLE_ARR = Double[].class.getTypeName();
-    private final static String DOUBLE__ARR = double[].class.getTypeName();
-    private final static String FLOAT_ARR = Float[].class.getTypeName();
-    private final static String FLOAT__ARR = float[].class.getTypeName();
-    private final static String CHARACTER_ARR = Character[].class.getTypeName();
-    private final static String CHARACTER__ARR = char[].class.getTypeName();
-    private final static String BOOLEAN_ARR = Boolean[].class.getTypeName();
-    private final static String BOOLEAN__ARR = boolean[].class.getTypeName();
-    private final static String OBJECT_ARR = Object[].class.getTypeName();
-    private final static String Date_ARR = Date[].class.getTypeName();
-    private final static String STRING_ARR = String[].class.getTypeName();
 
     /**
      * 判断对象是否为数组
@@ -58,7 +39,7 @@ public class ArrayUtil {
      * @param o 将数组值转化为JSON值
      * @return JSON字符串值
      */
-    public static String compileArray(Object o, boolean isPretty) {
+    public static String compileArray(Object o, boolean isPretty, boolean longToString) {
         StringBuilder s = new StringBuilder("[");
         String white = "";
 
@@ -74,7 +55,15 @@ public class ArrayUtil {
         }
 
         if (o instanceof long[] && !isPretty) {
-            return Arrays.toString((long[]) o);
+            long[] o1 = (long[]) o;
+            if (longToString) {
+                for (long num : o1) {
+                    s.append("\"").append(num).append("\"").append(",");
+                }
+                return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 1), "]");
+            } else {
+                return Arrays.toString(o1);
+            }
         }
 
         if (o instanceof short[] && !isPretty) {
@@ -117,8 +106,14 @@ public class ArrayUtil {
 
         if (o instanceof long[]) {
             long[] nums = (long[]) o;
-            for (long i : nums) {
-                s.append(white).append(i).append(",\n");
+            if (longToString) {
+                for (long i : nums) {
+                    s.append(white).append("\"").append(i).append("\",\n");
+                }
+            } else {
+                for (long i : nums) {
+                    s.append(white).append(i).append(",\n");
+                }
             }
             BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
             return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
@@ -183,7 +178,7 @@ public class ArrayUtil {
             Object[] objects = (Object[]) o;
             for (Object object : objects) {
                 if (isPretty) {
-                    if (object instanceof String || object instanceof Character) {
+                    if (object instanceof String || object instanceof Character || longToString) {
                         s.append(white).append("\"").append(object).append("\",\n");
                     } else if (isBaseArray(object)) {
                         s.append(white).append(object).append(",\n");
@@ -191,7 +186,7 @@ public class ArrayUtil {
                         s.append(white).append(JSON.stringify(object).pretty()).append(",\n");
                     }
                 } else {
-                    if (object instanceof String || object instanceof Character) {
+                    if (object instanceof String || object instanceof Character || longToString) {
                         s.append("\"").append(object).append("\",");
                     } else if (isBaseArray(object)) {
                         s.append(object).append(",");
@@ -226,6 +221,7 @@ public class ArrayUtil {
      * List 转 Array
      *
      * @param jBase 转换源
+     * @param field 当前字段
      * @return 转化后的包装类型数组
      */
     public static Object getArr(JBase jBase, Field field) {
@@ -243,9 +239,9 @@ public class ArrayUtil {
             case SHORT__ARR:
                 return JShort.get_Arr(jBase);
             case LONG_ARR:
-                return JLong.getArr(jBase);
+                return JLong.getArr(jBase, field);
             case LONG__ARR:
-                return JLong.get_Arr(jBase);
+                return JLong.get_Arr(jBase, field);
             case FLOAT__ARR:
                 return JFloat.get_Arr(jBase);
             case FLOAT_ARR:
@@ -287,10 +283,127 @@ public class ArrayUtil {
     }
 
 
+    /**
+     * List 转对应类型
+     *
+     * @param jBase 转换源
+     * @param field 当前字段
+     * @return 转化后的包装类型List
+     */
+    public static Object getList(JBase jBase, Field field) {
+        if (!field.isAnnotationPresent(JCollectType.class)) {
+            return null;
+        }
+        JCollectType jCollectType = field.getDeclaredAnnotation(JCollectType.class);
+        EuTypeof instance = EuTypeof.getInstance(jCollectType.type().getTypeName());
+        if (Objects.isNull(instance)) {
+            return null;
+        }
+        switch (instance) {
+            case INTEGER_ARR:
+                return JInteger.getList(jBase);
+            case SHORT_ARR:
+                return JShort.getList(jBase);
+            case LONG_ARR:
+                return JLong.getList(jBase, field);
+            case FLOAT_ARR:
+                return JFloat.getList(jBase);
+            case DOUBLE_ARR:
+                return JDouble.getList(jBase);
+            case CHARACTER_ARR:
+                return JChar.getList(jBase);
+            case BYTE_ARR:
+                return JByte.getList(jBase);
+            case BOOLEAN_ARR:
+                return JBool.getList(jBase);
+            case DATE_ARR:
+                if (field.isAnnotationPresent(JFormat.class)) {
+                    JFormat jDateFormat = field.getDeclaredAnnotation(JFormat.class);
+                    if (jDateFormat.value().equals("#")) {
+                        return JDate.getList(jBase);
+                    } else {
+                        return JDate.getList(jBase, jDateFormat.value());
+                    }
+                } else {
+                    return JDate.getList(jBase);
+                }
+            case OBJECT_ARR:
+                return JObject.getList(jBase);
+            case STRING_ARR:
+                return JString.getList(jBase);
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Map 转对应类型
+     *
+     * @param jBase 转换源
+     * @param field 当前字段
+     * @return 转化后的包装类型Map
+     */
+    public static Object getMap(JBase jBase, Field field) {
+        if (field.isAnnotationPresent(JCollectType.class)) {
+            return null;
+        }
+        JCollectType jCollectType = field.getDeclaredAnnotation(JCollectType.class);
+        EuTypeof instance = EuTypeof.getInstance(jCollectType.type().getTypeName());
+        if (Objects.isNull(instance)) {
+            return null;
+        }
+        switch (instance) {
+            case INTEGER_ARR:
+                return JInteger.getMap(jBase);
+            case SHORT_ARR:
+                return JShort.getMap(jBase);
+            case LONG_ARR:
+                return JLong.getMap(jBase, field);
+            case FLOAT_ARR:
+                return JFloat.getMap(jBase);
+            case DOUBLE_ARR:
+                return JDouble.getMap(jBase);
+            case CHARACTER_ARR:
+                return JChar.getMap(jBase);
+            case BYTE_ARR:
+                return JByte.getMap(jBase);
+            case BOOLEAN_ARR:
+                return JBool.getMap(jBase);
+            case DATE_ARR:
+                if (field.isAnnotationPresent(JFormat.class)) {
+                    JFormat jDateFormat = field.getDeclaredAnnotation(JFormat.class);
+                    if (jDateFormat.value().equals("#")) {
+                        return JDate.getMap(jBase);
+                    } else {
+                        return JDate.getMap(jBase, jDateFormat.value());
+                    }
+                } else {
+                    return JDate.getMap(jBase);
+                }
+            case OBJECT_ARR:
+                return JObject.getMap(jBase);
+            case STRING_ARR:
+                return JString.getMap(jBase);
+            default:
+                return null;
+        }
+    }
+
     public static Object doArrayByJArray(JBase jBase, Function<List<JBase>, Object> func) {
         try {
             JArray jArray = (JArray) jBase;
             List<JBase> value = jArray.getValue();
+            return func.apply(value);
+        } catch (Exception e) {
+            // log: error the source not cast array
+            throw new JTypeofException("error the source not cast array, because " + e.getMessage());
+        }
+    }
+
+    public static Object doMapByJObject(JBase jBase, Function<Map<String, JBase>, Object> func) {
+        try {
+            JObject jObject = (JObject) jBase;
+            Map<String, JBase> value = jObject.getValue();
             return func.apply(value);
         } catch (Exception e) {
             // log: error the source not cast array

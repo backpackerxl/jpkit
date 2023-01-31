@@ -4,6 +4,9 @@ import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class JObject extends JBase {
@@ -34,9 +37,36 @@ public class JObject extends JBase {
         });
     }
 
-    @Override
-    public void apply(Object obj, Field field, JBase jBase) {
+    /**
+     * List<JBase> 转 List<Object>
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object getList(JBase jBase) {
+        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
+            List<Object> res = new ArrayList<>(value.size());
+            for (JBase base : value) {
+                res.add(base.getValue());
+            }
+            return res;
+        });
+    }
 
+    /**
+     * Map<String, JBase> 转 Map<String,Object>
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object getMap(JBase jBase) {
+        return ArrayUtil.doMapByJObject(jBase, (value) -> {
+            Map<String, Object> res = new HashMap<>(value.size());
+            for (String base : value.keySet()) {
+                res.put(base, value.get(base).getValue());
+            }
+            return res;
+        });
     }
 
     @Override

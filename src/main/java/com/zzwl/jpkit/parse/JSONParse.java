@@ -151,11 +151,6 @@ public class JSONParse {
                 public Object getValue() {
                     return null;
                 }
-
-                @Override
-                public void apply(Object obj, Field field, JBase jBase) {
-
-                }
             };
         } else {
             throw new JTypeofException(this.get_char_some(4) + " is not a null, the error occurs is " + this.idx);

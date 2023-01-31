@@ -3,6 +3,10 @@ package com.zzwl.jpkit.typeof;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class JDouble extends JBase {
     private final Double value;
@@ -48,9 +52,36 @@ public class JDouble extends JBase {
         });
     }
 
-    @Override
-    public void apply(Object obj, Field field, JBase jBase) {
+    /**
+     * List<JBase> 转 List<Double>
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object getList(JBase jBase) {
+        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
+            List<Double> res = new ArrayList<>(value.size());
+            for (JBase base : value) {
+                res.add(((JDouble) base).getValue());
+            }
+            return res;
+        });
+    }
 
+    /**
+     * Map<String, JBase> 转 Map<String,Double>
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object getMap(JBase jBase) {
+        return ArrayUtil.doMapByJObject(jBase, (value) -> {
+            Map<String, Double> res = new HashMap<>(value.size());
+            for (String base : value.keySet()) {
+                res.put(base, ((JDouble) value.get(base)).getValue());
+            }
+            return res;
+        });
     }
 
     @Override

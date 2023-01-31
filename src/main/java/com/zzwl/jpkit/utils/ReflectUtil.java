@@ -1,24 +1,28 @@
 package com.zzwl.jpkit.utils;
 
+import com.zzwl.jpkit.anno.JFString;
 import com.zzwl.jpkit.anno.JFormat;
 import com.zzwl.jpkit.anno.JIgnore;
 import com.zzwl.jpkit.anno.JRename;
 import com.zzwl.jpkit.bean.FieldBean;
 import com.zzwl.jpkit.conversion.BToJSON;
+import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.typeof.JBase;
 import com.zzwl.jpkit.typeof.JDate;
+import com.zzwl.jpkit.typeof.JString;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 
 public class ReflectUtil {
 
     private static boolean isPretty = false;
+    private static boolean getTag = false;
+    private static boolean setTag = false;
 
     private ReflectUtil() {
     }
@@ -37,20 +41,15 @@ public class ReflectUtil {
     public static String doBeanByField(Object obj, CallBack callBack) {
         StringBuilder s = new StringBuilder();
         Field[] fields = obj.getClass().getDeclaredFields();
-        boolean tag = false;
         for (Field field : fields) {
             if (!field.isAnnotationPresent(JIgnore.class)) {
                 FieldBean fieldBean = getValueByMethod(obj, field);
                 // 利用反射先通过方法获取属性值
                 if (!Objects.isNull(fieldBean)) {
-                    if (!fieldBean.getName().equals("continue")) {
-                        s.append(callBack.apply(fieldBean.getName(), fieldBean.getObj()));
-                    }
-                } else {
-                    tag = true;
+                    s.append(callBack.apply(fieldBean.getName(), fieldBean.getObj()));
                 }
                 // 若利用方法获取不到属性值，就利用属性获取但此方法会打破属性的私有性
-                if (tag) {
+                if (getTag) {
                     fieldBean = getValueByField(obj, field);
                     if (!Objects.isNull(fieldBean)) {
                         s.append(callBack.apply(fieldBean.getName(), fieldBean.getObj()));
@@ -75,6 +74,7 @@ public class ReflectUtil {
     private static FieldBean getValueByMethod(Object obj, Field field) {
         try {
             Method method = obj.getClass().getDeclaredMethod(StringUtil.getMethodNameByFieldType(StringUtil.basicGetPrefix, field.getType(), field.getName()));
+            getTag = false;
             if (!method.isAnnotationPresent(JIgnore.class)) {
                 Object o = method.invoke(obj);
                 o = getObject(field, o);
@@ -89,11 +89,11 @@ public class ReflectUtil {
                         return new FieldBean(field.getName(), o);
                     }
                 }
-            } else {
-                return new FieldBean("continue", null);
             }
+            return null;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             //log输出： e.printStackTrace();
+            getTag = true;
             return null;
         }
     }
@@ -130,7 +130,8 @@ public class ReflectUtil {
      * @return 字段值
      */
     private static Object getObject(Field field, Object o) {
-        if (field.isAnnotationPresent(JFormat.class) && field.getType().getTypeName().equals(Date.class.getTypeName())) {
+        String typeName = field.getType().getTypeName();
+        if (field.isAnnotationPresent(JFormat.class) && typeName.equals(Date.class.getTypeName())) {
             JFormat jDateFormat = field.getDeclaredAnnotation(JFormat.class);
             if (jDateFormat.value().equals("#")) {
                 o = ((Date) o).getTime();
@@ -138,10 +139,38 @@ public class ReflectUtil {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(jDateFormat.value());
                 o = String.format("\"%s\"", simpleDateFormat.format(o));
             }
-        } else if (field.getType().getTypeName().equals(Date.class.getTypeName()) || field.getType().getTypeName().equals(String.class.getTypeName())) {
+        } else if (typeName.equals(Date.class.getTypeName()) || typeName.equals(String.class.getTypeName())) {
             o = String.format("\"%s\"", o.toString());
         } else if (ArrayUtil.isArray(o)) {
-            o = ArrayUtil.compileArray(o, isPretty);
+            o = ArrayUtil.compileArray(o, isPretty, (typeName.equals(Long[].class.getTypeName()) || typeName.equals(long[].class.getTypeName())) && field.isAnnotationPresent(JFString.class));
+        } else if ((typeName.equals(Long.class.getTypeName()) || typeName.equals(long.class.getTypeName())) && field.isAnnotationPresent(JFString.class)) {
+            o = String.format("\"%s\"", o.toString());
+        } else if (typeName.equals(List.class.getTypeName())) {
+            if (field.isAnnotationPresent(JFString.class)) {
+                JFString jfString = field.getDeclaredAnnotation(JFString.class);
+                if (jfString.type().getTypeName().equals(Long.class.getTypeName())) {
+                    // 打开Long to String
+                    BToJSON.setLongToStr(true);
+                }
+            }
+            if (isPretty) {
+                o = JSON.stringify(o).pretty();
+            } else {
+                o = JSON.stringify(o).terse();
+            }
+        } else if (typeName.equals(Map.class.getTypeName())) {
+            if (field.isAnnotationPresent(JFString.class)) {
+                JFString jfString = field.getDeclaredAnnotation(JFString.class);
+                if (jfString.type().getTypeName().equals(Long.class.getTypeName())) {
+                    // 打开Long to String
+                    BToJSON.setLongToStr(true);
+                }
+            }
+            if (isPretty) {
+                o = JSON.stringify(o).pretty();
+            } else {
+                o = JSON.stringify(o).terse();
+            }
         }
         return o;
     }
@@ -153,9 +182,11 @@ public class ReflectUtil {
             if (!method.isAnnotationPresent(JIgnore.class)) {
                 method.invoke(obj, value);
             }
+            setTag = false;
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             // log set error
-            throw new RuntimeException(e);
+            setTag = true;
+            //throw new RuntimeException(e);
         }
     }
 
@@ -175,31 +206,36 @@ public class ReflectUtil {
                     }
                 }
             } else {
-                return new FieldBean("continue", null);
+                return new FieldBean(field.getName(), null);
             }
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
+            // log No get Method
+            return new FieldBean(field.getName(), null);
         }
     }
 
     public static void setBeanByField(Object obj, Function<String, JBase> func) {
         Field[] fields = obj.getClass().getDeclaredFields();
-        boolean tag = false;
         for (Field field : fields) {
             if (!field.isAnnotationPresent(JIgnore.class)) {
                 FieldBean fieldBean = setValueByMethod(obj, field);
                 // 利用反射先通过方法设置属性值
-                if (!fieldBean.getName().equals("continue")) {
-                    JBase jBase = func.apply(fieldBean.getName());
-                    setValueByMethod(obj, field, getValue(jBase, field));
-                } else {
-                    tag = true;
+                JBase jBase = func.apply(fieldBean.getName());
+                if (Objects.isNull(jBase) || Objects.isNull(jBase.getValue())) {
+                    setValueByMethod(obj, field, null);
+                    continue;
                 }
+                setValueByMethod(obj, field, getValue(jBase, field));
                 // 若利用方法设置不到属性值，就利用属性设置但此方法会打破属性的私有性
-                if (tag) {
+                if (setTag) {
                     try {
                         field.setAccessible(true);
-                        field.set(obj, func.apply(fieldBean.getName()));
+                        jBase = func.apply(fieldBean.getName());
+                        if (Objects.isNull(jBase) || Objects.isNull(jBase.getValue())) {
+                            field.set(obj, null);
+                            continue;
+                        }
+                        field.set(obj, getValue(jBase, field));
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
@@ -210,7 +246,8 @@ public class ReflectUtil {
 
     private static Object getValue(JBase jBase, Field field) {
         Object obj = null;
-        if (field.getType().getName().equals(Date.class.getName())) {
+        String typeName = field.getType().getName();
+        if (typeName.equals(Date.class.getName())) {
             if (field.isAnnotationPresent(JFormat.class)) {
                 JFormat format = field.getDeclaredAnnotation(JFormat.class);
                 if (format.value().equals("#")) {
@@ -219,11 +256,15 @@ public class ReflectUtil {
                     obj = new JDate(jBase, format.value()).getValue();
                 }
             }
+        } else if ((typeName.equals(Long.class.getTypeName()) || typeName.equals(long.class.getTypeName())) && field.isAnnotationPresent(JFString.class)) {
+            obj = Long.valueOf(((JString) jBase).getValue());
         } else if (ArrayUtil.isArray(field)) {
             // Integer[] ...
             obj = ArrayUtil.getArr(jBase, field);
-        } else if (ArrayUtil.isBaseArray(field)) {
-            // int[] long[] ...
+        } else if (typeName.equals(List.class.getTypeName())) {
+            obj = ArrayUtil.getList(jBase, field);
+        } else if (typeName.equals(Map.class.getTypeName())) {
+            obj = ArrayUtil.getMap(jBase, field);
         } else {
             obj = jBase.getValue();
         }

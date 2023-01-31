@@ -4,6 +4,10 @@ import com.zzwl.jpkit.exception.JTypeofException;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class JByte extends JBase {
 
@@ -55,11 +59,37 @@ public class JByte extends JBase {
         });
     }
 
-    @Override
-    public void apply(Object obj, Field field, JBase jBase) {
-
+    /**
+     * List<JBase> 转 List<Byte>
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object getList(JBase jBase) {
+        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
+            List<Byte> res = new ArrayList<>(value.size());
+            for (JBase base : value) {
+                res.add(new JByte(base).getValue());
+            }
+            return res;
+        });
     }
 
+    /**
+     * Map<String, JBase> 转 Map<String,Byte>
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object getMap(JBase jBase) {
+        return ArrayUtil.doMapByJObject(jBase, (value) -> {
+            Map<String, Byte> res = new HashMap<>(value.size());
+            for (String base : value.keySet()) {
+                res.put(base, new JByte(value.get(base)).getValue());
+            }
+            return res;
+        });
+    }
 
     @Override
     public String toString() {

@@ -1,9 +1,10 @@
 [
 	{
+		"id": "1004207420089456666",
 		"username": "zzwl",
 		"user_code": 300,
 		"admin": true,
-		"create_time": "2023-01-29",
+		"create_time": "2023-01-31",
 		"nums": [
 			789,
 			526
@@ -12,6 +13,8 @@
 			"gg",
 			"hh"
 		],
-		"ints": null
+		"ints": null,
+		"longs": null,
+		"longList": null
 	}
 ]

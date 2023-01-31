@@ -4,7 +4,10 @@ import com.zzwl.jpkit.exception.JTypeofException;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JInteger extends JBase {
 
@@ -46,14 +49,41 @@ public class JInteger extends JBase {
         });
     }
 
-    @Override
-    public Integer getValue() {
-        return value;
+    /**
+     * List<JBase> 转 List<Integer>
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object getList(JBase jBase) {
+        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
+            List<Integer> res = new ArrayList<>(value.size());
+            for (JBase base : value) {
+                res.add(((JInteger) base).getValue());
+            }
+            return res;
+        });
+    }
+
+    /**
+     * Map<String, JBase> 转 Map<String,Integer>
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    public static Object getMap(JBase jBase) {
+        return ArrayUtil.doMapByJObject(jBase, (value) -> {
+            Map<String, Integer> res = new HashMap<>(value.size());
+            for (String base : value.keySet()) {
+                res.put(base, ((JInteger) value.get(base)).getValue());
+            }
+            return res;
+        });
     }
 
     @Override
-    public void apply(Object obj, Field field, JBase jBase) {
-
+    public Integer getValue() {
+        return value;
     }
 
     @Override
