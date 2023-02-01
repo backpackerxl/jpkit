@@ -250,6 +250,8 @@ public class JSONTest {
 
         pram.put("Authorization", "Bearer a92362b8-76aa-4fe7-9305-9db6de7eb34a");
 
+        pram.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
+
         ITypeof<Object> load = JSON.load(url, pram);
 
         System.out.println(JSON.stringify(load).pretty());
