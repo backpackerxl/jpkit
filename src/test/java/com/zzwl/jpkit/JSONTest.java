@@ -1,5 +1,6 @@
 package com.zzwl.jpkit;
 
+import com.zzwl.jpkit.anno.JConfig;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.typeof.*;
 import com.zzwl.jpkit.utils.StringUtil;
@@ -60,8 +61,8 @@ public class JSONTest {
         list.add(165146516423313131L);
         list.add(165146516453313131L);
         zzwl.setLongList(list);
-        JSON.setLongToString(true);
-        System.out.println(JSON.stringify(list).pretty());
+//        JSON.setLongToString(true);
+//        System.out.println(JSON.stringify(list).pretty());
         System.out.println("=================");
         String s = JSON.stringify(zzwl).terse();
         System.out.println(s);
@@ -209,13 +210,56 @@ public class JSONTest {
         bigDecimals.add(new BigDecimal("0.84894"));
 
         mySQL.setBigDecimals(bigDecimals);
+        BigDecimal[] bigDecimals1 = new BigDecimal[]{new BigDecimal("0.36"), new BigDecimal("0.25")};
+        mySQL.setBigs(bigDecimals1);
+
+        Map<String, BigDecimal> map = new HashMap<>();
+
+        map.put("one", new BigDecimal("5.26"));
+        map.put("two", new BigDecimal("5.2556"));
+        map.put("three", new BigDecimal("5.4426"));
+        map.put("fore", new BigDecimal("5.2667"));
+
+        mySQL.setMap(map);
+//        List<MySQL> mySQLList = new ArrayList<>();
+//        mySQLList.add(mySQL);
+//        mySQL.setMySQLList(mySQLList);
+
         System.out.println(mySQL);
     }
 
     @Test
     public void testSubParse() {
-        String json = "{\n" + "  \"server\": \"mysql\",\n" + "  \"version\": \"5.7.35\",\n" + "  \"bigDecimal\": 0.25689\n" + "}";
+        String json = "{\n" +
+                "  \"server\": \"mysql\",\n" +
+                "  \"version\": \"5.7.35\",\n" +
+                "  \"bigDecimal\": 0.25689,\n" +
+                "  \"bigs\": [\n" +
+                "    0.36,\n" +
+                "    0.25\n" +
+                "  ],\n" +
+                "  \"bigDecimals\": [\n" +
+                "    0.1,\n" +
+                "    0.1566,\n" +
+                "    0.2568,\n" +
+                "    0.84894\n" +
+                "  ],\n" +
+                "  \"map\": {\n" +
+                "    \"one\": 5.26,\n" +
+                "    \"fore\": 5.2667,\n" +
+                "    \"two\": 5.2556,\n" +
+                "    \"three\": 5.4426\n" +
+                "  },\n" +
+                "  \"mySQLList\": null\n" +
+                "}";
         MySQL parse = JSON.parse(json, MySQL.class);
         System.out.println(parse);
+    }
+
+    @Test
+    public void testAnn(){
+        JConfig.Group jConfig = MySQL.class.getDeclaredAnnotation(JConfig.Group.class);
+
+        System.out.println(Arrays.toString(jConfig.value()));
     }
 }

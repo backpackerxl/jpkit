@@ -1,6 +1,6 @@
 package com.zzwl.jpkit.parse;
 
-import com.zzwl.jpkit.anno.JFieldConfig;
+import com.zzwl.jpkit.anno.JSingleConfig;
 import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.typeof.JBase;
 import com.zzwl.jpkit.typeof.JObject;
@@ -40,8 +40,8 @@ public class ObjectParse {
      */
     public <B> B parse(Class<B> clazz) {
         Object bean = createBean(clazz);
-        if (bean.getClass().isAnnotationPresent(JFieldConfig.class)) {
-            JFieldConfig config = bean.getClass().getDeclaredAnnotation(JFieldConfig.class);
+        if (bean.getClass().isAnnotationPresent(JSingleConfig.class)) {
+            JSingleConfig config = bean.getClass().getDeclaredAnnotation(JSingleConfig.class);
             classes = new ArrayList<>();
             classes.addAll(Arrays.asList(config.type()));
             target = createBean(config.target());

@@ -3,9 +3,7 @@ package com.zzwl.jpkit.anno;
 import java.lang.annotation.*;
 
 /**
- * List或Map做类型标记
- * 此注解仅支持对List或Map做类型标记
- * <p>此注解可以作用于实体类的<em>属性</em>上</p>
+ * 配置自定义解析
  *
  * @since 1.0
  */

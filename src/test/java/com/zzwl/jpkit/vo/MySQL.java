@@ -1,20 +1,71 @@
 package com.zzwl.jpkit.vo;
 
-import com.zzwl.jpkit.anno.JFieldConfig;
+import com.zzwl.jpkit.anno.JCollectType;
+import com.zzwl.jpkit.anno.JConfig;
 import com.zzwl.jpkit.anno.JRename;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.plugs.BigDecimalPlug;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
-@JFieldConfig(type = {BigDecimal.class}, target = BigDecimalPlug.class)
+//@JSingleConfig(
+//        type = {
+//                BigDecimal.class,
+//                List.class,
+//                BigDecimal[].class,
+//                Map.class
+//        },
+//        target = BigDecimalPlug.class
+//)
+
+
+//@JConfig(
+//        value = BigDecimalPlug.class,
+//        typeof = {
+//                Map.class,
+//                List.class,
+//                BigDecimal.class,
+//                BigDecimal[].class,
+//        }
+//)
+//@JConfig(
+//        value = BigInteger.class,
+//        typeof = {
+//                BigInteger.class
+//        }
+//)
+
+@JConfig(
+        value = BigDecimalPlug.class,
+        typeof = {
+                Map.class,
+                List.class,
+                BigDecimal.class,
+                BigDecimal[].class,
+        }
+)
+@JConfig(
+        value = BigInteger.class,
+        typeof = {
+                BigInteger.class
+        }
+)
+@JConfig(value = List.class, typeof = {})
 public class MySQL {
     @JRename("server")
     private String serverName;
     private String version;
     private BigDecimal bigDecimal;
+    private BigDecimal[] bigs;
+    @JCollectType(type = BigDecimal.class)
     private List<BigDecimal> bigDecimals;
+    @JCollectType(type = BigDecimal.class)
+    private Map<String, BigDecimal> map;
+
+    private List<MySQL> mySQLList;
 
     public MySQL() {
     }
@@ -27,6 +78,30 @@ public class MySQL {
 
     public List<BigDecimal> getBigDecimals() {
         return bigDecimals;
+    }
+
+    public List<MySQL> getMySQLList() {
+        return mySQLList;
+    }
+
+    public Map<String, BigDecimal> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<String, BigDecimal> map) {
+        this.map = map;
+    }
+
+    public BigDecimal[] getBigs() {
+        return bigs;
+    }
+
+    public void setBigs(BigDecimal[] bigs) {
+        this.bigs = bigs;
+    }
+
+    public void setMySQLList(List<MySQL> mySQLList) {
+        this.mySQLList = mySQLList;
     }
 
     public void setBigDecimals(List<BigDecimal> bigDecimals) {

@@ -36,7 +36,7 @@ public class BigDecimalPlug {
      * @param jBase 数据源
      * @return Object
      */
-    @JFieldType(type = {BigDecimal.class})
+    @JFieldType(type = {BigDecimal[].class})
     public Object getArray(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             BigDecimal[] res = new BigDecimal[value.size()];

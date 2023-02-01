@@ -1,9 +1,6 @@
 package com.zzwl.jpkit.utils;
 
-import com.zzwl.jpkit.anno.JFString;
-import com.zzwl.jpkit.anno.JFormat;
-import com.zzwl.jpkit.anno.JIgnore;
-import com.zzwl.jpkit.anno.JRename;
+import com.zzwl.jpkit.anno.*;
 import com.zzwl.jpkit.bean.FieldBean;
 import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.core.JSON;
@@ -45,8 +42,8 @@ public class ReflectUtil {
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
             if (!field.isAnnotationPresent(JIgnore.class)) {
-                FieldBean fieldBean = getValueByMethod(obj, field);
                 // 利用反射先通过方法获取属性值
+                FieldBean fieldBean = getValueByMethod(obj, field);
                 if (!Objects.isNull(fieldBean)) {
                     s.append(callBack.apply(fieldBean.getName(), fieldBean.getObj()));
                 }
@@ -111,6 +108,7 @@ public class ReflectUtil {
         try {
             field.setAccessible(true);
             Object o = field.get(obj);
+            getTag = false;
             o = getObject(field, o);
             if (field.isAnnotationPresent(JRename.class)) {
                 JRename rename = field.getDeclaredAnnotation(JRename.class);
@@ -265,43 +263,47 @@ public class ReflectUtil {
         } else if (ArrayUtil.isArray(field)) {
             // Integer[] ...
             if (classes.contains(type)) {
-                obj = getObj(jBase, BasePlug.GET_ARR);
+                obj = getObj(jBase, BasePlug.GET_ARR, type);
             } else {
                 obj = ArrayUtil.getArr(jBase, field);
             }
         } else if (typeName.equals(List.class.getTypeName())) {
             // List
-            if (classes.contains(type)) {
-                obj = getObj(jBase, BasePlug.GET_LIST);
+            if (classes.contains(type) && field.isAnnotationPresent(JCollectType.class)) {
+                obj = getObj(jBase, BasePlug.GET_LIST, field.getDeclaredAnnotation(JCollectType.class).type());
             } else {
                 obj = ArrayUtil.getList(jBase, field);
             }
         } else if (typeName.equals(Map.class.getTypeName())) {
             // Map
-            if (classes.contains(type)) {
-                obj = getObj(jBase, BasePlug.GET_MAP);
+            if (classes.contains(type) && field.isAnnotationPresent(JCollectType.class)) {
+                obj = getObj(jBase, BasePlug.GET_MAP, field.getDeclaredAnnotation(JCollectType.class).type());
             } else {
                 obj = ArrayUtil.getMap(jBase, field);
             }
         } else if (classes.contains(type)) {
             // Object
-            obj = getObj(jBase, BasePlug.GET_OBJECT);
+            obj = getObj(jBase, BasePlug.GET_OBJECT, type);
         } else {
             obj = jBase.getValue();
         }
         return obj;
     }
 
-    private static Object getObj(JBase jBase, String name) {
-        Object obj;
+    private static Object getObj(JBase jBase, String name, Class<?> type) {
         try {
             Object target = ObjectParse.getTarget();
             Method method = target.getClass().getDeclaredMethod(name, JBase.class);
-            obj = method.invoke(target, jBase);
+            if (method.isAnnotationPresent(JFieldType.class)) {
+                JFieldType fieldType = method.getDeclaredAnnotation(JFieldType.class);
+                if (Arrays.asList(fieldType.type()).contains(type)) {
+                    return method.invoke(target, jBase);
+                }
+            }
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             // log :失败
             throw new RuntimeException(e);
         }
-        return obj;
+        return null;
     }
 }
