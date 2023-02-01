@@ -9,10 +9,7 @@ import com.zzwl.jpkit.typeof.JArray;
 import com.zzwl.jpkit.typeof.JBase;
 import com.zzwl.jpkit.typeof.JObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JSON {
     private JSON() {
@@ -305,6 +302,27 @@ public class JSON {
     }
 
     /**
+     * 加载json文件
+     * <blockquote><pre>
+     *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
+     *     String network = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
+     *     JBase load_local = JSON.load(local);
+     *     JBase load_net = JSON.load(network);
+     * </pre></blockquote>
+     *
+     * @param path 路径
+     * @param pram pram
+     * @return ITypeof<?>
+     */
+    public static ITypeof<Object> load(String path, Map<String, String> pram) {
+        if (path.startsWith(NetUtil.HTTP) || path.startsWith(NetUtil.HTTPS)) {
+            return new JSONParse(NetUtil.getJSON(path, pram)).parse();
+        } else {
+            return new JSONParse(FileUtil.getJSON(path)).parse();
+        }
+    }
+
+    /**
      * <blockquote><pre>
      *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
      *     String network = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
@@ -319,6 +337,28 @@ public class JSON {
      */
     public static <B> B load(String path, Class<B> clazz) {
         ITypeof<Object> load = load(path);
+        if (load instanceof JArray) {
+            throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
+        }
+        return parse(load, clazz);
+    }
+
+    /**
+     * <blockquote><pre>
+     *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
+     *     String network = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
+     *     User load_local = JSON.load(local, User.class);
+     *     BaiDu load_net = JSON.load(network, BaiDu.class);
+     * </pre></blockquote>
+     *
+     * @param path  路径
+     * @param clazz 类型
+     * @param pram  requestPram
+     * @param <B>   转化的类型
+     * @return 转化后的类型
+     */
+    public static <B> B load(String path, Map<String, String> pram, Class<B> clazz) {
+        ITypeof<Object> load = load(path, pram);
         if (load instanceof JArray) {
             throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
         }
@@ -355,6 +395,33 @@ public class JSON {
      * <blockquote><pre>
      *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
      *     String network = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
+     *     List<User> list = JSON.loadList(local, User.class);
+     *     List<BaiDu> list_baidu = JSON.loadList(network, BaiDu.class);
+     * </pre></blockquote>
+     *
+     * @param path  路径
+     * @param clazz 类型
+     * @param pram  pram
+     * @param <B>   转化的类型
+     * @return 转化后的List
+     */
+    public static <B> List<B> loadList(String path, Map<String, String> pram, Class<B> clazz) {
+        ITypeof<Object> load = load(path, pram);
+        if (load instanceof JObject) {
+            throw new RuntimeException("load error, please use JSON.load(path, Class<B> clazz)");
+        }
+        List<B> list = new ArrayList<>();
+        JArray arr = (JArray) load;
+        for (JBase jBase : arr.getValue()) {
+            list.add(parse(jBase, clazz));
+        }
+        return list;
+    }
+
+    /**
+     * <blockquote><pre>
+     *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
+     *     String network = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
      *     Map<String,User> list = JSON.loadMap(local, User.class);
      *     Map<String,BaiDu> list_baidu = JSON.loadMap(network, BaiDu.class);
      * </pre></blockquote>
@@ -366,6 +433,34 @@ public class JSON {
      */
     public static <B> Map<String, B> loadMap(String path, Class<B> clazz) {
         ITypeof<Object> load = load(path);
+        if (load instanceof JArray) {
+            throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
+        }
+        Map<String, B> map = new HashMap<>();
+        JObject jo = (JObject) load;
+        Map<String, JBase> value = jo.getValue();
+        for (String s : value.keySet()) {
+            map.put(s, parse(value.get(s), clazz));
+        }
+        return map;
+    }
+
+    /**
+     * <blockquote><pre>
+     *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
+     *     String network = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
+     *     Map<String,User> list = JSON.loadMap(local, User.class);
+     *     Map<String,BaiDu> list_baidu = JSON.loadMap(network, BaiDu.class);
+     * </pre></blockquote>
+     *
+     * @param path  路径
+     * @param clazz 类型
+     * @param pram  pram
+     * @param <B>   转化的类型
+     * @return 转化后的Map
+     */
+    public static <B> Map<String, B> loadMap(String path, Map<String, String> pram, Class<B> clazz) {
+        ITypeof<Object> load = load(path, pram);
         if (load instanceof JArray) {
             throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
         }
