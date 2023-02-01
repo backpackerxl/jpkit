@@ -1,7 +1,6 @@
 package com.zzwl.jpkit.typeof;
 
 import com.zzwl.jpkit.anno.JFString;
-import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
 import java.lang.reflect.Field;
@@ -34,8 +33,14 @@ public class JLong extends JBase {
         boolean tag = (typeName.equals(Long[].class.getTypeName()) || typeName.equals(long[].class.getTypeName())) && field.isAnnotationPresent(JFString.class);
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             Long[] res = new Long[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = tag ? Long.valueOf(((JString) value.get(i)).getValue()) : ((JLong) value.get(i)).getValue();
+            if (tag) {
+                for (int i = 0; i < value.size(); i++) {
+                    res[i] = Long.valueOf(((JString) value.get(i)).getValue());
+                }
+            } else {
+                for (int i = 0; i < value.size(); i++) {
+                    res[i] = ((JLong) value.get(i)).getValue();
+                }
             }
             return res;
         });
@@ -53,8 +58,14 @@ public class JLong extends JBase {
         boolean tag = (typeName.equals(Long[].class.getTypeName()) || typeName.equals(long[].class.getTypeName())) && field.isAnnotationPresent(JFString.class);
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             long[] res = new long[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = tag ? Long.valueOf(((JString) value.get(i)).getValue()) : ((JLong) value.get(i)).getValue();
+            if (tag) {
+                for (int i = 0; i < value.size(); i++) {
+                    res[i] = Long.parseLong(((JString) value.get(i)).getValue());
+                }
+            } else {
+                for (int i = 0; i < value.size(); i++) {
+                    res[i] = ((JLong) value.get(i)).getValue();
+                }
             }
             return res;
         });
@@ -71,9 +82,14 @@ public class JLong extends JBase {
         boolean tag = isTag(field);
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             List<Long> res = new ArrayList<>(value.size());
-            for (JBase base : value) {
-                Long temp = tag ? Long.valueOf(((JString) base).getValue()) : ((JLong) base).getValue();
-                res.add(temp);
+            if (tag) {
+                for (JBase base : value) {
+                    res.add(Long.valueOf(((JString) base).getValue()));
+                }
+            } else {
+                for (JBase base : value) {
+                    res.add(((JLong) base).getValue());
+                }
             }
             return res;
         });
@@ -90,9 +106,14 @@ public class JLong extends JBase {
         boolean tag = isTag(field);
         return ArrayUtil.doMapByJObject(jBase, (value) -> {
             Map<String, Long> res = new HashMap<>(value.size());
-            for (String base : value.keySet()) {
-                Long temp = tag ? Long.valueOf(((JString) value.get(base)).getValue()) : ((JLong) value.get(base)).getValue();
-                res.put(base, temp);
+            if (tag) {
+                for (String base : value.keySet()) {
+                    res.put(base, Long.valueOf(((JString) value.get(base)).getValue()));
+                }
+            } else {
+                for (String base : value.keySet()) {
+                    res.put(base, ((JLong) value.get(base)).getValue());
+                }
             }
             return res;
         });

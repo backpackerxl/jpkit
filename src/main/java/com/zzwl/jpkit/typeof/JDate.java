@@ -3,7 +3,6 @@ package com.zzwl.jpkit.typeof;
 import com.zzwl.jpkit.exception.JTypeofException;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.*;
 

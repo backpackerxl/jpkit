@@ -1,9 +1,5 @@
 package com.zzwl.jpkit.core;
 
-import com.zzwl.jpkit.typeof.JBase;
-
-import java.lang.reflect.Field;
-
 /**
  * 解析返回类型
  *

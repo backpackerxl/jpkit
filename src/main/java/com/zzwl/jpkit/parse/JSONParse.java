@@ -5,7 +5,6 @@ import com.zzwl.jpkit.exception.JCharacterException;
 import com.zzwl.jpkit.exception.JTypeofException;
 import com.zzwl.jpkit.typeof.*;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

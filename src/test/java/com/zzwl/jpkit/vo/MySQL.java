@@ -1,23 +1,119 @@
 package com.zzwl.jpkit.vo;
 
+import com.zzwl.jpkit.anno.JCollectType;
+import com.zzwl.jpkit.anno.JConfig;
 import com.zzwl.jpkit.anno.JRename;
+import com.zzwl.jpkit.core.JSON;
+import com.zzwl.jpkit.plugs.BigDecimalPlug;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Map;
+
+//@JSingleConfig(
+//        type = {
+//                BigDecimal.class,
+//                List.class,
+//                BigDecimal[].class,
+//                Map.class
+//        },
+//        target = BigDecimalPlug.class
+//)
+
+
+//@JConfig(
+//        value = BigDecimalPlug.class,
+//        typeof = {
+//                Map.class,
+//                List.class,
+//                BigDecimal.class,
+//                BigDecimal[].class,
+//        }
+//)
+//@JConfig(
+//        value = BigInteger.class,
+//        typeof = {
+//                BigInteger.class
+//        }
+//)
+
+@JConfig(
+        value = BigDecimalPlug.class,
+        typeof = {
+                Map.class,
+                List.class,
+                BigDecimal.class,
+                BigDecimal[].class,
+        }
+)
+@JConfig(
+        value = BigInteger.class,
+        typeof = {
+                BigInteger.class
+        }
+)
+@JConfig(value = List.class, typeof = {})
 public class MySQL {
     @JRename("server")
     private String serverName;
     private String version;
-    private Integer count;
-    private Double num;
-    private boolean isActive;
+    private BigDecimal bigDecimal;
+    private BigDecimal[] bigs;
+    @JCollectType(type = BigDecimal.class)
+    private List<BigDecimal> bigDecimals;
+    @JCollectType(type = BigDecimal.class)
+    private Map<String, BigDecimal> map;
 
-    public MySQL(){}
+    private List<MySQL> mySQLList;
 
-    public MySQL(String version, Integer count, Double num, boolean isActive, String serverName) {
-        this.version = version;
-        this.count = count;
-        this.num = num;
-        this.isActive = isActive;
+    public MySQL() {
+    }
+
+    public MySQL(String serverName, String version, BigDecimal bigDecimal) {
         this.serverName = serverName;
+        this.version = version;
+        this.bigDecimal = bigDecimal;
+    }
+
+    public List<BigDecimal> getBigDecimals() {
+        return bigDecimals;
+    }
+
+    public List<MySQL> getMySQLList() {
+        return mySQLList;
+    }
+
+    public Map<String, BigDecimal> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<String, BigDecimal> map) {
+        this.map = map;
+    }
+
+    public BigDecimal[] getBigs() {
+        return bigs;
+    }
+
+    public void setBigs(BigDecimal[] bigs) {
+        this.bigs = bigs;
+    }
+
+    public void setMySQLList(List<MySQL> mySQLList) {
+        this.mySQLList = mySQLList;
+    }
+
+    public void setBigDecimals(List<BigDecimal> bigDecimals) {
+        this.bigDecimals = bigDecimals;
+    }
+
+    public BigDecimal getBigDecimal() {
+        return bigDecimal;
+    }
+
+    public void setBigDecimal(BigDecimal bigDecimal) {
+        this.bigDecimal = bigDecimal;
     }
 
     public String getVersion() {
@@ -26,30 +122,6 @@ public class MySQL {
 
     public void setVersion(String version) {
         this.version = version;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    public Double getNum() {
-        return num;
-    }
-
-    public void setNum(Double num) {
-        this.num = num;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
     }
 
     public String getServerName() {
@@ -62,12 +134,6 @@ public class MySQL {
 
     @Override
     public String toString() {
-        return "MySQL{" +
-                "version='" + version + '\'' +
-                ", count=" + count +
-                ", num=" + num +
-                ", isActive=" + isActive +
-                ", serverName='" + serverName + '\'' +
-                '}';
+        return JSON.stringify(this).pretty();
     }
 }
