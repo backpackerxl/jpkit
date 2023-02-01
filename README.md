@@ -1,7 +1,7 @@
 # jpkit
 > this is java json kit
 
-[![Security Status](https://www.murphysec.com/platform3/v3/badge/1615761482176835584.svg?t=1)](https://www.murphysec.com/accept?code=a111c7f25ae06b96daa00627832e6b68&type=1&from=2&t=2)
+[![Security Status](https://www.oscs1024.com/platform/badge/murphysecurity/murphysec.svg?t=1)](https://www.murphysec.com/accept?code=a111c7f25ae06b96daa00627832e6b68&type=1&from=2&t=2)
 
 #### use
 
