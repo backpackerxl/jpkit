@@ -11,48 +11,8 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
-//@JSingleConfig(
-//        type = {
-//                BigDecimal.class,
-//                List.class,
-//                BigDecimal[].class,
-//                Map.class
-//        },
-//        target = BigDecimalPlug.class
-//)
-
-
-//@JConfig(
-//        value = BigDecimalPlug.class,
-//        typeof = {
-//                Map.class,
-//                List.class,
-//                BigDecimal.class,
-//                BigDecimal[].class,
-//        }
-//)
-//@JConfig(
-//        value = BigInteger.class,
-//        typeof = {
-//                BigInteger.class
-//        }
-//)
-
-@JConfig(
-        value = BigDecimalPlug.class,
-        typeof = {
-                Map.class,
-                List.class,
-                BigDecimal.class,
-                BigDecimal[].class,
-        }
-)
-@JConfig(
-        value = BigInteger.class,
-        typeof = {
-                BigInteger.class
-        }
-)
+@JConfig(value = BigDecimalPlug.class, typeof = {Map.class, List.class, BigDecimal.class, BigDecimal[].class,})
+@JConfig(value = BigInteger.class, typeof = {BigInteger.class})
 @JConfig(value = List.class, typeof = {})
 public class MySQL {
     @JRename("server")

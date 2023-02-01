@@ -1,9 +1,9 @@
 package com.zzwl.jpkit.vo;
 
+import com.zzwl.jpkit.anno.JCollectType;
+import com.zzwl.jpkit.anno.JFString;
 import com.zzwl.jpkit.anno.JFormat;
 import com.zzwl.jpkit.anno.JRename;
-import com.zzwl.jpkit.anno.JFString;
-import com.zzwl.jpkit.anno.JCollectType;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.typeof.JDate;
 

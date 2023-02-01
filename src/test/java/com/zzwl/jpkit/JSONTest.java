@@ -3,6 +3,7 @@ package com.zzwl.jpkit;
 import com.zzwl.jpkit.anno.JConfig;
 import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.core.JSON;
+import com.zzwl.jpkit.network.NetUtil;
 import com.zzwl.jpkit.typeof.*;
 import com.zzwl.jpkit.utils.StringUtil;
 import com.zzwl.jpkit.vo.MySQL;
@@ -149,16 +150,16 @@ public class JSONTest {
         String url = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
         String local = "src\\main\\resources\\db.json";
 
-//        JBase net = (JBase) JSON.load(url);
+        JBase net = (JBase) JSON.load(url);
         JBase net_local = (JBase) JSON.load(local);
 
-//        System.out.println(JSON.stringify(net).pretty());
+        System.out.println(JSON.stringify(net).pretty());
         System.out.println("===================================");
         String js = JSON.stringify(net_local).pretty();
         System.out.println(js);
 
-        List<User> us = JSON.loadList(local, User.class);
-        System.out.println(us);
+//        List<User> us = JSON.loadList(local, User.class);
+//        System.out.println(us);
 
     }
 
@@ -244,11 +245,9 @@ public class JSONTest {
     }
 
     @Test
-    public void testNetWork() {
+    public void testNetWorkPlus() {
         String url = "http://localhost:8083/business/dutyrecord/list/c85d8bab8827641f8047dd50e6cd78e1";
         Map<String, String> pram = new HashMap<>();
-
-        pram.put("Authorization", "Bearer a92362b8-76aa-4fe7-9305-9db6de7eb34a");
 
         pram.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
 
@@ -256,4 +255,24 @@ public class JSONTest {
 
         System.out.println(JSON.stringify(load).pretty());
     }
+
+
+    @Test
+    public void testNetWork() {
+        String url = "https://ug.baidu.com/mcp/pc/pcsearch";
+        Map<String, String> pram = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
+        Map<String, List<Map<String, String>>> vo = new LinkedHashMap<>();
+        pram.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
+        data.put("invoke_info", vo);
+        List<Map<String, String>> list = new ArrayList<>();
+        list.add(new HashMap<>());
+        vo.put("pos_1", list);
+        vo.put("pos_2", list);
+        vo.put("pos_3", list);
+        // data: {"invoke_info":{"pos_1":[{}],"pos_2":[{}],"pos_3":[{}]}}
+        ITypeof<Object> load = JSON.parse(NetUtil.doPost(url, pram, data));
+        System.out.println(JSON.stringify(load).pretty());
+    }
+
 }
