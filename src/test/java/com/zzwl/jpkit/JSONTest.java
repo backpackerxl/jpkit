@@ -1,6 +1,7 @@
 package com.zzwl.jpkit;
 
 import com.zzwl.jpkit.anno.JConfig;
+import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.typeof.*;
 import com.zzwl.jpkit.utils.StringUtil;
@@ -230,36 +231,29 @@ public class JSONTest {
 
     @Test
     public void testSubParse() {
-        String json = "{\n" +
-                "  \"server\": \"mysql\",\n" +
-                "  \"version\": \"5.7.35\",\n" +
-                "  \"bigDecimal\": 0.25689,\n" +
-                "  \"bigs\": [\n" +
-                "    0.36,\n" +
-                "    0.25\n" +
-                "  ],\n" +
-                "  \"bigDecimals\": [\n" +
-                "    0.1,\n" +
-                "    0.1566,\n" +
-                "    0.2568,\n" +
-                "    0.84894\n" +
-                "  ],\n" +
-                "  \"map\": {\n" +
-                "    \"one\": 5.26,\n" +
-                "    \"fore\": 5.2667,\n" +
-                "    \"two\": 5.2556,\n" +
-                "    \"three\": 5.4426\n" +
-                "  },\n" +
-                "  \"mySQLList\": null\n" +
-                "}";
+        String json = "{\n" + "  \"server\": \"mysql\",\n" + "  \"version\": \"5.7.35\",\n" + "  \"bigDecimal\": 0.25689,\n" + "  \"bigs\": [\n" + "    0.36,\n" + "    0.25\n" + "  ],\n" + "  \"bigDecimals\": [\n" + "    0.1,\n" + "    0.1566,\n" + "    0.2568,\n" + "    0.84894\n" + "  ],\n" + "  \"map\": {\n" + "    \"one\": 5.26,\n" + "    \"fore\": 5.2667,\n" + "    \"two\": 5.2556,\n" + "    \"three\": 5.4426\n" + "  },\n" + "  \"mySQLList\": null\n" + "}";
         MySQL parse = JSON.parse(json, MySQL.class);
         System.out.println(parse);
     }
 
     @Test
-    public void testAnn(){
+    public void testAnn() {
         JConfig.Group jConfig = MySQL.class.getDeclaredAnnotation(JConfig.Group.class);
 
         System.out.println(Arrays.toString(jConfig.value()));
+    }
+
+    @Test
+    public void testNetWork() {
+        String url = "http://localhost:8083/business/dutyrecord/list/c85d8bab8827641f8047dd50e6cd78e1";
+        Map<String, String> pram = new HashMap<>();
+
+        pram.put("Authorization", "Bearer a92362b8-76aa-4fe7-9305-9db6de7eb34a");
+
+        pram.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
+
+        ITypeof<Object> load = JSON.load(url, pram);
+
+        System.out.println(JSON.stringify(load).pretty());
     }
 }
