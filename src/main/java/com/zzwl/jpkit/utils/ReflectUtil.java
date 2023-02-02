@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ReflectUtil {
 
@@ -263,7 +264,7 @@ public class ReflectUtil {
             obj = Long.valueOf(((JString) jBase).getValue());
         } else if (ArrayUtil.isArray(field)) {
             // Integer[] ...
-            if (classes.contains(type)) {
+            if (ObjectParse.getAnnoConfig().getTypes().containsValue(field.getType())) {
                 obj = getObj(jBase, BasePlug.GET_ARR, type);
             } else {
                 obj = ArrayUtil.getArr(jBase, field);

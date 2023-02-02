@@ -246,9 +246,9 @@ public class JSONTest {
 
     @Test
     public void testAnn() {
-        JConfig.Group jConfig = MySQL.class.getDeclaredAnnotation(JConfig.Group.class);
+        JConfig jConfig = MySQL.class.getDeclaredAnnotation(JConfig.class);
 
-        System.out.println(Arrays.toString(jConfig.value()));
+        System.out.println(jConfig);
     }
 
     @Test

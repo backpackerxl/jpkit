@@ -1,6 +1,8 @@
 package com.zzwl.jpkit.parse;
 
+import com.zzwl.jpkit.anno.JConfig;
 import com.zzwl.jpkit.anno.JSingleConfig;
+import com.zzwl.jpkit.bean.AnnoConfig;
 import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.typeof.JBase;
 import com.zzwl.jpkit.typeof.JObject;
@@ -8,19 +10,20 @@ import com.zzwl.jpkit.utils.ReflectUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ObjectParse {
     private final JBase jBase;
+
+    private volatile static List<Class<?>> classes;
+    private volatile static Object target;
+
+    private volatile static AnnoConfig annoConfig;
 
     public ObjectParse(ITypeof<Object> typeof) {
         this.jBase = (JBase) typeof;
     }
 
-    private static List<Class<?>> classes;
-    private static Object target;
 
     public static List<Class<?>> getClasses() {
         return classes;
@@ -29,6 +32,10 @@ public class ObjectParse {
 
     public static Object getTarget() {
         return target;
+    }
+
+    public static AnnoConfig getAnnoConfig() {
+        return annoConfig;
     }
 
     /**
@@ -40,15 +47,42 @@ public class ObjectParse {
      */
     public <B> B parse(Class<B> clazz) {
         Object bean = createBean(clazz);
-        if (bean.getClass().isAnnotationPresent(JSingleConfig.class)) {
-            JSingleConfig config = bean.getClass().getDeclaredAnnotation(JSingleConfig.class);
-            classes = new ArrayList<>();
-            classes.addAll(Arrays.asList(config.type()));
-            target = createBean(config.target());
-        }
+        init(bean);
         JObject jo = (JObject) this.jBase;
         ReflectUtil.setBeanByField(bean, (name) -> jo.getValue().get(name));
         return (B) bean;
+    }
+
+    /**
+     * 通过注解初始化自定义插件信息
+     *
+     * @param bean 初始化数据
+     */
+    private void init(Object bean) {
+        if (bean.getClass().isAnnotationPresent(JConfig.class)) {
+            if (annoConfig == null) {
+                synchronized (AnnoConfig.class) {
+                    if (annoConfig == null) {
+                        Map<String, Object> targets = new HashMap<>();
+                        Map<String, List<Class<?>>> types = new HashMap<>();
+                        JConfig config = bean.getClass().getDeclaredAnnotation(JConfig.class);
+                        if (Objects.isNull(config)) {
+                            JConfig.Group group = bean.getClass().getDeclaredAnnotation(JConfig.Group.class);
+                            for (JConfig jConfig : group.value()) {
+                                Class<?> value = jConfig.value();
+                                targets.put(value.getTypeName(), createBean(value));
+                                types.put(value.getTypeName(), Arrays.asList(jConfig.typeof()));
+                            }
+                        } else {
+                            Class<?> value = config.value();
+                            targets.put(value.getTypeName(), createBean(value));
+                            types.put(value.getTypeName(), Arrays.asList(config.typeof()));
+                        }
+                        annoConfig = new AnnoConfig(targets, types);
+                    }
+                }
+            }
+        }
     }
 
     public Object createBean(Class<?> clazz) {

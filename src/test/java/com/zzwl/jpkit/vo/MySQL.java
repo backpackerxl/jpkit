@@ -13,7 +13,7 @@ import java.util.Map;
 
 @JConfig(value = BigDecimalPlug.class, typeof = {Map.class, List.class, BigDecimal.class, BigDecimal[].class,})
 @JConfig(value = BigInteger.class, typeof = {BigInteger.class})
-@JConfig(value = List.class, typeof = {})
+//@JConfig(value = List.class, typeof = {})
 public class MySQL {
     @JRename("server")
     private String serverName;
