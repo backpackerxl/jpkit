@@ -1,5 +1,6 @@
 package com.zzwl.jpkit.core;
 
+import com.zzwl.jpkit.bean.Options;
 import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.file.FileUtil;
 import com.zzwl.jpkit.network.NetUtil;
@@ -317,7 +318,7 @@ public class JSON {
      * @param pram pram
      * @return ITypeof<?>
      */
-    public static ITypeof<Object> load(String path, Map<String, String> pram) {
+    public static ITypeof<Object> load(String path, Options pram) {
         if (path.startsWith(NetUtil.HTTP) || path.startsWith(NetUtil.HTTPS)) {
             return new JSONParse(NetUtil.getJSON(path, pram)).parse();
         } else {
@@ -360,7 +361,7 @@ public class JSON {
      * @param <B>   转化的类型
      * @return 转化后的类型
      */
-    public static <B> B load(String path, Map<String, String> pram, Class<B> clazz) {
+    public static <B> B load(String path, Options pram, Class<B> clazz) {
         ITypeof<Object> load = load(path, pram);
         if (load instanceof JArray) {
             throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
@@ -408,7 +409,7 @@ public class JSON {
      * @param <B>   转化的类型
      * @return 转化后的List
      */
-    public static <B> List<B> loadList(String path, Map<String, String> pram, Class<B> clazz) {
+    public static <B> List<B> loadList(String path, Options pram, Class<B> clazz) {
         ITypeof<Object> load = load(path, pram);
         if (load instanceof JObject) {
             throw new RuntimeException("load error, please use JSON.load(path, Class<B> clazz)");
@@ -462,7 +463,7 @@ public class JSON {
      * @param <B>   转化的类型
      * @return 转化后的Map
      */
-    public static <B> Map<String, B> loadMap(String path, Map<String, String> pram, Class<B> clazz) {
+    public static <B> Map<String, B> loadMap(String path, Options pram, Class<B> clazz) {
         ITypeof<Object> load = load(path, pram);
         if (load instanceof JArray) {
             throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");

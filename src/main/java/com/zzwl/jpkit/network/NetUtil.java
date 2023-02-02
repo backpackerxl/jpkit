@@ -1,7 +1,9 @@
 package com.zzwl.jpkit.network;
 
 
+import com.zzwl.jpkit.bean.Options;
 import com.zzwl.jpkit.core.JSON;
+import com.zzwl.jpkit.utils.StringUtil;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -38,8 +40,12 @@ public final class NetUtil {
      * @param pram 请求头参数
      * @return 网络JSON内容
      */
-    public static String getJSON(String url, Map<String, String> pram) {
-        return doGet(url, pram);
+    public static String getJSON(String url, Options pram) {
+        if (pram.getData().size() == 0) {
+            return doGet(url, pram.getPram());
+        } else {
+            return doPost(url, pram.getPram(), pram.getData());
+        }
     }
 
     /**
@@ -93,7 +99,12 @@ public final class NetUtil {
             // Post 请求传入参数
             if (method.equals(POST)) {
                 out = new PrintWriter(con.getOutputStream());
-                out.write(JSON.stringify(data).terse());
+                String s = pram.get("Content-Type");
+                if (s != null && s.contains("json")) {
+                    out.write(JSON.stringify(data).terse());
+                } else {
+                    out.write(getFormData(data));
+                }
                 out.flush();
             }
             is = con.getInputStream();
@@ -120,5 +131,23 @@ public final class NetUtil {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    /**
+     * 将数据与肮转化为表单类型的数据
+     *
+     * @param data 数据源
+     * @return 表单类型的数据
+     */
+    private static String getFormData(Map<String, Object> data) {
+        StringBuilder s = new StringBuilder();
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            Object value = entry.getValue();
+            if (value instanceof String) {
+                value = StringUtil.getEncodeString(value.toString());
+            }
+            s.append(entry.getKey()).append("=").append(value).append("&");
+        }
+        return StringUtil.substringByNumber(s.toString(), 1);
     }
 }

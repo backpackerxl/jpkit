@@ -1,6 +1,7 @@
 package com.zzwl.jpkit;
 
 import com.zzwl.jpkit.anno.JConfig;
+import com.zzwl.jpkit.bean.Options;
 import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.network.NetUtil;
@@ -10,8 +11,11 @@ import com.zzwl.jpkit.vo.MySQL;
 import com.zzwl.jpkit.vo.User;
 import org.junit.Test;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -245,14 +249,32 @@ public class JSONTest {
     }
 
     @Test
-    public void testNetWorkPlus() {
+    public void testNetWorkGET() {
         String url = "http://localhost:8083/business/dutyrecord/list/c85d8bab8827641f8047dd50e6cd78e1";
-        Map<String, String> pram = new HashMap<>();
+        ITypeof<Object> load = JSON.load(
+                url,
+                Options
+                        .getInstance()
+                        .setPram("Authorization", "Bearer dbdb46f8-56c9-4f4f-8669-3e1f45a6d5cd")
+                        .setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36")
+        );
+        System.out.println(JSON.stringify(load).pretty());
+    }
 
-        pram.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
-
-        ITypeof<Object> load = JSON.load(url, pram);
-
+    @Test
+    public void testNetWorkPost() {
+        String url = "http://localhost:8083/business/dutyCheck/getInfo";
+        ITypeof<Object> load = JSON.load(
+                url,
+                Options
+                        .getInstance()
+                        .setPram("Authorization", "Bearer dbdb46f8-56c9-4f4f-8669-3e1f45a6d5cd")
+                        // 若传递的参数格式为 json 格式 ，则加上 application/json;charset=UTF-8
+                        //.setPram("Content-Type", "application/json;charset=UTF-8")
+                        .setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36")
+                        .setData("wxqNum", 10)
+                        .setData("zrrtype", 3)
+        );
         System.out.println(JSON.stringify(load).pretty());
     }
 
@@ -260,19 +282,31 @@ public class JSONTest {
     @Test
     public void testNetWork() {
         String url = "https://ug.baidu.com/mcp/pc/pcsearch";
-        Map<String, String> pram = new HashMap<>();
-        Map<String, Object> data = new HashMap<>();
         Map<String, List<Map<String, String>>> vo = new LinkedHashMap<>();
-        pram.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
-        data.put("invoke_info", vo);
         List<Map<String, String>> list = new ArrayList<>();
         list.add(new HashMap<>());
         vo.put("pos_1", list);
         vo.put("pos_2", list);
         vo.put("pos_3", list);
+        Options options = Options.getInstance().setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36").setData("invoke_info", vo);
         // data: {"invoke_info":{"pos_1":[{}],"pos_2":[{}],"pos_3":[{}]}}
-        ITypeof<Object> load = JSON.parse(NetUtil.doPost(url, pram, data));
+        ITypeof<Object> load = JSON.load(url, options);
         System.out.println(JSON.stringify(load).pretty());
+    }
+
+    @Test
+    public void testOption() throws UnsupportedEncodingException {
+        Options options = Options.getInstance().setPram("User-Agent", "aviuahviauhv").setPram("time", new Date().toString()).setPram("server", "Java VM").setData("key", "asvav5566ava");
+
+        Options options2 = Options.getInstance().setPram("User-Agent", "aviuahviauhv").setPram("time", new Date().toString()).setData("name", "hy").setData("password", "465616");
+        System.out.println(options.getPram());
+        System.out.println(options.getData());
+
+        System.out.println("===============");
+        System.out.println(options2.getPram());
+        System.out.println(options2.getData());
+
+        System.out.println(StringUtil.getEncodeString("155656*-/哈哈-88jkjkjk哈哈"));
     }
 
 }
