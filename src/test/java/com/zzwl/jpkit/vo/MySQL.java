@@ -27,6 +27,8 @@ public class MySQL {
 
     private List<MySQL> mySQLList;
 
+    private Type[] types;
+
     public MySQL() {
     }
 
@@ -34,6 +36,21 @@ public class MySQL {
         this.serverName = serverName;
         this.version = version;
         this.bigDecimal = bigDecimal;
+    }
+
+    public MySQL(String serverName, String version, BigDecimal bigDecimal, BigDecimal[] bigs) {
+        this.serverName = serverName;
+        this.version = version;
+        this.bigDecimal = bigDecimal;
+        this.bigs = bigs;
+    }
+
+    public Type[] getTypes() {
+        return types;
+    }
+
+    public void setTypes(Type[] types) {
+        this.types = types;
     }
 
     public List<BigDecimal> getBigDecimals() {

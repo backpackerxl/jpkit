@@ -87,6 +87,9 @@ public final class BToJSON<B> {
         if (bean instanceof String || bean instanceof Character || bean instanceof Date) {
             return String.format("\"%s\"", bean);
         }
+        if (bean instanceof Class) {
+            return String.format("\"%s\"", ((Class<?>) bean).getTypeName());
+        }
         // 处理 List
         if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(List.class.getTypeName()))) {
             StringBuilder s = new StringBuilder();
@@ -241,6 +244,9 @@ public final class BToJSON<B> {
         // 处理特殊类型
         if (bean instanceof String || bean instanceof Character || bean instanceof Date) {
             return String.format("\"%s\"", bean);
+        }
+        if (bean instanceof Class) {
+            return String.format("\"%s\"", ((Class<?>) bean).getTypeName());
         }
         // 处理 List 类型
         if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(List.class.getTypeName()))) {

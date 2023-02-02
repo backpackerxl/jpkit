@@ -8,6 +8,7 @@ import com.zzwl.jpkit.network.NetUtil;
 import com.zzwl.jpkit.typeof.*;
 import com.zzwl.jpkit.utils.StringUtil;
 import com.zzwl.jpkit.vo.MySQL;
+import com.zzwl.jpkit.vo.Type;
 import com.zzwl.jpkit.vo.User;
 import org.junit.Test;
 
@@ -216,7 +217,7 @@ public class JSONTest {
         bigDecimals.add(new BigDecimal("0.84894"));
 
         mySQL.setBigDecimals(bigDecimals);
-        BigDecimal[] bigDecimals1 = new BigDecimal[]{new BigDecimal("0.36"), new BigDecimal("0.25")};
+        BigDecimal[] bigDecimals1 = new BigDecimal[]{new BigDecimal("0.316"), new BigDecimal("0.25")};
         mySQL.setBigs(bigDecimals1);
 
         Map<String, BigDecimal> map = new HashMap<>();
@@ -227,10 +228,12 @@ public class JSONTest {
         map.put("fore", new BigDecimal("5.2667"));
 
         mySQL.setMap(map);
-//        List<MySQL> mySQLList = new ArrayList<>();
-//        mySQLList.add(mySQL);
-//        mySQL.setMySQLList(mySQLList);
-
+        List<MySQL> mySQLList = new ArrayList<>();
+        mySQLList.add(new MySQL("mysql", "8.0.23", new BigDecimal("0.25689"), bigDecimals1));
+        mySQL.setMySQLList(mySQLList);
+        Type[] types = new Type[]{new Type(156161651651651L, String.class.getTypeName(), String.class), new Type(4464646L, String.class.getTypeName(), String.class)};
+        mySQL.setTypes(types);
+        System.out.println(JSON.stringify(Class.class).pretty());
         System.out.println(mySQL);
     }
 
@@ -251,30 +254,17 @@ public class JSONTest {
     @Test
     public void testNetWorkGET() {
         String url = "http://localhost:8083/business/dutyrecord/list/c85d8bab8827641f8047dd50e6cd78e1";
-        ITypeof<Object> load = JSON.load(
-                url,
-                Options
-                        .getInstance()
-                        .setPram("Authorization", "Bearer dbdb46f8-56c9-4f4f-8669-3e1f45a6d5cd")
-                        .setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36")
-        );
+        ITypeof<Object> load = JSON.load(url, Options.getInstance().setPram("Authorization", "Bearer dbdb46f8-56c9-4f4f-8669-3e1f45a6d5cd").setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"));
         System.out.println(JSON.stringify(load).pretty());
     }
 
     @Test
     public void testNetWorkPost() {
         String url = "http://localhost:8083/business/dutyCheck/getInfo";
-        ITypeof<Object> load = JSON.load(
-                url,
-                Options
-                        .getInstance()
-                        .setPram("Authorization", "Bearer dbdb46f8-56c9-4f4f-8669-3e1f45a6d5cd")
-                        // 若传递的参数格式为 json 格式 ，则加上 application/json;charset=UTF-8
-                        //.setPram("Content-Type", "application/json;charset=UTF-8")
-                        .setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36")
-                        .setData("wxqNum", 10)
-                        .setData("zrrtype", 3)
-        );
+        ITypeof<Object> load = JSON.load(url, Options.getInstance().setPram("Authorization", "Bearer dbdb46f8-56c9-4f4f-8669-3e1f45a6d5cd")
+                // 若传递的参数格式为 json 格式 ，则加上 application/json;charset=UTF-8
+                //.setPram("Content-Type", "application/json;charset=UTF-8")
+                .setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36").setData("wxqNum", 10).setData("zrrtype", 3));
         System.out.println(JSON.stringify(load).pretty());
     }
 

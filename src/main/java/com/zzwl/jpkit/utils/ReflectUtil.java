@@ -130,8 +130,7 @@ public class ReflectUtil {
      * @return 字段值
      */
     private static Object getObject(Field field, Object o) {
-        String typeName = field.getType().getTypeName();
-        if (field.isAnnotationPresent(JFormat.class) && typeName.equals(Date.class.getTypeName())) {
+        if (field.isAnnotationPresent(JFormat.class) && o instanceof Date) {
             JFormat jDateFormat = field.getDeclaredAnnotation(JFormat.class);
             if (jDateFormat.value().equals("#")) {
                 o = ((Date) o).getTime();
@@ -139,13 +138,13 @@ public class ReflectUtil {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(jDateFormat.value());
                 o = String.format("\"%s\"", simpleDateFormat.format(o));
             }
-        } else if (typeName.equals(Character.class.getTypeName()) || typeName.equals(Date.class.getTypeName()) || typeName.equals(String.class.getTypeName())) {
-            o = String.format("\"%s\"", o.toString());
+        } else if (o instanceof Character || o instanceof Date || o instanceof String) {
+            o = String.format("\"%s\"", o);
         } else if (ArrayUtil.isArray(o)) {
-            o = ArrayUtil.compileArray(o, isPretty, (typeName.equals(Long[].class.getTypeName()) || typeName.equals(long[].class.getTypeName())) && field.isAnnotationPresent(JFString.class));
-        } else if ((typeName.equals(Long.class.getTypeName()) || typeName.equals(long.class.getTypeName())) && field.isAnnotationPresent(JFString.class)) {
-            o = String.format("\"%s\"", o.toString());
-        } else if (typeName.equals(List.class.getTypeName())) {
+            o = ArrayUtil.compileArray(o, isPretty, (o instanceof Long[] || o instanceof long[]) && field.isAnnotationPresent(JFString.class));
+        } else if (o instanceof Long && field.isAnnotationPresent(JFString.class)) {
+            o = String.format("\"%s\"", o);
+        } else if (o instanceof List) {
             if (field.isAnnotationPresent(JFString.class)) {
                 JFString jfString = field.getDeclaredAnnotation(JFString.class);
                 if (jfString.type().getTypeName().equals(Long.class.getTypeName())) {
@@ -158,7 +157,7 @@ public class ReflectUtil {
             } else {
                 o = JSON.stringify(o).terse();
             }
-        } else if (typeName.equals(Map.class.getTypeName())) {
+        } else if (o instanceof Map) {
             if (field.isAnnotationPresent(JFString.class)) {
                 JFString jfString = field.getDeclaredAnnotation(JFString.class);
                 if (jfString.type().getTypeName().equals(Long.class.getTypeName())) {
@@ -171,6 +170,8 @@ public class ReflectUtil {
             } else {
                 o = JSON.stringify(o).terse();
             }
+        } else if (o instanceof Class) {
+            o = String.format("\"%s\"", ((Class<?>) o).getTypeName());
         }
         return o;
     }
