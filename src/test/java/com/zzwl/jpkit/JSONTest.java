@@ -12,6 +12,7 @@ import com.zzwl.jpkit.vo.Type;
 import com.zzwl.jpkit.vo.User;
 import org.junit.Test;
 
+import javax.sound.midi.Soundbank;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -285,7 +286,7 @@ public class JSONTest {
     }
 
     @Test
-    public void testOption() throws UnsupportedEncodingException {
+    public void testOption() {
         Options options = Options.getInstance().setPram("User-Agent", "aviuahviauhv").setPram("time", new Date().toString()).setPram("server", "Java VM").setData("key", "asvav5566ava");
 
         Options options2 = Options.getInstance().setPram("User-Agent", "aviuahviauhv").setPram("time", new Date().toString()).setData("name", "hy").setData("password", "465616");

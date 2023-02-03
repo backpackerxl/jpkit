@@ -1,6 +1,8 @@
 package com.zzwl.jpkit.utils;
 
 import com.zzwl.jpkit.anno.*;
+import com.zzwl.jpkit.bean.AnnoConfig;
+import com.zzwl.jpkit.bean.AnnoConfigContext;
 import com.zzwl.jpkit.bean.FieldBean;
 import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.core.JSON;
@@ -227,7 +229,7 @@ public class ReflectUtil {
                     setValueByMethod(obj, field, null);
                     continue;
                 }
-                setValueByMethod(obj, field, getValue(jBase, field));
+                setValueByMethod(obj, field, getValue(obj, jBase, field));
                 // 若利用方法设置不到属性值，就利用属性设置但此方法会打破属性的私有性
                 if (setTag) {
                     try {
@@ -237,7 +239,7 @@ public class ReflectUtil {
                             field.set(obj, null);
                             continue;
                         }
-                        field.set(obj, getValue(jBase, field));
+                        field.set(obj, getValue(obj, jBase, field));
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
@@ -246,11 +248,12 @@ public class ReflectUtil {
         }
     }
 
-    private static Object getValue(JBase jBase, Field field) {
+    private static Object getValue(Object source, JBase jBase, Field field) {
         Object obj = null;
         Class<?> type = field.getType();
         String typeName = type.getName();
         List<Class<?>> classes = ObjectParse.getClasses();
+        Map<String, List<Class<?>>> types = AnnoConfigContext.getAnnoConfigContext().getContext().get(source.getClass().getTypeName()).getTypes();
         if (typeName.equals(Date.class.getName())) {
             if (field.isAnnotationPresent(JFormat.class)) {
                 JFormat format = field.getDeclaredAnnotation(JFormat.class);
@@ -263,36 +266,63 @@ public class ReflectUtil {
         } else if ((typeName.equals(Long.class.getTypeName()) || typeName.equals(long.class.getTypeName())) && field.isAnnotationPresent(JFString.class)) {
             obj = Long.valueOf(((JString) jBase).getValue());
         } else if (ArrayUtil.isArray(field)) {
+            boolean tag = false;
+            String key = "";
             // Integer[] ...
-            if (ObjectParse.getAnnoConfig().getTypes().containsValue(field.getType())) {
-                obj = getObj(jBase, BasePlug.GET_ARR, type);
+            for (Map.Entry<String, List<Class<?>>> entry : types.entrySet()) {
+                if (entry.getValue().contains(type)) {
+                    tag = true;
+                    key = entry.getKey();
+                    break;
+                }
+            }
+            if (tag) {
+                obj = getObj(jBase, BasePlug.GET_ARR, type, key);
             } else {
                 obj = ArrayUtil.getArr(jBase, field);
             }
         } else if (typeName.equals(List.class.getTypeName())) {
             // List
-            if (classes.contains(type) && field.isAnnotationPresent(JCollectType.class)) {
-                obj = getObj(jBase, BasePlug.GET_LIST, field.getDeclaredAnnotation(JCollectType.class).type());
+            boolean tag = false;
+            String key = "";
+            for (Map.Entry<String, List<Class<?>>> entry : types.entrySet()) {
+                if (entry.getValue().contains(type) && field.isAnnotationPresent(JCollectType.class)) {
+                    tag = true;
+                    key = entry.getKey();
+                    break;
+                }
+            }
+            if (tag) {
+                obj = getObj(jBase, BasePlug.GET_LIST, field.getDeclaredAnnotation(JCollectType.class).type(), key);
             } else {
                 obj = ArrayUtil.getList(jBase, field);
             }
         } else if (typeName.equals(Map.class.getTypeName())) {
+            boolean tag = false;
+            String key = "";
+            for (Map.Entry<String, List<Class<?>>> entry : types.entrySet()) {
+                if (entry.getValue().contains(type) && field.isAnnotationPresent(JCollectType.class)) {
+                    tag = true;
+                    key = entry.getKey();
+                    break;
+                }
+            }
             // Map
-            if (classes.contains(type) && field.isAnnotationPresent(JCollectType.class)) {
-                obj = getObj(jBase, BasePlug.GET_MAP, field.getDeclaredAnnotation(JCollectType.class).type());
+            if (tag) {
+                obj = getObj(jBase, BasePlug.GET_MAP, field.getDeclaredAnnotation(JCollectType.class).type(), key);
             } else {
                 obj = ArrayUtil.getMap(jBase, field);
             }
         } else if (classes.contains(type)) {
             // Object
-            obj = getObj(jBase, BasePlug.GET_OBJECT, type);
+            obj = getObj(jBase, BasePlug.GET_OBJECT, type,"");
         } else {
             obj = jBase.getValue();
         }
         return obj;
     }
 
-    private static Object getObj(JBase jBase, String name, Class<?> type) {
+    private static Object getObj(JBase jBase, String name, Class<?> type, String key) {
         try {
             Object target = ObjectParse.getTarget();
             Method method = target.getClass().getDeclaredMethod(name, JBase.class);
