@@ -5,15 +5,14 @@ import com.zzwl.jpkit.anno.JConfig;
 import com.zzwl.jpkit.anno.JRename;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.plugs.BigDecimalPlug;
+import com.zzwl.jpkit.plug.MySQLPlug;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
 @JConfig(value = BigDecimalPlug.class, typeof = {Map.class, List.class, BigDecimal.class, BigDecimal[].class,})
-@JConfig(value = BigInteger.class, typeof = {BigInteger.class})
-//@JConfig(value = List.class, typeof = {})
+@JConfig(value = MySQLPlug.class, typeof = {List.class})
 public class MySQL {
     @JRename("server")
     private String serverName;
@@ -25,6 +24,7 @@ public class MySQL {
     @JCollectType(type = BigDecimal.class)
     private Map<String, BigDecimal> map;
 
+    @JCollectType(type = MySQL.class)
     private List<MySQL> mySQLList;
 
     private Type[] types;

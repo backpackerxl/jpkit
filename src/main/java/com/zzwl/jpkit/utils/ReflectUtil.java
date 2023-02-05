@@ -8,9 +8,7 @@ import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.parse.ObjectParse;
 import com.zzwl.jpkit.plugs.BasePlug;
-import com.zzwl.jpkit.typeof.JBase;
-import com.zzwl.jpkit.typeof.JDate;
-import com.zzwl.jpkit.typeof.JString;
+import com.zzwl.jpkit.typeof.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -249,25 +247,55 @@ public class ReflectUtil {
     }
 
     private static Object getValue(Object source, JBase jBase, Field field) {
-        Object obj = null;
         Class<?> type = field.getType();
         String typeName = type.getName();
-        List<Class<?>> classes = ObjectParse.getClasses();
-        Map<String, List<Class<?>>> types = AnnoConfigContext.getAnnoConfigContext().getContext().get(source.getClass().getTypeName()).getTypes();
+        if ((typeName.equals(Long.class.getTypeName()) || typeName.equals(long.class.getTypeName())) && field.isAnnotationPresent(JFString.class)) {
+            return Long.valueOf(((JString) jBase).getValue());
+        }
+
+        if (isBaseTypeof(field)) {
+            return jBase.getValue();
+        }
+
+        if (field.getType().equals(Byte.class) || field.getType().equals(byte.class)) {
+            return new JByte(jBase).getValue();
+        }
+
+        if (field.getType().equals(Character.class) || field.getType().equals(char.class)) {
+            return new JChar(jBase).getValue();
+        }
+
+        if (field.getType().equals(Float.class) || field.getType().equals(float.class)) {
+            return new JFloat(jBase).getValue();
+        }
+
+        if (field.getType().equals(Short.class) || field.getType().equals(short.class)) {
+            return new JShort(jBase).getValue();
+        }
+        if (typeName.equals(Class.class.getTypeName())) {
+            // Object
+            try {
+                return Class.forName(((JString) jBase).getValue());
+            } catch (ClassNotFoundException e) {
+                return null;
+            }
+        }
         if (typeName.equals(Date.class.getName())) {
             if (field.isAnnotationPresent(JFormat.class)) {
                 JFormat format = field.getDeclaredAnnotation(JFormat.class);
                 if (format.value().equals("#")) {
-                    obj = new JDate(jBase).getValue();
+                    return new JDate(jBase).getValue();
                 } else {
-                    obj = new JDate(jBase, format.value()).getValue();
+                    return new JDate(jBase, format.value()).getValue();
                 }
             }
-        } else if ((typeName.equals(Long.class.getTypeName()) || typeName.equals(long.class.getTypeName())) && field.isAnnotationPresent(JFString.class)) {
-            obj = Long.valueOf(((JString) jBase).getValue());
-        } else if (ArrayUtil.isArray(field)) {
-            boolean tag = false;
-            String key = "";
+        }
+        // 符合操作特殊类型
+        AnnoConfig config = AnnoConfigContext.getAnnoConfigContext().getContext().get(source.getClass().getTypeName());
+        Map<String, List<Class<?>>> types = config.getTypes();
+        boolean tag = false;
+        String key = "";
+        if (ArrayUtil.isArray(field)) {
             // Integer[] ...
             for (Map.Entry<String, List<Class<?>>> entry : types.entrySet()) {
                 if (entry.getValue().contains(type)) {
@@ -277,14 +305,13 @@ public class ReflectUtil {
                 }
             }
             if (tag) {
-                obj = getObj(jBase, BasePlug.GET_ARR, type, key);
+                return getObj(jBase, BasePlug.GET_ARR, type, config.getTargets().get(key));
             } else {
-                obj = ArrayUtil.getArr(jBase, field);
+                return ArrayUtil.getArr(jBase, field);
             }
-        } else if (typeName.equals(List.class.getTypeName())) {
+        }
+        if (typeName.equals(List.class.getTypeName())) {
             // List
-            boolean tag = false;
-            String key = "";
             for (Map.Entry<String, List<Class<?>>> entry : types.entrySet()) {
                 if (entry.getValue().contains(type) && field.isAnnotationPresent(JCollectType.class)) {
                     tag = true;
@@ -293,13 +320,12 @@ public class ReflectUtil {
                 }
             }
             if (tag) {
-                obj = getObj(jBase, BasePlug.GET_LIST, field.getDeclaredAnnotation(JCollectType.class).type(), key);
+                return getObj(jBase, BasePlug.GET_LIST, field.getDeclaredAnnotation(JCollectType.class).type(), config.getTargets().get(key));
             } else {
-                obj = ArrayUtil.getList(jBase, field);
+                return ArrayUtil.getList(jBase, field);
             }
-        } else if (typeName.equals(Map.class.getTypeName())) {
-            boolean tag = false;
-            String key = "";
+        }
+        if (typeName.equals(Map.class.getTypeName())) {
             for (Map.Entry<String, List<Class<?>>> entry : types.entrySet()) {
                 if (entry.getValue().contains(type) && field.isAnnotationPresent(JCollectType.class)) {
                     tag = true;
@@ -309,22 +335,37 @@ public class ReflectUtil {
             }
             // Map
             if (tag) {
-                obj = getObj(jBase, BasePlug.GET_MAP, field.getDeclaredAnnotation(JCollectType.class).type(), key);
+                return getObj(jBase, BasePlug.GET_MAP, field.getDeclaredAnnotation(JCollectType.class).type(), config.getTargets().get(key));
             } else {
-                obj = ArrayUtil.getMap(jBase, field);
+                return ArrayUtil.getMap(jBase, field);
             }
-        } else if (classes.contains(type)) {
-            // Object
-            obj = getObj(jBase, BasePlug.GET_OBJECT, type,"");
-        } else {
-            obj = jBase.getValue();
         }
-        return obj;
+        for (Map.Entry<String, List<Class<?>>> entry : types.entrySet()) {
+            if (entry.getValue().contains(type)) {
+                tag = true;
+                key = entry.getKey();
+                break;
+            }
+        }
+        if (tag) {
+            return getObj(jBase, BasePlug.GET_OBJECT, type, config.getTargets().get(key));
+        }
+        return jBase.getValue();
     }
 
-    private static Object getObj(JBase jBase, String name, Class<?> type, String key) {
+    /**
+     * 判断是否为基础数据类型
+     *
+     * @param field 当前字段
+     * @return 是否为基础数据类型
+     */
+    private static boolean isBaseTypeof(Field field) {
+        Class<?> type = field.getType();
+        return type.equals(Boolean.class) || type.equals(boolean.class) || type.equals(Double.class) || type.equals(double.class) || type.equals(Integer.class) || type.equals(int.class) || type.equals(Long.class) || type.equals(long.class) || type.equals(String.class) || type.equals(Object.class);
+    }
+
+    private static Object getObj(JBase jBase, String name, Class<?> type, Object target) {
         try {
-            Object target = ObjectParse.getTarget();
             Method method = target.getClass().getDeclaredMethod(name, JBase.class);
             if (method.isAnnotationPresent(JFieldType.class)) {
                 JFieldType fieldType = method.getDeclaredAnnotation(JFieldType.class);
@@ -332,10 +373,10 @@ public class ReflectUtil {
                     return method.invoke(target, jBase);
                 }
             }
+            return null;
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             // log :失败
-            throw new RuntimeException(e);
+            return null;
         }
-        return null;
     }
 }

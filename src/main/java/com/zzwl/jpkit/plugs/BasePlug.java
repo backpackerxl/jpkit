@@ -5,4 +5,6 @@ public class BasePlug {
     public final static String GET_ARR = "getArray";
     public final static String GET_LIST = "getList";
     public final static String GET_MAP = "getMap";
+    public final static String GET_STRING = "toString";
+
 }

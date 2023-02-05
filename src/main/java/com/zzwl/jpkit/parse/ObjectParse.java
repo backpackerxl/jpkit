@@ -60,29 +60,35 @@ public class ObjectParse {
      *
      * @param bean 初始化数据
      */
-    private void init(Class<?> clazz, Object bean) {
+    public static void init(Class<?> clazz, Object bean) {
         Map<String, AnnoConfig> context = AnnoConfigContext.getAnnoConfigContext().getContext();
+        Map<String, Object> targets = new HashMap<>();
+        Map<String, List<Class<?>>> types = new HashMap<>();
         if (bean.getClass().isAnnotationPresent(JConfig.class)) {
-            Map<String, Object> targets = new HashMap<>();
-            Map<String, List<Class<?>>> types = new HashMap<>();
             JConfig config = bean.getClass().getDeclaredAnnotation(JConfig.class);
-            if (Objects.isNull(config)) {
-                JConfig.Group group = bean.getClass().getDeclaredAnnotation(JConfig.Group.class);
-                for (JConfig jConfig : group.value()) {
-                    Class<?> value = jConfig.value();
-                    targets.put(value.getTypeName(), createBean(value));
-                    types.put(value.getTypeName(), Arrays.asList(jConfig.typeof()));
-                }
-            } else {
-                Class<?> value = config.value();
+            Class<?> value = config.value();
+            targets.put(value.getTypeName(), createBean(value));
+            types.put(value.getTypeName(), Arrays.asList(config.typeof()));
+            context.put(clazz.getTypeName(), new AnnoConfig(targets, types));
+        }
+        if (bean.getClass().isAnnotationPresent(JConfig.Group.class)) {
+            JConfig.Group group = bean.getClass().getDeclaredAnnotation(JConfig.Group.class);
+            for (JConfig jConfig : group.value()) {
+                Class<?> value = jConfig.value();
                 targets.put(value.getTypeName(), createBean(value));
-                types.put(value.getTypeName(), Arrays.asList(config.typeof()));
+                types.put(value.getTypeName(), Arrays.asList(jConfig.typeof()));
             }
             context.put(clazz.getTypeName(), new AnnoConfig(targets, types));
         }
     }
 
-    public Object createBean(Class<?> clazz) {
+    /**
+     * 通过class获得一个对象
+     *
+     * @param clazz 源
+     * @return 对象
+     */
+    public static Object createBean(Class<?> clazz) {
         Object o;
         try {
             Constructor<?> constructor = Class.forName(clazz.getName()).getDeclaredConstructor();
