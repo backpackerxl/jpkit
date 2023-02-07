@@ -250,6 +250,10 @@ public class JSONTest {
 
     @Test
     public void testAnn() {
+        String json = "    {\n" + "      \"id\": \"156161651651651\",\n" + "      \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    },\n";
+
+        Type parse = JSON.parse(json, Type.class);
+        System.out.println(parse);
     }
 
     @Test

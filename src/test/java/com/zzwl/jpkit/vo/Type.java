@@ -8,6 +8,9 @@ public class Type {
     private String name;
     private Class<?> aClass;
 
+    public Type() {
+    }
+
     public Type(long id, String name, Class<?> aClass) {
         this.id = id;
         this.name = name;
