@@ -12,8 +12,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-//@JConfig(value = BigDecimalPlug.class, typeof = {Map.class, List.class, BigDecimal.class, BigDecimal[].class,})
-//@JConfig(value = MySQLPlug.class, typeof = {List.class})
 @JPConfig(plugs = {BigDecimalPlug.class, MySQLPlug.class})
 public class MySQL {
     @JRename("server")
