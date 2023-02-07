@@ -1,32 +1,35 @@
 package com.zzwl.jpkit.vo;
 
-import com.zzwl.jpkit.anno.JCollectType;
-import com.zzwl.jpkit.anno.JConfig;
+import com.zzwl.jpkit.anno.JPConfig;
+import com.zzwl.jpkit.anno.JParse;
 import com.zzwl.jpkit.anno.JRename;
 import com.zzwl.jpkit.core.JSON;
-import com.zzwl.jpkit.plugs.BigDecimalPlug;
 import com.zzwl.jpkit.plug.MySQLPlug;
+import com.zzwl.jpkit.plugs.BasePlug;
+import com.zzwl.jpkit.plugs.BigDecimalPlug;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-@JConfig(value = BigDecimalPlug.class, typeof = {Map.class, List.class, BigDecimal.class, BigDecimal[].class,})
-@JConfig(value = MySQLPlug.class, typeof = {List.class})
+//@JConfig(value = BigDecimalPlug.class, typeof = {Map.class, List.class, BigDecimal.class, BigDecimal[].class,})
+//@JConfig(value = MySQLPlug.class, typeof = {List.class})
+@JPConfig(plugs = {BigDecimalPlug.class, MySQLPlug.class})
 public class MySQL {
     @JRename("server")
     private String serverName;
     private String version;
+    @JParse(method = BasePlug.GET_OBJECT)
     private BigDecimal bigDecimal;
+    @JParse(method = BasePlug.GET_ARR)
     private BigDecimal[] bigs;
-    @JCollectType(type = BigDecimal.class)
+    @JParse(method = BasePlug.GET_LIST)
     private List<BigDecimal> bigDecimals;
-    @JCollectType(type = BigDecimal.class)
+    @JParse(method = BasePlug.GET_MAP)
     private Map<String, BigDecimal> map;
-
-    @JCollectType(type = MySQL.class)
+    @JParse(method = BasePlug.GET_LIST, pos = 1)
     private List<MySQL> mySQLList;
-
+    @JParse(method = BasePlug.GET_ARR, pos = 1)
     private Type[] types;
 
     public MySQL() {

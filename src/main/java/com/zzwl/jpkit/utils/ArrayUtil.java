@@ -276,6 +276,8 @@ public class ArrayUtil {
                 return JObject.getArr(jBase);
             case STRING_ARR:
                 return JString.getArr(jBase);
+            case CLASS_ARR:
+                return JClass.getArr(jBase);
             default:
                 return null;
         }
@@ -330,6 +332,8 @@ public class ArrayUtil {
                 return JObject.getList(jBase);
             case STRING_ARR:
                 return JString.getList(jBase);
+            case CLASS_ARR:
+                return JClass.getList(jBase);
             default:
                 return null;
         }
@@ -383,6 +387,8 @@ public class ArrayUtil {
                 return JObject.getMap(jBase);
             case STRING_ARR:
                 return JString.getMap(jBase);
+            case CLASS_ARR:
+                return JClass.getMap(jBase);
             default:
                 return null;
         }
@@ -395,7 +401,7 @@ public class ArrayUtil {
      * @param func  回调函数
      * @return 结果
      */
-    public static Object doArrayByJArray(JBase jBase, Function<List<JBase>, Object> func) {
+    public static <T> T doArrayByJArray(JBase jBase, Function<List<JBase>, T> func) {
         try {
             JArray jArray = (JArray) jBase;
             List<JBase> value = jArray.getValue();
@@ -413,7 +419,7 @@ public class ArrayUtil {
      * @param func  回调函数
      * @return 结果
      */
-    public static Object doMapByJObject(JBase jBase, Function<Map<String, JBase>, Object> func) {
+    public static <T> T doMapByJObject(JBase jBase, Function<Map<String, JBase>, T> func) {
         try {
             JObject jObject = (JObject) jBase;
             Map<String, JBase> value = jObject.getValue();

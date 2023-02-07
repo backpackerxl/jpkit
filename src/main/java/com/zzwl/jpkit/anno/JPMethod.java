@@ -11,6 +11,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-public @interface JFieldType {
-    Class<?>[] type();
+public @interface JPMethod {
+    String value();
 }

@@ -1,9 +1,6 @@
 package com.zzwl.jpkit.typeof;
 
 import com.zzwl.jpkit.core.ITypeof;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
 public abstract class JBase implements ITypeof<Object> {
     /**
      * 判断是否为基础数据类型的包装类型
