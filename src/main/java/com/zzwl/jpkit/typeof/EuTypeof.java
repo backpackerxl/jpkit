@@ -22,7 +22,8 @@ public enum EuTypeof {
     BOOLEAN__ARR(boolean[].class.getTypeName()),
     OBJECT_ARR(Object[].class.getTypeName()),
     DATE_ARR(Date[].class.getTypeName()),
-    STRING_ARR(String[].class.getTypeName());
+    STRING_ARR(String[].class.getTypeName()),
+    CLASS_ARR(Class[].class.getTypeName());
 
     private final String typeName;
 

@@ -1,6 +1,9 @@
 package com.zzwl.jpkit.parse;
 
-import com.zzwl.jpkit.anno.JSingleConfig;
+import com.zzwl.jpkit.anno.JPConfig;
+import com.zzwl.jpkit.anno.JPMethod;
+import com.zzwl.jpkit.bean.JPConfigAnno;
+import com.zzwl.jpkit.bean.JPConfigAnnoContext;
 import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.typeof.JBase;
 import com.zzwl.jpkit.typeof.JObject;
@@ -8,28 +11,18 @@ import com.zzwl.jpkit.utils.ReflectUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.Map;
 
 public class ObjectParse {
     private final JBase jBase;
+    public final static String TEMPLATE = "%s$%s$%s";
 
     public ObjectParse(ITypeof<Object> typeof) {
         this.jBase = (JBase) typeof;
     }
 
-    private static List<Class<?>> classes;
-    private static Object target;
-
-    public static List<Class<?>> getClasses() {
-        return classes;
-    }
-
-
-    public static Object getTarget() {
-        return target;
-    }
 
     /**
      * JSON转化转化为对象
@@ -40,31 +33,66 @@ public class ObjectParse {
      */
     public <B> B parse(Class<B> clazz) {
         Object bean = createBean(clazz);
-        if (bean.getClass().isAnnotationPresent(JSingleConfig.class)) {
-            JSingleConfig config = bean.getClass().getDeclaredAnnotation(JSingleConfig.class);
-            classes = new ArrayList<>();
-            classes.addAll(Arrays.asList(config.type()));
-            target = createBean(config.target());
+        if (!JPConfigAnnoContext.getAnnoConfigContext().getContext().containsKey(clazz.getTypeName())) {
+            init(clazz);
         }
         JObject jo = (JObject) this.jBase;
         ReflectUtil.setBeanByField(bean, (name) -> jo.getValue().get(name));
         return (B) bean;
     }
 
-    public Object createBean(Class<?> clazz) {
-        Object o;
+    /**
+     * 通过注解初始化自定义插件信息
+     */
+    public static void init(Class<?> clazz) {
+        if (clazz.isAnnotationPresent(JPConfig.class)) {
+            Map<String, JPConfigAnno> context = JPConfigAnnoContext.getAnnoConfigContext().getContext();
+            JPConfig jpConfig = clazz.getDeclaredAnnotation(JPConfig.class);
+            JPConfigAnno configAnno = new JPConfigAnno();
+            Map<String, Object[]> methodStore = configAnno.getMethodStore();
+            for (Class<?> plug : jpConfig.plugs()) {
+                for (Method method : plug.getDeclaredMethods()) {
+                    if (method.isAnnotationPresent(JPMethod.class)) {
+                        Object[] objects = new Object[2];
+                        objects[0] = createBean(plug);
+                        objects[1] = method;
+                        methodStore.put(String.format(TEMPLATE, plug.getTypeName(), method.getReturnType().getTypeName(), method.getDeclaredAnnotation(JPMethod.class).value()), objects);
+                    }
+                }
+            }
+            context.put(clazz.getTypeName(), configAnno);
+        }
+    }
+
+    /**
+     * 通过class获得一个对象
+     *
+     * @param clazz 源
+     * @return 对象
+     */
+    public static Object createBean(Class<?> clazz) {
         try {
+            // 使用无参构造函数
             Constructor<?> constructor = Class.forName(clazz.getName()).getDeclaredConstructor();
-            o = constructor.newInstance();
-            return o;
+            return constructor.newInstance();
         } catch (NoSuchMethodException | ClassNotFoundException e) {
-            // log 没有构造函数
-            throw new RuntimeException(e);
+            // log 没有无参构造函数
+            try {
+                Constructor<?>[] constructors = Class.forName(clazz.getName()).getDeclaredConstructors();
+                Constructor<?> constructor = constructors[0];
+                Parameter[] parameters = constructor.getParameters();
+                Object[] objects = new Object[parameters.length];
+                for (int i = 0; i < parameters.length; i++) {
+                    objects[i] = JBase.getBaseValue(parameters[i].getType());
+                }
+                return constructor.newInstance(objects);
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException |
+                     InvocationTargetException ex) {
+                throw new RuntimeException(ex);
+            }
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
             // log 不能创建实例
             throw new RuntimeException(e);
         }
     }
-
-
 }

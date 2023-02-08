@@ -8,25 +8,14 @@ import com.zzwl.jpkit.exception.JTypeofException;
 import com.zzwl.jpkit.typeof.*;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 public class ArrayUtil {
     private ArrayUtil() {
-    }
-
-    /**
-     * 判断对象是否为数组
-     *
-     * @param obj 未知对象
-     * @return 是否为数组
-     */
-    public static boolean isArray(Object obj) {
-        return obj instanceof int[] || obj instanceof Object[] || obj instanceof long[] || obj instanceof byte[] || obj instanceof char[] || obj instanceof boolean[] || obj instanceof short[] || obj instanceof double[] || obj instanceof float[];
-    }
-
-    public static boolean isArray(Field field) {
-        return field.getType().getTypeName().contains("[]");
     }
 
     /**
@@ -273,6 +262,8 @@ public class ArrayUtil {
                 return JObject.getArr(jBase);
             case STRING_ARR:
                 return JString.getArr(jBase);
+            case CLASS_ARR:
+                return JClass.getArr(jBase);
             default:
                 return null;
         }
@@ -327,6 +318,8 @@ public class ArrayUtil {
                 return JObject.getList(jBase);
             case STRING_ARR:
                 return JString.getList(jBase);
+            case CLASS_ARR:
+                return JClass.getList(jBase);
             default:
                 return null;
         }
@@ -380,6 +373,8 @@ public class ArrayUtil {
                 return JObject.getMap(jBase);
             case STRING_ARR:
                 return JString.getMap(jBase);
+            case CLASS_ARR:
+                return JClass.getMap(jBase);
             default:
                 return null;
         }
@@ -392,7 +387,7 @@ public class ArrayUtil {
      * @param func  回调函数
      * @return 结果
      */
-    public static Object doArrayByJArray(JBase jBase, Function<List<JBase>, Object> func) {
+    public static <T> T doArrayByJArray(JBase jBase, Function<List<JBase>, T> func) {
         try {
             JArray jArray = (JArray) jBase;
             List<JBase> value = jArray.getValue();
@@ -410,7 +405,7 @@ public class ArrayUtil {
      * @param func  回调函数
      * @return 结果
      */
-    public static Object doMapByJObject(JBase jBase, Function<Map<String, JBase>, Object> func) {
+    public static <T> T doMapByJObject(JBase jBase, Function<Map<String, JBase>, T> func) {
         try {
             JObject jObject = (JObject) jBase;
             Map<String, JBase> value = jObject.getValue();

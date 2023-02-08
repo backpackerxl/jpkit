@@ -1,12 +1,12 @@
 package com.zzwl.jpkit;
 
-import com.zzwl.jpkit.anno.JConfig;
+import com.zzwl.jpkit.bean.Options;
 import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.core.JSON;
+import com.zzwl.jpkit.parse.ObjectParse;
 import com.zzwl.jpkit.typeof.*;
 import com.zzwl.jpkit.utils.StringUtil;
-import com.zzwl.jpkit.vo.MySQL;
-import com.zzwl.jpkit.vo.User;
+import com.zzwl.jpkit.vo.*;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -73,6 +73,16 @@ public class JSONTest {
 
     @Test
     public void testArray() {
+        System.out.println(JSON.stringify(true).terse());
+        System.out.println(JSON.stringify(121231).terse());
+        System.out.println(JSON.stringify(3.455554).terse());
+        System.out.println(JSON.stringify(3.556f).terse());
+        System.out.println(JSON.stringify((short) 4355).terse());
+        System.out.println(JSON.stringify("dddd").terse());
+        System.out.println(JSON.stringify('c').terse());
+        System.out.println(JSON.stringify(454664684489L).terse());
+        System.out.println(JSON.stringify(new Date()).terse());
+        System.out.println(JSON.stringify((byte) 12).terse());
         int[] ints = new int[]{589, 456, 89};
         System.out.println(JSON.stringify(ints).terse());
         System.out.println(JSON.stringify(ints).pretty());
@@ -117,6 +127,7 @@ public class JSONTest {
         map.put("isPublish", false);
         map.put("isCopy", true);
         System.out.println(JSON.stringify(map).pretty(2));
+        System.out.println(JSON.stringify(new Date()).terse());
     }
 
     @Test
@@ -154,11 +165,11 @@ public class JSONTest {
 
 //        System.out.println(JSON.stringify(net).pretty());
         System.out.println("===================================");
-        String js = JSON.stringify(net_local).pretty();
-        System.out.println(js);
+//        String js = JSON.stringify(net_local).pretty();
+        System.out.println(net_local);
 
-        List<User> us = JSON.loadList(local, User.class);
-        System.out.println(us);
+//        List<User> us = JSON.loadList(local, User.class);
+//        System.out.println(us);
 
     }
 
@@ -211,7 +222,7 @@ public class JSONTest {
         bigDecimals.add(new BigDecimal("0.84894"));
 
         mySQL.setBigDecimals(bigDecimals);
-        BigDecimal[] bigDecimals1 = new BigDecimal[]{new BigDecimal("0.36"), new BigDecimal("0.25")};
+        BigDecimal[] bigDecimals1 = new BigDecimal[]{new BigDecimal("0.316"), new BigDecimal("0.25")};
         mySQL.setBigs(bigDecimals1);
 
         Map<String, BigDecimal> map = new HashMap<>();
@@ -222,38 +233,173 @@ public class JSONTest {
         map.put("fore", new BigDecimal("5.2667"));
 
         mySQL.setMap(map);
-//        List<MySQL> mySQLList = new ArrayList<>();
-//        mySQLList.add(mySQL);
-//        mySQL.setMySQLList(mySQLList);
-
+        List<MySQL> mySQLList = new ArrayList<>();
+        mySQLList.add(new MySQL("mysql", "8.0.23", new BigDecimal("0.25689"), bigDecimals1));
+        mySQL.setMySQLList(mySQLList);
+        Type[] types = new Type[]{new Type(156161651651651L, String.class.getTypeName(), String.class), new Type(4464646L, String.class.getTypeName(), String.class)};
+        mySQL.setTypes(types);
+        mySQL.setType(new Type(1561645451651L, int.class.getTypeName(), Integer.class));
+        System.out.println(JSON.stringify(Class.class).terse());
         System.out.println(mySQL);
     }
 
     @Test
     public void testSubParse() {
-        String json = "{\n" + "  \"server\": \"mysql\",\n" + "  \"version\": \"5.7.35\",\n" + "  \"bigDecimal\": 0.25689,\n" + "  \"bigs\": [\n" + "    0.36,\n" + "    0.25\n" + "  ],\n" + "  \"bigDecimals\": [\n" + "    0.1,\n" + "    0.1566,\n" + "    0.2568,\n" + "    0.84894\n" + "  ],\n" + "  \"map\": {\n" + "    \"one\": 5.26,\n" + "    \"fore\": 5.2667,\n" + "    \"two\": 5.2556,\n" + "    \"three\": 5.4426\n" + "  },\n" + "  \"mySQLList\": null\n" + "}";
+        String json = "{\n" +
+                "  \"server\": \"mysql\",\n" +
+                "  \"version\": \"5.7.35\",\n" +
+                "  \"bigDecimal\": 0.25689,\n" +
+                "  \"bigs\": [\n" +
+                "    0.316,\n" +
+                "    0.25\n" +
+                "  ],\n" +
+                "  \"bigDecimals\": [\n" +
+                "    0.1,\n" +
+                "    0.1566,\n" +
+                "    0.2568,\n" +
+                "    0.84894\n" +
+                "  ],\n" +
+                "  \"map\": {\n" +
+                "    \"one\": 5.26,\n" +
+                "    \"fore\": 5.2667,\n" +
+                "    \"two\": 5.2556,\n" +
+                "    \"three\": 5.4426\n" +
+                "  },\n" +
+                "  \"mySQLList\": [\n" +
+                "    {\n" +
+                "      \"server\": \"mysql\",\n" +
+                "      \"version\": \"8.0.23\",\n" +
+                "      \"bigDecimal\": 0.25689,\n" +
+                "      \"bigs\": [\n" +
+                "        0.316,\n" +
+                "        0.25\n" +
+                "      ],\n" +
+                "      \"bigDecimals\": null,\n" +
+                "      \"map\": null,\n" +
+                "      \"mySQLList\": null,\n" +
+                "      \"types\": null,\n" +
+                "      \"type\": null\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"types\": [\n" +
+                "    {\n" +
+                "      \"id\": \"156161651651651\",\n" +
+                "      \"name\": \"java.lang.String\",\n" +
+                "      \"aClass\": \"java.lang.String\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": \"4464646\",\n" +
+                "      \"name\": \"java.lang.String\",\n" +
+                "      \"aClass\": \"java.lang.String\"\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"type\": {\n" +
+                "    \"id\": \"1561645451651\",\n" +
+                "    \"name\": \"int\",\n" +
+                "    \"aClass\": \"java.lang.Integer\"\n" +
+                "  }\n" +
+                "}";
         MySQL parse = JSON.parse(json, MySQL.class);
         System.out.println(parse);
     }
 
     @Test
     public void testAnn() {
-        JConfig.Group jConfig = MySQL.class.getDeclaredAnnotation(JConfig.Group.class);
+        String json = "    {\n" + "  \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    },\n";
 
-        System.out.println(Arrays.toString(jConfig.value()));
+        Type parse = JSON.parse(json, Type.class);
+        System.out.println(parse);
+    }
+
+//    @Test
+//    public void testNetWorkGET() {
+//        String url = "http://localhost:8083/business/dutyrecord/list/c85d8bab8827641f8047dd50e6cd78e1";
+//        ITypeof<Object> load = JSON.load(url, Options.getInstance().setPram("Authorization", "Bearer dbdb46f8-56c9-4f4f-8669-3e1f45a6d5cd").setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"));
+//        System.out.println(JSON.stringify(load).pretty());
+//    }
+
+//    @Test
+//    public void testNetWorkPost() {
+//        String url = "http://localhost:8083/business/dutyCheck/getInfo";
+//        ITypeof<Object> load = JSON.load(url, Options.getInstance().setPram("Authorization", "Bearer dbdb46f8-56c9-4f4f-8669-3e1f45a6d5cd")
+//                // 若传递的参数格式为 json 格式 ，则加上 application/json;charset=UTF-8
+//                //.setPram("Content-Type", "application/json;charset=UTF-8")
+//                .setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36").setData("wxqNum", 10).setData("zrrtype", 3));
+//        System.out.println(JSON.stringify(load).pretty());
+//    }
+
+
+//    @Test
+//    public void testNetWork() {
+//        String url = "https://ug.baidu.com/mcp/pc/pcsearch";
+//        Map<String, List<Map<String, String>>> vo = new LinkedHashMap<>();
+//        List<Map<String, String>> list = new ArrayList<>();
+//        list.add(new HashMap<>());
+//        vo.put("pos_1", list);
+//        vo.put("pos_2", list);
+//        vo.put("pos_3", list);
+//        Options options = Options.getInstance().setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36").setData("invoke_info", vo);
+//        // data: {"invoke_info":{"pos_1":[{}],"pos_2":[{}],"pos_3":[{}]}}
+//        ITypeof<Object> load = JSON.load(url, options);
+//        System.out.println(JSON.stringify(load).pretty());
+//    }
+
+    @Test
+    public void testOption() {
+        Options options = Options.getInstance().setPram("User-Agent", "aviuahviauhv").setPram("time", new Date().toString()).setPram("server", "Java VM").setData("key", "asvav5566ava");
+
+        Options options2 = Options.getInstance().setPram("User-Agent", "aviuahviauhv").setPram("time", new Date().toString()).setData("name", "hy").setData("password", "465616");
+        System.out.println(options.getPram());
+        System.out.println(options.getData());
+
+        System.out.println("===============");
+        System.out.println(options2.getPram());
+        System.out.println(options2.getData());
+
+        System.out.println(StringUtil.getEncodeString("155656*-/哈哈-88jkjkjk哈哈"));
     }
 
     @Test
-    public void testNetWork() {
-        String url = "http://localhost:8083/business/dutyrecord/list/c85d8bab8827641f8047dd50e6cd78e1";
-        Map<String, String> pram = new HashMap<>();
+    public void getTestTypeof() {
+        Use use = new Use(3.56f, 789456L, 569, (short) 545, (byte) 23, 'c', false, 2.568);
 
-        pram.put("Authorization", "Bearer a92362b8-76aa-4fe7-9305-9db6de7eb34a");
+        String json_use = JSON.stringify(use).pretty();
 
-        pram.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
+        System.out.println(json_use);
 
-        ITypeof<Object> load = JSON.load(url, pram);
+        Use use1 = JSON.parse(json_use, Use.class);
 
-        System.out.println(JSON.stringify(load).pretty());
+        System.out.println(use1);
+
+        UsePlus usePlus = new UsePlus();
+        usePlus.setB(new Byte("45"));
+        usePlus.setBl(true);
+        usePlus.setS(new Short("456"));
+        usePlus.setF(4.56f);
+        usePlus.setD(4.5896);
+        usePlus.setI(456);
+        usePlus.setC('k');
+        usePlus.setL(45689966L);
+
+        String pretty = JSON.stringify(usePlus).pretty();
+
+        UsePlus usePlus1 = JSON.parse(pretty, UsePlus.class);
+
+        System.out.println(usePlus1);
+    }
+
+    @Test
+    public void testMap() {
+        Map<String, Integer> map = new HashMap<>(0, 1);
+        map.put("fg", 455);
+        map.put("df", 455);
+//        map.put("vb", 455);
+        System.out.println(map);
+    }
+
+    @Test
+    public void testCreateBean() throws ClassNotFoundException {
+        Object bean = ObjectParse.createBean(Type.class);
+        System.out.println(bean);
     }
 }

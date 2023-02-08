@@ -7,10 +7,10 @@ import java.lang.annotation.*;
  *
  * @since 1.0
  */
-@Target({ElementType.METHOD})
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-public @interface JFieldType {
-    Class<?>[] type();
+public @interface JPConfig {
+    Class<?>[] plugs();
 }

@@ -76,16 +76,16 @@ public final class BToJSON<B> {
             return JSON.stringify(((JBase) bean).getValue()).terse();
         }
         // 处理数组对象
-        if (ArrayUtil.isArray(bean)) {
+        if (bean.getClass().isArray()) {
             return ArrayUtil.compileArray(bean, false, false);
-        }
-        // 处理基础数据类型, 除 Date, String, char
-        if (JBase.isBase(bean)) {
-            return bean.toString();
         }
         // 处理特殊类型
         if (bean instanceof String || bean instanceof Character || bean instanceof Date) {
             return String.format("\"%s\"", bean);
+        }
+        // 处理Class类型
+        if (bean instanceof Class) {
+            return String.format("\"%s\"", ((Class<?>) bean).getTypeName());
         }
         // 处理 List
         if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(List.class.getTypeName()))) {
@@ -126,6 +126,10 @@ public final class BToJSON<B> {
             // 关闭Long to String
             setLongToStr(false);
             return String.format("{%s}", StringUtil.substringByNumber(s.toString(), 1));
+        }
+        // 处理基础数据类型, 除 Date, String, char
+        if (JBase.isBase(bean)) {
+            return bean.toString();
         }
         // 处理普通类型
         return String.format("{%s}", StringUtil.substringByNumber(ReflectUtil.doBeanByField(bean, (name, obj) -> String.format("\"%s\":%s,", name, obj)), 1));
@@ -231,16 +235,16 @@ public final class BToJSON<B> {
             return JSON.stringify(((JBase) bean).getValue()).pretty();
         }
         // 处理数组对象
-        if (ArrayUtil.isArray(bean)) {
+        if (bean.getClass().isArray()) {
             return ArrayUtil.compileArray(bean, true, false);
-        }
-        // 处理基础数据类型,除 String, char, Date
-        if (JBase.isBase(bean)) {
-            return bean.toString();
         }
         // 处理特殊类型
         if (bean instanceof String || bean instanceof Character || bean instanceof Date) {
             return String.format("\"%s\"", bean);
+        }
+        // 处理Class类型
+        if (bean instanceof Class) {
+            return String.format("\"%s\"", ((Class<?>) bean).getTypeName());
         }
         // 处理 List 类型
         if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(List.class.getTypeName()))) {
@@ -297,6 +301,10 @@ public final class BToJSON<B> {
             // 将缩进恢复
             setTab(getTab() - getBeforeTab());
             return String.format("%s\n%s}", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab()));
+        }
+        // 处理基础数据类型,除 String, char, Date
+        if (JBase.isBase(bean)) {
+            return bean.toString();
         }
         // 处理普通类型
         ReflectUtil.setIsPretty(true);

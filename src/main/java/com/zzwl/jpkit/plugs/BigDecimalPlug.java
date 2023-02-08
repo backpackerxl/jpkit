@@ -1,7 +1,7 @@
 package com.zzwl.jpkit.plugs;
 
 
-import com.zzwl.jpkit.anno.JFieldType;
+import com.zzwl.jpkit.anno.JPMethod;
 import com.zzwl.jpkit.typeof.JBase;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
@@ -12,15 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 public class BigDecimalPlug {
-
     /**
      * JBase to BigDecimal
      *
      * @param jBase 数据源
      * @return Object
      */
-    @JFieldType(type = {BigDecimal.class})
-    public Object getObject(JBase jBase) {
+    @JPMethod(BasePlug.GET_OBJECT)
+    public BigDecimal getObject(JBase jBase) {
         try {
             return new BigDecimal(jBase.getValue().toString());
         } catch (ClassCastException e) {
@@ -36,8 +35,8 @@ public class BigDecimalPlug {
      * @param jBase 数据源
      * @return Object
      */
-    @JFieldType(type = {BigDecimal[].class})
-    public Object getArray(JBase jBase) {
+    @JPMethod(BasePlug.GET_ARR)
+    public BigDecimal[] getArray(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             BigDecimal[] res = new BigDecimal[value.size()];
             for (int i = 0; i < value.size(); i++) {
@@ -53,8 +52,8 @@ public class BigDecimalPlug {
      * @param jBase 数据源
      * @return Object
      */
-    @JFieldType(type = {BigDecimal.class})
-    public Object getList(JBase jBase) {
+    @JPMethod(BasePlug.GET_LIST)
+    public List<BigDecimal> getList(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             List<BigDecimal> res = new ArrayList<>(value.size());
             for (JBase base : value) {
@@ -70,8 +69,8 @@ public class BigDecimalPlug {
      * @param jBase 数据源
      * @return Object
      */
-    @JFieldType(type = {BigDecimal.class})
-    public Object getMap(JBase jBase) {
+    @JPMethod(BasePlug.GET_MAP)
+    public Map<String, BigDecimal> getMap(JBase jBase) {
         return ArrayUtil.doMapByJObject(jBase, (value) -> {
             Map<String, BigDecimal> res = new HashMap<>(value.size());
             for (String base : value.keySet()) {

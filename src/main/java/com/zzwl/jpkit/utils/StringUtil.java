@@ -3,7 +3,9 @@ package com.zzwl.jpkit.utils;
 import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.typeof.JBool;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 
 public class StringUtil {
 
@@ -58,5 +60,33 @@ public class StringUtil {
             s.append(BToJSON.getTabCharacter());
         }
         return s.toString();
+    }
+
+    /**
+     * 获取浏览器中文编码
+     *
+     * @param s  字符
+     * @param ec 编码方式
+     * @return 浏览器中文编码
+     */
+    public static String getEncodeString(String s, String ec) {
+        try {
+            if (!s.matches("[一-龥]")) {
+                return URLEncoder.encode(s, ec);
+            }
+            return s;
+        } catch (UnsupportedEncodingException e) {
+            return "";
+        }
+    }
+
+    /**
+     * 获取浏览器中文编码
+     *
+     * @param s 字符 默认UTF-8
+     * @return 浏览器中文编码
+     */
+    public static String getEncodeString(String s) {
+        return getEncodeString(s, "utf-8");
     }
 }

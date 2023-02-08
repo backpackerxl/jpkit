@@ -7,12 +7,10 @@ import java.lang.annotation.*;
  *
  * @since 1.0
  */
-@Target({ElementType.TYPE})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-public @interface JSingleConfig {
-    Class<?>[] type();
-
-    Class<?> target();
+public @interface JPMethod {
+    String value();
 }

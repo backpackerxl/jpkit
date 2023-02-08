@@ -1,71 +1,40 @@
 package com.zzwl.jpkit.vo;
 
 import com.zzwl.jpkit.anno.JCollectType;
-import com.zzwl.jpkit.anno.JConfig;
+import com.zzwl.jpkit.anno.JPConfig;
+import com.zzwl.jpkit.anno.JParse;
 import com.zzwl.jpkit.anno.JRename;
 import com.zzwl.jpkit.core.JSON;
+import com.zzwl.jpkit.plugs.BasePlug;
 import com.zzwl.jpkit.plugs.BigDecimalPlug;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
-//@JSingleConfig(
-//        type = {
-//                BigDecimal.class,
-//                List.class,
-//                BigDecimal[].class,
-//                Map.class
-//        },
-//        target = BigDecimalPlug.class
-//)
-
-
-//@JConfig(
-//        value = BigDecimalPlug.class,
-//        typeof = {
-//                Map.class,
-//                List.class,
-//                BigDecimal.class,
-//                BigDecimal[].class,
-//        }
-//)
-//@JConfig(
-//        value = BigInteger.class,
-//        typeof = {
-//                BigInteger.class
-//        }
-//)
-
-@JConfig(
-        value = BigDecimalPlug.class,
-        typeof = {
-                Map.class,
-                List.class,
-                BigDecimal.class,
-                BigDecimal[].class,
-        }
-)
-@JConfig(
-        value = BigInteger.class,
-        typeof = {
-                BigInteger.class
-        }
-)
-@JConfig(value = List.class, typeof = {})
+//@JPConfig(plugs = {BigDecimalPlug.class, MySQLPlug.class})
+@JPConfig(plugs = {BigDecimalPlug.class})
 public class MySQL {
     @JRename("server")
     private String serverName;
     private String version;
+    @JParse(method = BasePlug.GET_OBJECT)
     private BigDecimal bigDecimal;
+    @JParse(method = BasePlug.GET_ARR)
     private BigDecimal[] bigs;
-    @JCollectType(type = BigDecimal.class)
+    @JParse(method = BasePlug.GET_LIST)
     private List<BigDecimal> bigDecimals;
-    @JCollectType(type = BigDecimal.class)
+    @JParse(method = BasePlug.GET_MAP)
     private Map<String, BigDecimal> map;
-
+    //@JParse(method = BasePlug.GET_LIST, pos = 1)
+    @JCollectType(type = MySQL.class)
     private List<MySQL> mySQLList;
+    // method名字必须与插件的方法名对应， pos指定使用@JPConfig数组中第几个插件解析，默认从0开始计算
+    //@JParse(method = BasePlug.GET_ARR, pos = 1)
+    @JCollectType(type = Type.class)
+    private Type[] types;
+
+    private Type type;
 
     public MySQL() {
     }
@@ -74,6 +43,29 @@ public class MySQL {
         this.serverName = serverName;
         this.version = version;
         this.bigDecimal = bigDecimal;
+    }
+
+    public MySQL(String serverName, String version, BigDecimal bigDecimal, BigDecimal[] bigs) {
+        this.serverName = serverName;
+        this.version = version;
+        this.bigDecimal = bigDecimal;
+        this.bigs = bigs;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public Type[] getTypes() {
+        return types;
+    }
+
+    public void setTypes(Type[] types) {
+        this.types = types;
     }
 
     public List<BigDecimal> getBigDecimals() {
