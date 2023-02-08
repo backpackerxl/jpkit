@@ -311,38 +311,38 @@ public class JSONTest {
         System.out.println(parse);
     }
 
-    @Test
-    public void testNetWorkGET() {
-        String url = "http://localhost:8083/business/dutyrecord/list/c85d8bab8827641f8047dd50e6cd78e1";
-        ITypeof<Object> load = JSON.load(url, Options.getInstance().setPram("Authorization", "Bearer dbdb46f8-56c9-4f4f-8669-3e1f45a6d5cd").setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"));
-        System.out.println(JSON.stringify(load).pretty());
-    }
+//    @Test
+//    public void testNetWorkGET() {
+//        String url = "http://localhost:8083/business/dutyrecord/list/c85d8bab8827641f8047dd50e6cd78e1";
+//        ITypeof<Object> load = JSON.load(url, Options.getInstance().setPram("Authorization", "Bearer dbdb46f8-56c9-4f4f-8669-3e1f45a6d5cd").setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"));
+//        System.out.println(JSON.stringify(load).pretty());
+//    }
 
-    @Test
-    public void testNetWorkPost() {
-        String url = "http://localhost:8083/business/dutyCheck/getInfo";
-        ITypeof<Object> load = JSON.load(url, Options.getInstance().setPram("Authorization", "Bearer dbdb46f8-56c9-4f4f-8669-3e1f45a6d5cd")
-                // 若传递的参数格式为 json 格式 ，则加上 application/json;charset=UTF-8
-                //.setPram("Content-Type", "application/json;charset=UTF-8")
-                .setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36").setData("wxqNum", 10).setData("zrrtype", 3));
-        System.out.println(JSON.stringify(load).pretty());
-    }
+//    @Test
+//    public void testNetWorkPost() {
+//        String url = "http://localhost:8083/business/dutyCheck/getInfo";
+//        ITypeof<Object> load = JSON.load(url, Options.getInstance().setPram("Authorization", "Bearer dbdb46f8-56c9-4f4f-8669-3e1f45a6d5cd")
+//                // 若传递的参数格式为 json 格式 ，则加上 application/json;charset=UTF-8
+//                //.setPram("Content-Type", "application/json;charset=UTF-8")
+//                .setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36").setData("wxqNum", 10).setData("zrrtype", 3));
+//        System.out.println(JSON.stringify(load).pretty());
+//    }
 
 
-    @Test
-    public void testNetWork() {
-        String url = "https://ug.baidu.com/mcp/pc/pcsearch";
-        Map<String, List<Map<String, String>>> vo = new LinkedHashMap<>();
-        List<Map<String, String>> list = new ArrayList<>();
-        list.add(new HashMap<>());
-        vo.put("pos_1", list);
-        vo.put("pos_2", list);
-        vo.put("pos_3", list);
-        Options options = Options.getInstance().setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36").setData("invoke_info", vo);
-        // data: {"invoke_info":{"pos_1":[{}],"pos_2":[{}],"pos_3":[{}]}}
-        ITypeof<Object> load = JSON.load(url, options);
-        System.out.println(JSON.stringify(load).pretty());
-    }
+//    @Test
+//    public void testNetWork() {
+//        String url = "https://ug.baidu.com/mcp/pc/pcsearch";
+//        Map<String, List<Map<String, String>>> vo = new LinkedHashMap<>();
+//        List<Map<String, String>> list = new ArrayList<>();
+//        list.add(new HashMap<>());
+//        vo.put("pos_1", list);
+//        vo.put("pos_2", list);
+//        vo.put("pos_3", list);
+//        Options options = Options.getInstance().setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36").setData("invoke_info", vo);
+//        // data: {"invoke_info":{"pos_1":[{}],"pos_2":[{}],"pos_3":[{}]}}
+//        ITypeof<Object> load = JSON.load(url, options);
+//        System.out.println(JSON.stringify(load).pretty());
+//    }
 
     @Test
     public void testOption() {
