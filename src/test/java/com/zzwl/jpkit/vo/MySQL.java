@@ -34,6 +34,8 @@ public class MySQL {
     @JCollectType(type = Type.class)
     private Type[] types;
 
+    private Type type;
+
     public MySQL() {
     }
 
@@ -48,6 +50,14 @@ public class MySQL {
         this.version = version;
         this.bigDecimal = bigDecimal;
         this.bigs = bigs;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public Type[] getTypes() {

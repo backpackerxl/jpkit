@@ -135,3 +135,138 @@ public class Test {
     }
 }
 ```
+- you can use your plug parse java bean
+```java
+// BigDecimalPlug 是jpkit内置的解析插件，
+// 当自定义解析插件与jpkit解析行为同时存在，优先使用自定义解析插件
+@JPConfig(plugs = {BigDecimalPlug.class})
+public class MySQL{
+    @JRename("server")
+    private String serverName;
+    private String version;
+    @JParse(method = BasePlug.GET_OBJECT)
+    private BigDecimal bigDecimal;
+    @JParse(method = BasePlug.GET_ARR)
+    private BigDecimal[] bigs;
+    @JParse(method = BasePlug.GET_LIST)
+    private List<BigDecimal> bigDecimals;
+    @JParse(method = BasePlug.GET_MAP)
+    private Map<String, BigDecimal> map;
+    //@JParse(method = BasePlug.GET_LIST, pos = 1)
+    @JCollectType(type = MySQL.class)
+    private List<MySQL> mySQLList;
+    // method名字必须与插件的方法名对应， pos指定使用@JPConfig数组中第几个插件解析，默认从0开始计算
+    //@JParse(method = BasePlug.GET_ARR, pos = 1)
+    @JCollectType(type = Type.class)
+    private Type[] types;
+    // get set 构造
+}
+
+class Type{
+    @JFString
+    private long id;
+    private String name;
+    private Class<?> aClass;
+    // get set 构造
+}
+// 你可以这样写插件，对于一些简单类型组合的对象类型
+// jpkit内置了一个通用解析插件BasePlug
+class MySQLPlug{
+    /**
+     * List<JBase> to List<MySQL>
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    @JPMethod(BasePlug.GET_LIST)
+    public List<MySQL> getList(JBase jBase) {
+        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
+            List<MySQL> res = new ArrayList<>(value.size());
+            for (JBase base : value) {
+                res.add(JSON.parse(base.toString(), MySQL.class));
+            }
+            return res;
+        });
+    }
+
+    /**
+     * List<JBase> to Type[]
+     *
+     * @param jBase 数据源
+     * @return Object
+     */
+    @JPMethod(BasePlug.GET_ARR)
+    public Type[] getArray(JBase jBase) {
+        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
+            Type[] res = new Type[value.size()];
+            for (int i = 0; i < value.size(); i++) {
+                res[i] = JSON.parse(value.get(i).toString(), Type.class);
+            }
+            return res;
+        });
+    }
+}
+
+class Test{
+    @Test
+    public void testSubParse() {
+        String json = "{\n" +
+                "  \"server\": \"mysql\",\n" +
+                "  \"version\": \"5.7.35\",\n" +
+                "  \"bigDecimal\": 0.25689,\n" +
+                "  \"bigs\": [\n" +
+                "    0.316,\n" +
+                "    0.25\n" +
+                "  ],\n" +
+                "  \"bigDecimals\": [\n" +
+                "    0.1,\n" +
+                "    0.1566,\n" +
+                "    0.2568,\n" +
+                "    0.84894\n" +
+                "  ],\n" +
+                "  \"map\": {\n" +
+                "    \"one\": 5.26,\n" +
+                "    \"fore\": 5.2667,\n" +
+                "    \"two\": 5.2556,\n" +
+                "    \"three\": 5.4426\n" +
+                "  },\n" +
+                "  \"mySQLList\": [\n" +
+                "    {\n" +
+                "      \"server\": \"mysql\",\n" +
+                "      \"version\": \"8.0.23\",\n" +
+                "      \"bigDecimal\": 0.25689,\n" +
+                "      \"bigs\": [\n" +
+                "        0.316,\n" +
+                "        0.25\n" +
+                "      ],\n" +
+                "      \"bigDecimals\": null,\n" +
+                "      \"map\": null,\n" +
+                "      \"mySQLList\": null,\n" +
+                "      \"types\": null,\n" +
+                "      \"type\": null\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"types\": [\n" +
+                "    {\n" +
+                "      \"id\": \"156161651651651\",\n" +
+                "      \"name\": \"java.lang.String\",\n" +
+                "      \"aClass\": \"java.lang.String\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": \"4464646\",\n" +
+                "      \"name\": \"java.lang.String\",\n" +
+                "      \"aClass\": \"java.lang.String\"\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"type\": {\n" +
+                "    \"id\": \"1561645451651\",\n" +
+                "    \"name\": \"int\",\n" +
+                "    \"aClass\": \"java.lang.Integer\"\n" +
+                "  }\n" +
+                "}";
+        MySQL parse = JSON.parse(json, MySQL.class);
+        System.out.println(parse);
+    }
+}
+
+```

@@ -238,6 +238,7 @@ public class JSONTest {
         mySQL.setMySQLList(mySQLList);
         Type[] types = new Type[]{new Type(156161651651651L, String.class.getTypeName(), String.class), new Type(4464646L, String.class.getTypeName(), String.class)};
         mySQL.setTypes(types);
+        mySQL.setType(new Type(1561645451651L, int.class.getTypeName(), Integer.class));
         System.out.println(JSON.stringify(Class.class).terse());
         System.out.println(mySQL);
     }
@@ -276,7 +277,8 @@ public class JSONTest {
                 "      \"bigDecimals\": null,\n" +
                 "      \"map\": null,\n" +
                 "      \"mySQLList\": null,\n" +
-                "      \"types\": null\n" +
+                "      \"types\": null,\n" +
+                "      \"type\": null\n" +
                 "    }\n" +
                 "  ],\n" +
                 "  \"types\": [\n" +
@@ -290,7 +292,12 @@ public class JSONTest {
                 "      \"name\": \"java.lang.String\",\n" +
                 "      \"aClass\": \"java.lang.String\"\n" +
                 "    }\n" +
-                "  ]\n" +
+                "  ],\n" +
+                "  \"type\": {\n" +
+                "    \"id\": \"1561645451651\",\n" +
+                "    \"name\": \"int\",\n" +
+                "    \"aClass\": \"java.lang.Integer\"\n" +
+                "  }\n" +
                 "}";
         MySQL parse = JSON.parse(json, MySQL.class);
         System.out.println(parse);
@@ -391,7 +398,7 @@ public class JSONTest {
     }
 
     @Test
-    public void testCreateBean() {
+    public void testCreateBean() throws ClassNotFoundException {
         Object bean = ObjectParse.createBean(Type.class);
         System.out.println(bean);
     }

@@ -350,7 +350,7 @@ public class ReflectUtil {
             }
             return ArrayUtil.getMap(jBase, field);
         }
-        if (JBase.isBase(field.getType())) {
+        if (!JBase.isBase(field.getType())) {
             return BasePlug.getObject(jBase, field.getType());
         }
         return jBase.getValue();
