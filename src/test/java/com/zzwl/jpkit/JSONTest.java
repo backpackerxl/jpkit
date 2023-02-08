@@ -350,14 +350,14 @@ public class JSONTest {
         System.out.println(bean);
     }
 
-//    @Test
-//    public void testNet() {
+    @Test
+    public void testNet() {
 //        String url = "http://localhost:8084/warning/dutycontacts/page?page=1&limit=50&name=罗吉军&sex=男&deptId=1067246875800000064&_t=1675842265671";
 //        Options options = Options.getInstance().setPram("Authorization", "Bearer 0fb2cd10-1a93-47c7-8501-c0dc0f18de6f").setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
 //        JBase load = (JBase) JSON.load(url, options);
 //        System.out.println(load);
-//
-//        System.out.println(StringUtil.replaceAll("[a-z]+", "4464sdsf56446fgg", String::toUpperCase));
-////        System.out.println(load);
-//    }
+
+        System.out.println(StringUtil.replace("[a-z]+", "4464sdsf56446fgg", String::toUpperCase));
+//        System.out.println(load);
+    }
 }

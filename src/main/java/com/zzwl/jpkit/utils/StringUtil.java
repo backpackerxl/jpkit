@@ -85,15 +85,10 @@ public class StringUtil {
      */
     public static String replace(String regex, String target, Function<String, String> func) {
         Pattern compile = Pattern.compile(regex);
-        int i = 0;
         Matcher matcher = compile.matcher(target);
-        while (matcher.find()) {
-            if (i == 1) {
-                break;
-            }
+        if (matcher.find()) {
             String group = matcher.group();
             target = target.replace(group, func.apply(group));
-            i++;
         }
         return target;
     }
