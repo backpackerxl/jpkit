@@ -19,20 +19,6 @@ public class ArrayUtil {
     }
 
     /**
-     * 判断对象是否为数组
-     *
-     * @param obj 未知对象
-     * @return 是否为数组
-     */
-    public static boolean isArray(Object obj) {
-        return obj instanceof int[] || obj instanceof Object[] || obj instanceof long[] || obj instanceof byte[] || obj instanceof char[] || obj instanceof boolean[] || obj instanceof short[] || obj instanceof double[] || obj instanceof float[];
-    }
-
-    public static boolean isArray(Field field) {
-        return field.getType().getTypeName().contains("[]");
-    }
-
-    /**
      * 处理数组的情况
      *
      * @param o 将数组值转化为JSON值

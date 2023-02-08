@@ -1,6 +1,7 @@
 package com.zzwl.jpkit.vo;
 
 import com.zzwl.jpkit.anno.JFString;
+import com.zzwl.jpkit.core.JSON;
 
 public class Type {
     @JFString
@@ -39,5 +40,10 @@ public class Type {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return JSON.stringify(this).pretty();
     }
 }

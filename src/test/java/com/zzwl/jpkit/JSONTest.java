@@ -3,6 +3,7 @@ package com.zzwl.jpkit;
 import com.zzwl.jpkit.bean.Options;
 import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.core.JSON;
+import com.zzwl.jpkit.parse.ObjectParse;
 import com.zzwl.jpkit.typeof.*;
 import com.zzwl.jpkit.utils.StringUtil;
 import com.zzwl.jpkit.vo.*;
@@ -243,14 +244,61 @@ public class JSONTest {
 
     @Test
     public void testSubParse() {
-        String json = "{\n" + "  \"server\": \"mysql\",\n" + "  \"version\": \"5.7.35\",\n" + "  \"bigDecimal\": 0.25689,\n" + "  \"bigs\": [\n" + "    0.316,\n" + "    0.25\n" + "  ],\n" + "  \"bigDecimals\": [\n" + "    0.1,\n" + "    0.1566,\n" + "    0.2568,\n" + "    0.84894\n" + "  ],\n" + "  \"map\": {\n" + "    \"one\": 5.26,\n" + "    \"fore\": 5.2667,\n" + "    \"two\": 5.2556,\n" + "    \"three\": 5.4426\n" + "  },\n" + "  \"mySQLList\": [\n" + "    {\n" + "      \"server\": \"mysql\",\n" + "      \"version\": \"8.0.23\",\n" + "      \"bigDecimal\": 0.25689,\n" + "      \"bigs\": [\n" + "        0.316,\n" + "        0.25\n" + "      ],\n" + "      \"bigDecimals\": null,\n" + "      \"map\": null,\n" + "      \"mySQLList\": null,\n" + "      \"types\": null\n" + "    }\n" + "  ],\n" + "  \"types\": [\n" + "    {\n" + "      \"id\": \"156161651651651\",\n" + "      \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    },\n" + "    {\n" + "      \"id\": \"4464646\",\n" + "      \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    }\n" + "  ]\n" + "}";
+        String json = "{\n" +
+                "  \"server\": \"mysql\",\n" +
+                "  \"version\": \"5.7.35\",\n" +
+                "  \"bigDecimal\": 0.25689,\n" +
+                "  \"bigs\": [\n" +
+                "    0.316,\n" +
+                "    0.25\n" +
+                "  ],\n" +
+                "  \"bigDecimals\": [\n" +
+                "    0.1,\n" +
+                "    0.1566,\n" +
+                "    0.2568,\n" +
+                "    0.84894\n" +
+                "  ],\n" +
+                "  \"map\": {\n" +
+                "    \"one\": 5.26,\n" +
+                "    \"fore\": 5.2667,\n" +
+                "    \"two\": 5.2556,\n" +
+                "    \"three\": 5.4426\n" +
+                "  },\n" +
+                "  \"mySQLList\": [\n" +
+                "    {\n" +
+                "      \"server\": \"mysql\",\n" +
+                "      \"version\": \"8.0.23\",\n" +
+                "      \"bigDecimal\": 0.25689,\n" +
+                "      \"bigs\": [\n" +
+                "        0.316,\n" +
+                "        0.25\n" +
+                "      ],\n" +
+                "      \"bigDecimals\": null,\n" +
+                "      \"map\": null,\n" +
+                "      \"mySQLList\": null,\n" +
+                "      \"types\": null\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"types\": [\n" +
+                "    {\n" +
+                "      \"id\": \"156161651651651\",\n" +
+                "      \"name\": \"java.lang.String\",\n" +
+                "      \"aClass\": \"java.lang.String\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": \"4464646\",\n" +
+                "      \"name\": \"java.lang.String\",\n" +
+                "      \"aClass\": \"java.lang.String\"\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
         MySQL parse = JSON.parse(json, MySQL.class);
         System.out.println(parse);
     }
 
     @Test
     public void testAnn() {
-        String json = "    {\n" + "      \"id\": \"156161651651651\",\n" + "      \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    },\n";
+        String json = "    {\n" + "  \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    },\n";
 
         Type parse = JSON.parse(json, Type.class);
         System.out.println(parse);
@@ -340,5 +388,11 @@ public class JSONTest {
         map.put("df", 455);
 //        map.put("vb", 455);
         System.out.println(map);
+    }
+
+    @Test
+    public void testCreateBean() {
+        Object bean = ObjectParse.createBean(Type.class);
+        System.out.println(bean);
     }
 }

@@ -76,7 +76,7 @@ public final class BToJSON<B> {
             return JSON.stringify(((JBase) bean).getValue()).terse();
         }
         // 处理数组对象
-        if (ArrayUtil.isArray(bean)) {
+        if (bean.getClass().isArray()) {
             return ArrayUtil.compileArray(bean, false, false);
         }
         // 处理特殊类型
@@ -235,7 +235,7 @@ public final class BToJSON<B> {
             return JSON.stringify(((JBase) bean).getValue()).pretty();
         }
         // 处理数组对象
-        if (ArrayUtil.isArray(bean)) {
+        if (bean.getClass().isArray()) {
             return ArrayUtil.compileArray(bean, true, false);
         }
         // 处理特殊类型

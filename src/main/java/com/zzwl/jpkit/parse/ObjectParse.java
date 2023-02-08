@@ -12,6 +12,7 @@ import com.zzwl.jpkit.utils.ReflectUtil;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Map;
 
 public class ObjectParse {
@@ -70,19 +71,28 @@ public class ObjectParse {
      * @return 对象
      */
     public static Object createBean(Class<?> clazz) {
-        Object o;
         try {
+            // 使用无参构造函数
             Constructor<?> constructor = Class.forName(clazz.getName()).getDeclaredConstructor();
-            o = constructor.newInstance();
-            return o;
+            return constructor.newInstance();
         } catch (NoSuchMethodException | ClassNotFoundException e) {
-            // log 没有构造函数
-            throw new RuntimeException(e);
+            // log 没有无参构造函数
+            try {
+                Constructor<?>[] constructors = Class.forName(clazz.getName()).getDeclaredConstructors();
+                Constructor<?> constructor = constructors[0];
+                Parameter[] parameters = constructor.getParameters();
+                Object[] objects = new Object[parameters.length];
+                for (int i = 0; i < parameters.length; i++) {
+                    objects[i] = JBase.getBaseValue(parameters[i].getType());
+                }
+                return constructor.newInstance(objects);
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException |
+                     InvocationTargetException ex) {
+                throw new RuntimeException(ex);
+            }
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
             // log 不能创建实例
             throw new RuntimeException(e);
         }
     }
-
-
 }

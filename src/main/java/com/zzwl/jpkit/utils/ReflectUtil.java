@@ -7,6 +7,7 @@ import com.zzwl.jpkit.bean.JPConfigAnnoContext;
 import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.parse.ObjectParse;
+import com.zzwl.jpkit.plugs.BasePlug;
 import com.zzwl.jpkit.typeof.*;
 
 import java.lang.reflect.Field;
@@ -132,6 +133,9 @@ public class ReflectUtil {
      * @return 字段值
      */
     private static Object getPlugsObject(Field field, Object o) {
+        if (Objects.isNull(o)) {
+            return null;
+        }
         if (field.isAnnotationPresent(JFormat.class) && o instanceof Date) {
             JFormat jDateFormat = field.getDeclaredAnnotation(JFormat.class);
             if (jDateFormat.value().equals("#")) {
@@ -142,7 +146,7 @@ public class ReflectUtil {
             }
         } else if (o instanceof Character || o instanceof Date || o instanceof String) {
             o = String.format("\"%s\"", o);
-        } else if (ArrayUtil.isArray(o)) {
+        } else if (o.getClass().isArray()) {
             o = ArrayUtil.compileArray(o, isPretty, (o instanceof Long[] || o instanceof long[]) && field.isAnnotationPresent(JFString.class));
         } else if (o instanceof Long && field.isAnnotationPresent(JFString.class)) {
             o = String.format("\"%s\"", o);
@@ -178,11 +182,18 @@ public class ReflectUtil {
         return o;
     }
 
+    /**
+     * 通过方法的形式为属性设置值
+     *
+     * @param obj   对象
+     * @param field 字段
+     * @param value 设置值
+     */
     public static void setValueByMethod(Object obj, Field field, Object value) {
         try {
             Class<?> type = field.getType();
             Method method = obj.getClass().getDeclaredMethod(StringUtil.getMethodNameByFieldType(StringUtil.basicSetPrefix, type, field.getName()), type);
-            if (!method.isAnnotationPresent(JIgnore.class)) {
+            if (!method.isAnnotationPresent(JIgnore.class) && !Objects.isNull(value)) {
                 method.invoke(obj, value);
             }
             setTag = false;
@@ -193,6 +204,13 @@ public class ReflectUtil {
         }
     }
 
+    /**
+     * 处理为字段赋值的相关
+     *
+     * @param obj   对象
+     * @param field 字段
+     * @return 处理结果
+     */
     private static FieldBean setValueByMethod(Object obj, Field field) {
         try {
             Method method = obj.getClass().getDeclaredMethod(StringUtil.getMethodNameByFieldType(StringUtil.basicGetPrefix, field.getType(), field.getName()));
@@ -217,6 +235,12 @@ public class ReflectUtil {
         }
     }
 
+    /**
+     * 为对象字段赋值
+     *
+     * @param obj  对象
+     * @param func 自定义处理函数
+     */
     public static void setBeanByField(Object obj, Function<String, JBase> func) {
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
@@ -238,7 +262,10 @@ public class ReflectUtil {
                             field.set(obj, null);
                             continue;
                         }
-                        field.set(obj, getValue(obj, jBase, field));
+                        Object value = getValue(obj, jBase, field);
+                        if (!Objects.isNull(value)) {
+                            field.set(obj, value);
+                        }
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
@@ -247,6 +274,14 @@ public class ReflectUtil {
         }
     }
 
+    /**
+     * 为setValue提供准确的类型值
+     *
+     * @param source 包装对象
+     * @param jBase  数据源
+     * @param field  字段
+     * @return 对应类型
+     */
     private static Object getValue(Object source, JBase jBase, Field field) {
         Class<?> type = field.getType();
         String typeName = type.getName();
@@ -291,20 +326,57 @@ public class ReflectUtil {
             Class<?> sourceClass = source.getClass();
             return getPlugsObject(jBase, field, sourceClass);
         }
-        if (ArrayUtil.isArray(field)) {
+        if (field.getType().isArray()) {
             // Integer[] ...
+            Class<?> mySelf = isMySelf(field);
+            if (!Objects.isNull(mySelf) && !JBase.isBase(mySelf)) {
+                return BasePlug.getArray(jBase, mySelf);
+            }
             return ArrayUtil.getArr(jBase, field);
         }
         if (typeName.equals(List.class.getTypeName())) {
             // List
+            Class<?> mySelf = isMySelf(field);
+            if (!Objects.isNull(mySelf) && !JBase.isBase(mySelf)) {
+                return BasePlug.getList(jBase, mySelf);
+            }
             return ArrayUtil.getList(jBase, field);
         }
         if (typeName.equals(Map.class.getTypeName())) {
+            // Map
+            Class<?> mySelf = isMySelf(field);
+            if (!Objects.isNull(mySelf) && !JBase.isBase(mySelf)) {
+                return BasePlug.getMap(jBase, mySelf);
+            }
             return ArrayUtil.getMap(jBase, field);
+        }
+        if (JBase.isBase(field.getType())) {
+            return BasePlug.getObject(jBase, field.getType());
         }
         return jBase.getValue();
     }
 
+    /**
+     * 判断是否为自身转化
+     *
+     * @param field 字段
+     * @return 是否为自身转化
+     */
+    private static Class<?> isMySelf(Field field) {
+        if (field.isAnnotationPresent(JCollectType.class)) {
+            return field.getDeclaredAnnotation(JCollectType.class).type();
+        }
+        return null;
+    }
+
+    /**
+     * 获取插件提供的类型值
+     *
+     * @param jBase       数据源
+     * @param field       字段
+     * @param sourceClass 包装对象的Class
+     * @return 对应类型
+     */
     private static Object getPlugsObject(JBase jBase, Field field, Class<?> sourceClass) {
         JPConfigAnno jpConfigAnno;
         jpConfigAnno = JPConfigAnnoContext.getAnnoConfigContext().getContext().get(sourceClass.getTypeName());
@@ -341,5 +413,4 @@ public class ReflectUtil {
         Class<?> type = field.getType();
         return type.equals(Boolean.class) || type.equals(boolean.class) || type.equals(Double.class) || type.equals(double.class) || type.equals(Integer.class) || type.equals(int.class) || type.equals(Long.class) || type.equals(long.class) || type.equals(String.class) || type.equals(Object.class);
     }
-
 }

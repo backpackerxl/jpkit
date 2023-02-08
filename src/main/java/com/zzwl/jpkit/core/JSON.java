@@ -289,7 +289,7 @@ public class JSON {
      * 加载json文件
      * <blockquote><pre>
      *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
-     *     String network = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
+     *     String network = "network_url";
      *     JBase load_local = JSON.load(local);
      *     JBase load_net = JSON.load(network);
      * </pre></blockquote>
@@ -309,7 +309,7 @@ public class JSON {
      * 加载json文件
      * <blockquote><pre>
      *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
-     *     String network = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
+     *     String network = "network_url";
      *     JBase load_local = JSON.load(local);
      *     JBase load_net = JSON.load(network);
      * </pre></blockquote>
@@ -329,7 +329,7 @@ public class JSON {
     /**
      * <blockquote><pre>
      *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
-     *     String network = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
+     *     String network = "network_url";
      *     User load_local = JSON.load(local, User.class);
      *     BaiDu load_net = JSON.load(network, BaiDu.class);
      * </pre></blockquote>
@@ -350,7 +350,7 @@ public class JSON {
     /**
      * <blockquote><pre>
      *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
-     *     String network = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
+     *     String network = "network_url";
      *     User load_local = JSON.load(local, User.class);
      *     BaiDu load_net = JSON.load(network, BaiDu.class);
      * </pre></blockquote>
@@ -372,7 +372,7 @@ public class JSON {
     /**
      * <blockquote><pre>
      *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
-     *     String network = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
+     *     String network = "network_url";
      *     List<User> list = JSON.loadList(local, User.class);
      *     List<BaiDu> list_baidu = JSON.loadList(network, BaiDu.class);
      * </pre></blockquote>
@@ -398,7 +398,7 @@ public class JSON {
     /**
      * <blockquote><pre>
      *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
-     *     String network = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
+     *     String network = "network_url";
      *     List<User> list = JSON.loadList(local, User.class);
      *     List<BaiDu> list_baidu = JSON.loadList(network, BaiDu.class);
      * </pre></blockquote>
@@ -425,7 +425,7 @@ public class JSON {
     /**
      * <blockquote><pre>
      *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
-     *     String network = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
+     *     String network = "network_url";
      *     Map<String,User> list = JSON.loadMap(local, User.class);
      *     Map<String,BaiDu> list_baidu = JSON.loadMap(network, BaiDu.class);
      * </pre></blockquote>
@@ -452,7 +452,7 @@ public class JSON {
     /**
      * <blockquote><pre>
      *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
-     *     String network = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
+     *     String network = "network_url";
      *     Map<String,User> list = JSON.loadMap(local, User.class);
      *     Map<String,BaiDu> list_baidu = JSON.loadMap(network, BaiDu.class);
      * </pre></blockquote>
