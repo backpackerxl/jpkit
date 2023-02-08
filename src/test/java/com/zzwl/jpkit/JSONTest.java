@@ -245,60 +245,7 @@ public class JSONTest {
 
     @Test
     public void testSubParse() {
-        String json = "{\n" +
-                "  \"server\": \"mysql\",\n" +
-                "  \"version\": \"5.7.35\",\n" +
-                "  \"bigDecimal\": 0.25689,\n" +
-                "  \"bigs\": [\n" +
-                "    0.316,\n" +
-                "    0.25\n" +
-                "  ],\n" +
-                "  \"bigDecimals\": [\n" +
-                "    0.1,\n" +
-                "    0.1566,\n" +
-                "    0.2568,\n" +
-                "    0.84894\n" +
-                "  ],\n" +
-                "  \"map\": {\n" +
-                "    \"one\": 5.26,\n" +
-                "    \"fore\": 5.2667,\n" +
-                "    \"two\": 5.2556,\n" +
-                "    \"three\": 5.4426\n" +
-                "  },\n" +
-                "  \"mySQLList\": [\n" +
-                "    {\n" +
-                "      \"server\": \"mysql\",\n" +
-                "      \"version\": \"8.0.23\",\n" +
-                "      \"bigDecimal\": 0.25689,\n" +
-                "      \"bigs\": [\n" +
-                "        0.316,\n" +
-                "        0.25\n" +
-                "      ],\n" +
-                "      \"bigDecimals\": null,\n" +
-                "      \"map\": null,\n" +
-                "      \"mySQLList\": null,\n" +
-                "      \"types\": null,\n" +
-                "      \"type\": null\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"types\": [\n" +
-                "    {\n" +
-                "      \"id\": \"156161651651651\",\n" +
-                "      \"name\": \"java.lang.String\",\n" +
-                "      \"aClass\": \"java.lang.String\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"id\": \"4464646\",\n" +
-                "      \"name\": \"java.lang.String\",\n" +
-                "      \"aClass\": \"java.lang.String\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"type\": {\n" +
-                "    \"id\": \"1561645451651\",\n" +
-                "    \"name\": \"int\",\n" +
-                "    \"aClass\": \"java.lang.Integer\"\n" +
-                "  }\n" +
-                "}";
+        String json = "{\n" + "  \"server\": \"mysql\",\n" + "  \"version\": \"5.7.35\",\n" + "  \"bigDecimal\": 0.25689,\n" + "  \"bigs\": [\n" + "    0.316,\n" + "    0.25\n" + "  ],\n" + "  \"bigDecimals\": [\n" + "    0.1,\n" + "    0.1566,\n" + "    0.2568,\n" + "    0.84894\n" + "  ],\n" + "  \"map\": {\n" + "    \"one\": 5.26,\n" + "    \"fore\": 5.2667,\n" + "    \"two\": 5.2556,\n" + "    \"three\": 5.4426\n" + "  },\n" + "  \"mySQLList\": [\n" + "    {\n" + "      \"server\": \"mysql\",\n" + "      \"version\": \"8.0.23\",\n" + "      \"bigDecimal\": 0.25689,\n" + "      \"bigs\": [\n" + "        0.316,\n" + "        0.25\n" + "      ],\n" + "      \"bigDecimals\": null,\n" + "      \"map\": null,\n" + "      \"mySQLList\": null,\n" + "      \"types\": null,\n" + "      \"type\": null\n" + "    }\n" + "  ],\n" + "  \"types\": [\n" + "    {\n" + "      \"id\": \"156161651651651\",\n" + "      \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    },\n" + "    {\n" + "      \"id\": \"4464646\",\n" + "      \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    }\n" + "  ],\n" + "  \"type\": {\n" + "    \"id\": \"1561645451651\",\n" + "    \"name\": \"int\",\n" + "    \"aClass\": \"java.lang.Integer\"\n" + "  }\n" + "}";
         MySQL parse = JSON.parse(json, MySQL.class);
         System.out.println(parse);
     }
@@ -402,4 +349,15 @@ public class JSONTest {
         Object bean = ObjectParse.createBean(Type.class);
         System.out.println(bean);
     }
+
+//    @Test
+//    public void testNet() {
+//        String url = "http://localhost:8084/warning/dutycontacts/page?page=1&limit=50&name=罗吉军&sex=男&deptId=1067246875800000064&_t=1675842265671";
+//        Options options = Options.getInstance().setPram("Authorization", "Bearer 0fb2cd10-1a93-47c7-8501-c0dc0f18de6f").setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
+//        JBase load = (JBase) JSON.load(url, options);
+//        System.out.println(load);
+//
+//        System.out.println(StringUtil.replaceAll("[a-z]+", "4464sdsf56446fgg", String::toUpperCase));
+////        System.out.println(load);
+//    }
 }

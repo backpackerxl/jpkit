@@ -6,6 +6,9 @@ import com.zzwl.jpkit.typeof.JBool;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtil {
 
@@ -65,19 +68,52 @@ public class StringUtil {
     /**
      * 获取浏览器中文编码
      *
-     * @param s  字符
-     * @param ec 编码方式
+     * @param s 字符
      * @return 浏览器中文编码
      */
-    public static String getEncodeString(String s, String ec) {
-        try {
-            if (!s.matches("[一-龥]")) {
-                return URLEncoder.encode(s, ec);
+    public static String getEncodeString(String s) {
+        return replaceAll("[一-龥]+", s, StringUtil::getEncode);
+    }
+
+    /**
+     * 替换匹配值
+     *
+     * @param regex  正则
+     * @param target 字符串
+     * @param func   处理函数
+     * @return 结果
+     */
+    public static String replace(String regex, String target, Function<String, String> func) {
+        Pattern compile = Pattern.compile(regex);
+        int i = 0;
+        Matcher matcher = compile.matcher(target);
+        while (matcher.find()) {
+            if (i == 1) {
+                break;
             }
-            return s;
-        } catch (UnsupportedEncodingException e) {
-            return "";
+            String group = matcher.group();
+            target = target.replace(group, func.apply(group));
+            i++;
         }
+        return target;
+    }
+
+    /**
+     * 替换匹配值
+     *
+     * @param regex  正则
+     * @param target 字符串
+     * @param func   处理函数
+     * @return 结果
+     */
+    public static String replaceAll(String regex, String target, Function<String, String> func) {
+        Pattern compile = Pattern.compile(regex);
+        Matcher matcher = compile.matcher(target);
+        while (matcher.find()) {
+            String group = matcher.group();
+            target = target.replace(group, func.apply(group));
+        }
+        return target;
     }
 
     /**
@@ -86,7 +122,11 @@ public class StringUtil {
      * @param s 字符 默认UTF-8
      * @return 浏览器中文编码
      */
-    public static String getEncodeString(String s) {
-        return getEncodeString(s, "utf-8");
+    public static String getEncode(String s) {
+        try {
+            return URLEncoder.encode(s, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -83,7 +83,7 @@ public final class NetUtil {
         InputStream is = null;
         PrintWriter out = null;
         try {
-            URL u = new URL(url);
+            URL u = new URL(StringUtil.getEncodeString(url));
             HttpURLConnection con = (HttpURLConnection) u.openConnection();
             con.setRequestMethod(method);
             con.setDoInput(true);
