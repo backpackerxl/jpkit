@@ -2,7 +2,7 @@
 
 [![Security Status](https://www.oscs1024.com/platform/badge/murphysecurity/murphysec.svg?t=1)](https://www.murphysec.com/accept?code=a111c7f25ae06b96daa00627832e6b68&type=1&from=2&t=2)
 [![](https://badgen.net/badge/releases/v1.0.0/purple?icon=github)](https://github.com/Backpackerxl/jpkit/releases/tag/v1.0.0)
-[![](https://badgen.net/badge/maven/v1.0.0/cyan?icon=maven)](https://github.com/Backpackerxl/jpkit/packages)
+[![](https://badgen.net/badge/maven/v1.0.0/cyan?icon=maven)](https://github.com/Backpackerxl/jpkit/packages/1773341)
 [![](https://badgen.net/badge/license/Apache%20License%202.0/blue?icon=gitlab)](https://github.com/Backpackerxl/jpkit/blob/main/LICENSE)
 
 > 这是一个用于Java和JSON之间相互转换的工具。目前，它只针对JSON实现。在未来，将实现其他文本解析。
@@ -76,7 +76,7 @@ public class Test {
 </repositories>
 ```
 
-> 现在即可愉快的使用jpkit, token可以在iuss中问我要或者发邮件，
+> 现在即可愉快的使用jpkit, token可以在issues中问我要或者发邮件，
 > 网易邮箱: backpackerxh@163.com
 > QQ邮箱: 946115360@qq.com
 
