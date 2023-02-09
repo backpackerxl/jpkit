@@ -1,6 +1,9 @@
 # `jpkit`
 
 [![Security Status](https://www.oscs1024.com/platform/badge/murphysecurity/murphysec.svg?t=1)](https://www.murphysec.com/accept?code=a111c7f25ae06b96daa00627832e6b68&type=1&from=2&t=2)
+![](https://badgen.net/badge/release/v1.0.0/?icon=github)
+![](https://badgen.net/badge/license/Apache%202.0/?icon=github)
+![](https://badgen.net/badge/maven/v1.0.0/?icon=github)
 
 > 这是一个用于Java和JSON之间相互转换的工具。目前，它只针对JSON实现。在未来，将实现其他文本解析。
 
