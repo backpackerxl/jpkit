@@ -8,6 +8,8 @@
 
 #### 快速开始
 
+- 导入`jpkit`的jar包
+
 ```java
 
 import com.zzwl.jpkit.typeof.JBase;
