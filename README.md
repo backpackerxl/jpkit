@@ -61,15 +61,22 @@ public class Test {
 ```
 
 - 在项目的pom文件中加入如下内容
-
 ```xml
 
+<dependency>
+    <groupId>com.zzwl</groupId>
+    <artifactId>jpkit</artifactId>
+    <version>0.0.1</version>
+</dependency>
+```
+
+```xml
 <repositories>
-    <repository>
-        <id>github</id>
-        <name>GitHub Backpackerxl Apache Maven Packages</name>
-        <url>https://maven.pkg.github.com/backpackerxl/jpkit</url>
-    </repository>
+<repository>
+    <id>github</id>
+    <name>GitHub Backpackerxl Apache Maven Packages</name>
+    <url>https://maven.pkg.github.com/backpackerxl/jpkit</url>
+</repository>
 </repositories>
 ```
 
