@@ -53,7 +53,7 @@ public class Test {
 
 #### Maven install
 
-- 需要修改maven的setting文件，加入如下内容
+- 需要修改maven的setting文件中的<servers>标签中加入如下内容
 
 ```xml
 
