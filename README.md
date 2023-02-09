@@ -8,7 +8,7 @@
 
 #### 快速开始
 
-- 导入`jpkit`的jar包
+- 下载导入`jpkit`的jar包
 
 ```java
 
