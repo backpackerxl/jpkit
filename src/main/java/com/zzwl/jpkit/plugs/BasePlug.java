@@ -7,6 +7,9 @@ import com.zzwl.jpkit.utils.ArrayUtil;
 import java.lang.reflect.Array;
 import java.util.*;
 
+/**
+ * @since 1.0
+ */
 public class BasePlug {
     public final static String GET_OBJECT = "getObject";
     public final static String GET_ARR = "getArray";
@@ -17,7 +20,7 @@ public class BasePlug {
      * JBase to Object
      *
      * @param jBase 数据源
-     * @return Object
+     * @return 对应类型的对象
      */
     public static <T> T getObject(JBase jBase, Class<T> clazz) {
         try {
@@ -33,7 +36,7 @@ public class BasePlug {
      * List<JBase> to Object[]
      *
      * @param jBase 数据源
-     * @return Object
+     * @return 对应类型的数组
      */
     public static Object[] getArray(JBase jBase, Class<?> clazz) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
@@ -49,7 +52,7 @@ public class BasePlug {
      * List<JBase> to List<Object>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return 对应类型的List
      */
     public static <T> List<T> getList(JBase jBase, Class<T> clazz) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
@@ -65,7 +68,7 @@ public class BasePlug {
      * Map<String, JBase> to Map<String, Object>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return 对应类型的Map
      */
     public static <T> Map<String, T> getMap(JBase jBase, Class<T> target) {
         return ArrayUtil.doMapByJObject(jBase, (value) -> {

@@ -20,6 +20,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
+/**
+ * @since 1.0
+ */
 public class ReflectUtil {
 
     private static boolean isPretty = false;
@@ -329,7 +332,7 @@ public class ReflectUtil {
         if (field.getType().isArray()) {
             // Integer[] ...
             Class<?> mySelf = isMySelf(field);
-            if (!Objects.isNull(mySelf) && !JBase.isBase(mySelf)) {
+            if (!Objects.isNull(mySelf) && JBase.isNotBase(mySelf)) {
                 return BasePlug.getArray(jBase, mySelf);
             }
             return ArrayUtil.getArr(jBase, field);
@@ -337,7 +340,7 @@ public class ReflectUtil {
         if (typeName.equals(List.class.getTypeName())) {
             // List
             Class<?> mySelf = isMySelf(field);
-            if (!Objects.isNull(mySelf) && !JBase.isBase(mySelf)) {
+            if (!Objects.isNull(mySelf) && JBase.isNotBase(mySelf)) {
                 return BasePlug.getList(jBase, mySelf);
             }
             return ArrayUtil.getList(jBase, field);
@@ -345,12 +348,12 @@ public class ReflectUtil {
         if (typeName.equals(Map.class.getTypeName())) {
             // Map
             Class<?> mySelf = isMySelf(field);
-            if (!Objects.isNull(mySelf) && !JBase.isBase(mySelf)) {
+            if (!Objects.isNull(mySelf) && JBase.isNotBase(mySelf)) {
                 return BasePlug.getMap(jBase, mySelf);
             }
             return ArrayUtil.getMap(jBase, field);
         }
-        if (!JBase.isBase(field.getType())) {
+        if (JBase.isNotBase(field.getType())) {
             return BasePlug.getObject(jBase, field.getType());
         }
         return jBase.getValue();

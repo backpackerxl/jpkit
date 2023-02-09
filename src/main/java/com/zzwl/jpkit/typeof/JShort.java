@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @since 1.0
+ */
 public class JShort extends JBase {
 
     private final Short value;
@@ -25,9 +28,9 @@ public class JShort extends JBase {
      * JArray to Short[]
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Short[]
      */
-    public static Object getArr(JBase jBase) {
+    public static Short[] getArr(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             Short[] res = new Short[value.size()];
             for (int i = 0; i < value.size(); i++) {
@@ -41,9 +44,9 @@ public class JShort extends JBase {
      * JArray to short[]
      *
      * @param jBase 数据源
-     * @return Object
+     * @return short[]
      */
-    public static Object get_Arr(JBase jBase) {
+    public static short[] get_Arr(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             short[] res = new short[value.size()];
             for (int i = 0; i < value.size(); i++) {
@@ -58,13 +61,13 @@ public class JShort extends JBase {
      * List<JBase> 转 List<Short>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return List<Short>
      */
-    public static Object getList(JBase jBase) {
+    public static List<Short> getList(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            List<Object> res = new ArrayList<>(value.size());
+            List<Short> res = new ArrayList<>(value.size());
             for (JBase base : value) {
-                res.add(new JShort(base));
+                res.add(new JShort(base).getValue());
             }
             return res;
         });
@@ -74,9 +77,9 @@ public class JShort extends JBase {
      * Map<String, JBase> 转 Map<String, Short>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Map<String, Short>
      */
-    public static Object getMap(JBase jBase) {
+    public static Map<String, Short> getMap(JBase jBase) {
         return ArrayUtil.doMapByJObject(jBase, (value) -> {
             Map<String, Short> res = new HashMap<>(value.size());
             for (String base : value.keySet()) {

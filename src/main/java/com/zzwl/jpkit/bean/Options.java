@@ -3,6 +3,9 @@ package com.zzwl.jpkit.bean;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @since 1.0
+ */
 public final class Options {
     private final Map<String, String> pram;
     private final Map<String, Object> data;

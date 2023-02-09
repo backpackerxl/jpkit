@@ -4,6 +4,9 @@ import com.zzwl.jpkit.core.JSON;
 
 import java.util.List;
 
+/**
+ * @since 1.0
+ */
 public class JArray extends JBase {
     private final List<JBase> value;
 

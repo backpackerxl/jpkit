@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @since 1.0
+ */
 public class JSONParse {
     private int idx;
     private final char[] json_arr;
@@ -41,7 +44,7 @@ public class JSONParse {
     /**
      * 解析json字符串
      *
-     * @return <b>ITypeof<Object></b>对象
+     * @return ITypeof<Object>
      */
     public ITypeof<Object> parse() {
         char next_char = this.get_next_char();

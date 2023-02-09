@@ -3,6 +3,9 @@ package com.zzwl.jpkit.bean;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @since 1.0
+ */
 public final class JPConfigAnnoContext {
     private final Map<String, JPConfigAnno> context = new HashMap<>();
 
@@ -11,6 +14,11 @@ public final class JPConfigAnnoContext {
 
     private volatile static JPConfigAnnoContext annoConfigContext;
 
+    /**
+     * 获取配置注解的容器
+     *
+     * @return 配置注解的容器
+     */
     public static JPConfigAnnoContext getAnnoConfigContext() {
         if (annoConfigContext == null) {
             synchronized (JPConfigAnnoContext.class) {

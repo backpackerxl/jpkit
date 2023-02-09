@@ -12,6 +12,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+/**
+ * @since 1.0
+ */
 public final class BToJSON<B> {
     // 需要转化为json字符串的java bean
     private final B bean;
@@ -58,7 +61,7 @@ public final class BToJSON<B> {
     /**
      * 紧凑型JSON字符串
      * <blockquote><pre>
-     *     System.out.println(JSON.stringify(obj).terse());
+     *     JSON.stringify(obj).terse();
      * </pre></blockquote>
      *
      * @return JSON字符串
@@ -138,9 +141,9 @@ public final class BToJSON<B> {
     /**
      * 紧凑型JSON字符串, 按量转化
      * <blockquote><pre>
-     *     // 返回第一条数据的json字符串
-     *     System.out.println(JSON.stringify(obj).terse(1));
-     *     // 当limit为负数或者超过数据存储量时返回所有数据的json字符串
+     *     1.返回第一条数据的json字符串
+     *     JSON.stringify(obj).terse(1);
+     *     2.当limit为负数或者超过数据存储量时返回所有数据的json字符串
      * </pre></blockquote>
      *
      * @param limit 返回条数
@@ -220,7 +223,7 @@ public final class BToJSON<B> {
     /**
      * 格式化JSON字符串
      * <blockquote><pre>
-     *     System.out.println(JSON.stringify(obj).pretty());
+     *     JSON.stringify(obj).pretty();
      * </pre></blockquote>
      *
      * @return JSON字符串
@@ -317,9 +320,9 @@ public final class BToJSON<B> {
     /**
      * 格式化JSON字符串, 按量转化
      * <blockquote><pre>
-     *     // 返回第一条数据的格式化json字符串
-     *     System.out.println(JSON.stringify(obj).pretty(1));
-     *     // 当limit为负数或者超过数据存储量时返回所有数据的格式化json字符串
+     *     1.返回第一条数据的格式化json字符串
+     *     JSON.stringify(obj).pretty(1);
+     *     2.当limit为负数或者超过数据存储量时返回所有数据的格式化json字符串
      * </pre></blockquote>
      *
      * @param limit 返回条数
@@ -412,8 +415,8 @@ public final class BToJSON<B> {
     /**
      * 保存json文件
      * <blockquote><pre>
-     *     // 当 savePretty 为true时保存为格式化的json, 反之则为紧凑型json
-     *     JSON.stringify(user).save("D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json", false);
+     *     1.当 savePretty 为true时保存为格式化的json, 反之则为紧凑型json
+     *     JSON.stringify(user).save("src\\test\\resources\\db.json", false);
      * </pre></blockquote>
      *
      * @param p      路径
@@ -440,8 +443,8 @@ public final class BToJSON<B> {
     /**
      * 保存json文件
      * <blockquote><pre>
-     *     // 默认格式化保存
-     *     JSON.stringify(user).save("D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json");
+     *     1.默认格式化保存
+     *     JSON.stringify(user).save("src\\test\\resources\\db.json");
      * </pre></blockquote>
      *
      * @param p 路径
@@ -453,9 +456,9 @@ public final class BToJSON<B> {
     /**
      * 按量保存json文件
      * <blockquote><pre>
-     *     // 当 savePretty 为true时保存为格式化的json, 反之则为紧凑型json
-     *     // 保存第一条
-     *     JSON.stringify(user).save("D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json", false, 1);
+     *     1.当 savePretty 为true时保存为格式化的json, 反之则为紧凑型json
+     *     2.保存第一条
+     *     JSON.stringify(user).save("src\\test\\resources\\db.json", false, 1);
      * </pre></blockquote>
      *
      * @param p      路径
@@ -483,9 +486,9 @@ public final class BToJSON<B> {
     /**
      * 按量保存json文件
      * <blockquote><pre>
-     *     // 默认格式化保存
-     *     // 保存第一条
-     *     JSON.stringify(user).save("D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json", 1);
+     *     1.默认格式化保存
+     *     2.保存第一条
+     *     JSON.stringify(user).save("src\\test\\resources\\db.json", 1);
      * </pre></blockquote>
      *
      * @param p     路径

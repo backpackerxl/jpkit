@@ -1,6 +1,8 @@
 package com.zzwl.jpkit.bean;
 
-
+/**
+ * @since 1.0
+ */
 public class FieldBean {
     private final String name;
     private final Object obj;

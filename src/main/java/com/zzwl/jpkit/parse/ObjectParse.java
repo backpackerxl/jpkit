@@ -15,6 +15,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Map;
 
+/**
+ * @since 1.0
+ */
 public class ObjectParse {
     private final JBase jBase;
     public final static String TEMPLATE = "%s$%s$%s";
@@ -29,7 +32,7 @@ public class ObjectParse {
      *
      * @param clazz 类型
      * @param <B>   转化后的类型
-     * @return 转化好的东西
+     * @return 转化好的对象
      */
     public <B> B parse(Class<B> clazz) {
         Object bean = createBean(clazz);
@@ -68,7 +71,7 @@ public class ObjectParse {
      * 通过class获得一个对象
      *
      * @param clazz 源
-     * @return 对象
+     * @return 根据Class创建的对象
      */
     public static Object createBean(Class<?> clazz) {
         try {

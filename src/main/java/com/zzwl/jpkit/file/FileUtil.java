@@ -7,6 +7,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * @since 1.0
+ */
 public final class FileUtil {
     private FileUtil() {
     }

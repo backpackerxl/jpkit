@@ -2,6 +2,9 @@ package com.zzwl.jpkit.typeof;
 
 import com.zzwl.jpkit.core.ITypeof;
 
+/**
+ * @since 1.0
+ */
 public abstract class JBase implements ITypeof<Object> {
     /**
      * 判断是否为基础数据类型的包装类型
@@ -19,8 +22,8 @@ public abstract class JBase implements ITypeof<Object> {
      * @param o 数据
      * @return 是否为 Integer Boolean Byte Long Short Double Float...
      */
-    public static boolean isBase(Class<?> o) {
-        return o.getTypeName().startsWith("java.math") || o.getTypeName().startsWith("java.util") || o.getTypeName().startsWith("java.lang");
+    public static boolean isNotBase(Class<?> o) {
+        return !o.getTypeName().startsWith("java.math") && !o.getTypeName().startsWith("java.util") && !o.getTypeName().startsWith("java.lang");
     }
 
     /**

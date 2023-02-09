@@ -133,7 +133,7 @@ public class JSONTest {
     @Test
     public void testListAndMap() {
         List<User> users = new ArrayList<>();
-        String path = "src\\main\\resources\\db.json";
+        String path = "src\\test\\resources\\db.json";
 
         users.add(new User(1004207420089456666L, "zzwl", 300, true, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
         users.add(new User(2L, "zzwl", 400, false, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
@@ -158,7 +158,7 @@ public class JSONTest {
 
 
         String url = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
-        String local = "src\\main\\resources\\db.json";
+        String local = "src\\test\\resources\\db.json";
 
 //        JBase net = (JBase) JSON.load(url);
         JBase net_local = (JBase) JSON.load(local);
@@ -245,61 +245,11 @@ public class JSONTest {
 
     @Test
     public void testSubParse() {
-        String json = "{\n" +
-                "  \"server\": \"mysql\",\n" +
-                "  \"version\": \"5.7.35\",\n" +
-                "  \"bigDecimal\": 0.25689,\n" +
-                "  \"bigs\": [\n" +
-                "    0.316,\n" +
-                "    0.25\n" +
-                "  ],\n" +
-                "  \"bigDecimals\": [\n" +
-                "    0.1,\n" +
-                "    0.1566,\n" +
-                "    0.2568,\n" +
-                "    0.84894\n" +
-                "  ],\n" +
-                "  \"map\": {\n" +
-                "    \"one\": 5.26,\n" +
-                "    \"fore\": 5.2667,\n" +
-                "    \"two\": 5.2556,\n" +
-                "    \"three\": 5.4426\n" +
-                "  },\n" +
-                "  \"mySQLList\": [\n" +
-                "    {\n" +
-                "      \"server\": \"mysql\",\n" +
-                "      \"version\": \"8.0.23\",\n" +
-                "      \"bigDecimal\": 0.25689,\n" +
-                "      \"bigs\": [\n" +
-                "        0.316,\n" +
-                "        0.25\n" +
-                "      ],\n" +
-                "      \"bigDecimals\": null,\n" +
-                "      \"map\": null,\n" +
-                "      \"mySQLList\": null,\n" +
-                "      \"types\": null,\n" +
-                "      \"type\": null\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"types\": [\n" +
-                "    {\n" +
-                "      \"id\": \"156161651651651\",\n" +
-                "      \"name\": \"java.lang.String\",\n" +
-                "      \"aClass\": \"java.lang.String\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"id\": \"4464646\",\n" +
-                "      \"name\": \"java.lang.String\",\n" +
-                "      \"aClass\": \"java.lang.String\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"type\": {\n" +
-                "    \"id\": \"1561645451651\",\n" +
-                "    \"name\": \"int\",\n" +
-                "    \"aClass\": \"java.lang.Integer\"\n" +
-                "  }\n" +
-                "}";
+        long start = new Date().getTime();
+        String json = "{\n" + "  \"server\": \"mysql\",\n" + "  \"version\": \"5.7.35\",\n" + "  \"bigDecimal\": 0.25689,\n" + "  \"bigs\": [\n" + "    0.316,\n" + "    0.25\n" + "  ],\n" + "  \"bigDecimals\": [\n" + "    0.1,\n" + "    0.1566,\n" + "    0.2568,\n" + "    0.84894\n" + "  ],\n" + "  \"map\": {\n" + "    \"one\": 5.26,\n" + "    \"fore\": 5.2667,\n" + "    \"two\": 5.2556,\n" + "    \"three\": 5.4426\n" + "  },\n" + "  \"mySQLList\": [\n" + "    {\n" + "      \"server\": \"mysql\",\n" + "      \"version\": \"8.0.23\",\n" + "      \"bigDecimal\": 0.25689,\n" + "      \"bigs\": [\n" + "        0.316,\n" + "        0.25\n" + "      ],\n" + "      \"bigDecimals\": null,\n" + "      \"map\": null,\n" + "      \"mySQLList\": null,\n" + "      \"types\": null,\n" + "      \"type\": null\n" + "    }\n" + "  ],\n" + "  \"types\": [\n" + "    {\n" + "      \"id\": \"156161651651651\",\n" + "      \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    },\n" + "    {\n" + "      \"id\": \"4464646\",\n" + "      \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    }\n" + "  ],\n" + "  \"type\": {\n" + "    \"id\": \"1561645451651\",\n" + "    \"name\": \"int\",\n" + "    \"aClass\": \"java.lang.Integer\"\n" + "  }\n" + "}";
         MySQL parse = JSON.parse(json, MySQL.class);
+        long end = new Date().getTime();
+        System.out.println("解析耗时: " + (end - start));
         System.out.println(parse);
     }
 
@@ -401,5 +351,16 @@ public class JSONTest {
     public void testCreateBean() throws ClassNotFoundException {
         Object bean = ObjectParse.createBean(Type.class);
         System.out.println(bean);
+    }
+
+    @Test
+    public void testNet() {
+//        String url = "http://localhost:8084/warning/dutycontacts/page?page=1&limit=50&name=罗吉军&sex=男&deptId=1067246875800000064&_t=1675842265671";
+//        Options options = Options.getInstance().setPram("Authorization", "Bearer 0fb2cd10-1a93-47c7-8501-c0dc0f18de6f").setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
+//        JBase load = (JBase) JSON.load(url, options);
+//        System.out.println(load);
+
+        System.out.println(StringUtil.replace("[a-z]+", "4464sdsf56446fgg", String::toUpperCase));
+//        System.out.println(load);
     }
 }

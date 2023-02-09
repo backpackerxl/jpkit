@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @since 1.0
+ */
 public class JChar extends JBase {
 
     private final Character value;
@@ -26,9 +29,9 @@ public class JChar extends JBase {
      * JArray to Character[]
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Character[]
      */
-    public static Object getArr(JBase jBase) {
+    public static Character[] getArr(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             Character[] res = new Character[value.size()];
             for (int i = 0; i < value.size(); i++) {
@@ -42,9 +45,9 @@ public class JChar extends JBase {
      * JArray to char[]
      *
      * @param jBase 数据源
-     * @return Object
+     * @return char[]
      */
-    public static Object get_Arr(JBase jBase) {
+    public static char[] get_Arr(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             char[] res = new char[value.size()];
             for (int i = 0; i < value.size(); i++) {
@@ -58,9 +61,9 @@ public class JChar extends JBase {
      * List<JBase> 转 List<Character>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return List<Character>
      */
-    public static Object getList(JBase jBase) {
+    public static List<Character> getList(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             List<Character> res = new ArrayList<>(value.size());
             for (JBase base : value) {
@@ -74,9 +77,9 @@ public class JChar extends JBase {
      * Map<String, JBase> 转 Map<String,Character>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Map<String, Character>
      */
-    public static Object getMap(JBase jBase) {
+    public static Map<String, Character> getMap(JBase jBase) {
         return ArrayUtil.doMapByJObject(jBase, (value) -> {
             Map<String, Character> res = new HashMap<>(value.size());
             for (String base : value.keySet()) {

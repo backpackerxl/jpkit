@@ -11,12 +11,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @since 1.0
+ */
 public class BigDecimalPlug {
     /**
      * JBase to BigDecimal
      *
      * @param jBase 数据源
-     * @return Object
+     * @return BigDecimal
      */
     @JPMethod(BasePlug.GET_OBJECT)
     public BigDecimal getObject(JBase jBase) {
@@ -33,7 +36,7 @@ public class BigDecimalPlug {
      * List<JBase> to BigDecimal[]
      *
      * @param jBase 数据源
-     * @return Object
+     * @return BigDecimal[]
      */
     @JPMethod(BasePlug.GET_ARR)
     public BigDecimal[] getArray(JBase jBase) {
@@ -50,7 +53,7 @@ public class BigDecimalPlug {
      * List<JBase> to List<BigDecimal>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return List<BigDecimal>
      */
     @JPMethod(BasePlug.GET_LIST)
     public List<BigDecimal> getList(JBase jBase) {
@@ -67,7 +70,7 @@ public class BigDecimalPlug {
      * Map<String, JBase> to Map<String, BigDecimal>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Map<String, BigDecimal>
      */
     @JPMethod(BasePlug.GET_MAP)
     public Map<String, BigDecimal> getMap(JBase jBase) {

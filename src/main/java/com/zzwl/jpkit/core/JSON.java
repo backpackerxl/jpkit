@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @since 1.0
+ */
 public class JSON {
     private JSON() {
     }
@@ -24,68 +27,49 @@ public class JSON {
      * <blockquote><pre>
      *    <ul>
      *      <li>
-     *        <b>紧凑型JSON字符串<b/>
+     *        <p>紧凑型JSON字符串</p>
      *        <p>String json = JSON.stringify(obj).terse();</p>
-     *        <p>System.out.println(json);</p>
      *      </li>
      *      <li>
-     *          <b>格式化JSON字符串<b/>
+     *          <p>格式化JSON字符串</p>
      *          <p>String json = JSON.stringify(obj).pretty();</p>
-     *          <p>System.out.println(json);</p>
      *      </li>
-     *     <ul/>
+     *     </ul>
      * </pre></blockquote>
      *
      * @param obj 待转化对象
      * @param <B> 泛型
-     * @return <b>BToJSON<B><b/>
+     * @return BToJSON<B>
      */
     public static <B> BToJSON<B> stringify(B obj) {
         return new BToJSON<>(obj);
     }
 
     /**
-     * JSON解析为对象
+     * JSON解析为JBase对象
      * <blockquote><pre>
-     * String json = "{
-     *                      "username": "zzwl",
-     *                      "user_code": 300,
-     *                      "admin": true,
-     *                      "create_time": "2023-01-13",
-     *                      "nums": [
-     *                         4545,
-     *                         2121,
-     *                         3636
-     *                      ],
-     *                      "strings": [
-     *                         "zz",
-     *                         "xx",
-     *                         "ww"
-     *                      ]
-     *                    }"
+     * String json =
+     * "{
+     *    "username": "zzwl",
+     *    "user_code": 300,
+     *    "admin": true
+     * }";
      *    JObject parse = (JObject) JSON.parse(json);
      *    <ul>
      *      <li>
-     *        <p>JArray number = (JArray) parse.getValue().get("nums");</p>
-     *        <p>
-     *           for (JBase jBase : number.getValue()) {
-     *                System.out.println(jBase.getValue());
-     *           }
-     *        </p>
-     *      </li>
-     *      <li>
-     *          <p>JDate date = new JDate(parse.getValue().get("create_time"), "yyyy-MM-dd");</p>
-     *          <p>System.out.println(date);</p>
+     *          <p>JString username = (JString) parse.getValue().get("username");</p>
      *      </li>
      *      <li>
      *          <p>JShort code = new JShort(parse.getValue().get("user_code"));</p>
-     *          <p>System.out.println(code);</p>
      *      </li>
-     *     <ul/>
+     *      <li>
+     *          <p>JBool isAdmin = (JBool) parse.getValue().get("admin");</p>
+     *      </li>
+     *     </ul>
      * </pre></blockquote>
      *
      * @param json JSON字符串
-     * @return <b>ITypeof<?></b>
+     * @return ITypeof<Object>
      */
     public static ITypeof<Object> parse(String json) {
         return new JSONParse(json).parse();
@@ -94,24 +78,14 @@ public class JSON {
     /**
      * JSON解析为Java普通对象
      * <blockquote><pre>
-     *     String json = "{
-     *                      "username": "zzwl",
-     *                      "user_code": 300,
-     *                      "admin": true,
-     *                      "create_time": "2023-01-13",
-     *                      "nums": [
-     *                         4545,
-     *                         2121,
-     *                         3636
-     *                      ],
-     *                      "strings": [
-     *                         "zz",
-     *                         "xx",
-     *                         "ww"
-     *                      ]
-     *                    }"
-     *     User user = JSON.parse(json, User.class);
-     *     System.out.println(user)
+     *     String json =
+     *     "{
+     *        "username": "zzwl",
+     *        "user_code": 300,
+     *        "admin": true
+     *      }";
+     *     B user = JSON.parse(json, B.class);
+     *
      * </pre></blockquote>
      *
      * @param json  JSON字符串
@@ -130,29 +104,20 @@ public class JSON {
     /**
      * JSON解析为Java普通对象
      * <blockquote><pre>
-     *     String json = "{
-     *                      "username": "zzwl",
-     *                      "user_code": 300,
-     *                      "admin": true,
-     *                      "create_time": "2023-01-13",
-     *                      "nums": [
-     *                         4545,
-     *                         2121,
-     *                         3636
-     *                      ],
-     *                      "strings": [
-     *                         "zz",
-     *                         "xx",
-     *                         "ww"
-     *                      ]
-     *                    }"
-     *     User user = JSON.parse(JSON.parse(json), User.class);
-     *     System.out.println(user)
+     *     String json =
+     *     "{
+     *        "username": "zzwl",
+     *        "user_code": 300,
+     *        "admin": true
+     *      }";
+     *
+     *     B user = JSON.parse(JSON.parse(json), B.class);
+     *
      * </pre></blockquote>
      *
-     * @param typeof 第一次解析后的对象
+     * @param typeof JBase 对象
      * @param clazz  类型
-     * @param <B>    转成功后的类型
+     * @param <B>    转换成功后的类型
      * @return 解析好的对象
      */
     public static <B> B parse(ITypeof<Object> typeof, Class<B> clazz) {
@@ -163,44 +128,24 @@ public class JSON {
     }
 
     /**
-     * JSON解析为Java普通对象
+     * JSON解析为Java的List<B>对象
      * <blockquote><pre>
-     *     String json = "[
-     *                       {
-     *                            "username": "zzwl",
-     *                            "user_code": 300,
-     *                            "admin": true,
-     *                            "create_time": "2023-01-13",
-     *                            "nums": [
-     *                               4545,
-     *                               2121,
-     *                               3636
-     *                            ],
-     *                            "strings": [
-     *                               "zz",
-     *                               "xx",
-     *                               "ww"
-     *                            ]
-     *                         },
-     *                         {
-     *                            "username": "zzwl",
-     *                            "user_code": 300,
-     *                            "admin": true,
-     *                            "create_time": "2023-01-13",
-     *                            "nums": [
-     *                               4545,
-     *                               2121,
-     *                               3636
-     *                            ],
-     *                            "strings": [
-     *                               "zz",
-     *                               "xx",
-     *                               "ww"
-     *                            ]
-     *                          }
-     *                      ]"
-     *     List<User> user = JSON.parseList(json, User.class);
-     *     System.out.println(user)
+     *     String json =
+     *     "[
+     *        {
+     *          "username": "zzwl",
+     *          "user_code": 300,
+     *          "admin": true,
+     *        },
+     *        {
+     *          "username": "zzwl",
+     *          "user_code": 300,
+     *          "admin": true,
+     *         }
+     *       ]";
+     *
+     *     List<B> user = JSON.parseList(json, B.class);
+     *
      * </pre></blockquote>
      *
      * @param json  JSON字符串
@@ -222,48 +167,28 @@ public class JSON {
     }
 
     /**
-     * JSON解析为Java普通对象
+     * JSON解析为Java的Map<String ,B> 对象
      * <blockquote><pre>
-     *     String json = "[
-     *                       {
-     *                        "user_1" : {
-     *                                     "username": "zzwl",
-     *                                     "user_code": 300,
-     *                                     "admin": true,
-     *                                     "create_time": "2023-01-13",
-     *                                     "nums": [
-     *                                       4545,
-     *                                       2121,
-     *                                       3636
-     *                                     ],
-     *                                     "strings": [
-     *                                       "zz",
-     *                                       "xx",
-     *                                       "ww"
-     *                                      ]
-     *                                   }
-     *                          },
-     *                          {
-     *                            "user_2": {
-     *                                        "username": "zzwl",
-     *                                        "user_code": 300,
-     *                                        "admin": true,
-     *                                        "create_time": "2023-01-13",
-     *                                        "nums": [
-     *                                          4545,
-     *                                          2121,
-     *                                          3636
-     *                                         ],
-     *                                         "strings": [
-     *                                            "zz",
-     *                                            "xx",
-     *                                            "ww"
-     *                                          ]
-     *                                        }
-     *                               }
-     *                            ]"
-     *     Map<String, User> user = JSON.parseMap(JSON.parse(json), User.class);
-     *     System.out.println(user)
+     *     String json =
+     *     "[
+     *        {
+     *          "user_1" : {
+     *                        "username": "zzwl",
+     *                        "user_code": 300,
+     *                        "admin": true,
+     *                      }
+     *        },
+     *        {
+     *           "user_2": {
+     *                        "username": "zzwl",
+     *                        "user_code": 300,
+     *                        "admin": true,
+     *                      }
+     *         }
+     *      ]";
+     *
+     *     Map<String, B> user = JSON.parseMap(JSON.parse(json), B.class);
+     *
      * </pre></blockquote>
      *
      * @param json  JSON字符串
@@ -286,10 +211,12 @@ public class JSON {
     }
 
     /**
-     * 加载json文件
+     * 加载本地或网络JSON资源为对应的JBase对象
      * <blockquote><pre>
-     *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
+     *     String local = "src\\test\\resources\\db.json";
+     *
      *     String network = "network_url";
+     *
      *     JBase load_local = JSON.load(local);
      *     JBase load_net = JSON.load(network);
      * </pre></blockquote>
@@ -306,10 +233,12 @@ public class JSON {
     }
 
     /**
-     * 加载json文件
+     * 加载本地或网络(需要请求参数)JSON资源为对应的JBase对象
      * <blockquote><pre>
-     *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
+     *     String local = "src\\test\\resources\\db.json";
+     *
      *     String network = "network_url";
+     *
      *     JBase load_local = JSON.load(local);
      *     JBase load_net = JSON.load(network);
      * </pre></blockquote>
@@ -327,11 +256,14 @@ public class JSON {
     }
 
     /**
+     * 加载本地或网络JSON资源为对应的Java Bean对象
      * <blockquote><pre>
-     *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
+     *     String local = "src\\test\\resources\\db.json";
+     *
      *     String network = "network_url";
-     *     User load_local = JSON.load(local, User.class);
-     *     BaiDu load_net = JSON.load(network, BaiDu.class);
+     *
+     *     B load_local = JSON.load(local, B.class);
+     *     B load_net = JSON.load(network, B.class);
      * </pre></blockquote>
      *
      * @param path  路径
@@ -348,11 +280,14 @@ public class JSON {
     }
 
     /**
+     * 加载本地或网络(需要请求参数)JSON资源为对应的Java Bean对象
      * <blockquote><pre>
-     *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
+     *     String local = "src\\test\\resources\\db.json";
+     *
      *     String network = "network_url";
-     *     User load_local = JSON.load(local, User.class);
-     *     BaiDu load_net = JSON.load(network, BaiDu.class);
+     *
+     *     B load_local = JSON.load(local, B.class);
+     *     B load_net = JSON.load(network, B.class);
      * </pre></blockquote>
      *
      * @param path  路径
@@ -370,11 +305,14 @@ public class JSON {
     }
 
     /**
+     * 加载本地或网络JSON资源为对应的List对象
      * <blockquote><pre>
-     *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
+     *     String local = "src\\test\\resources\\db.json";
+     *
      *     String network = "network_url";
-     *     List<User> list = JSON.loadList(local, User.class);
-     *     List<BaiDu> list_baidu = JSON.loadList(network, BaiDu.class);
+     *
+     *     List<B> list = JSON.loadList(local, B.class);
+     *     List<B> list_baidu = JSON.loadList(network, B.class);
      * </pre></blockquote>
      *
      * @param path  路径
@@ -396,11 +334,14 @@ public class JSON {
     }
 
     /**
+     * 加载本地或网络(需要请求参数)JSON资源为对应的List对象
      * <blockquote><pre>
-     *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
+     *     String local = "src\\test\\resources\\db.json";
+     *
      *     String network = "network_url";
-     *     List<User> list = JSON.loadList(local, User.class);
-     *     List<BaiDu> list_baidu = JSON.loadList(network, BaiDu.class);
+     *
+     *     List<B> list = JSON.loadList(local, B.class);
+     *     List<B> list_baidu = JSON.loadList(network, B.class);
      * </pre></blockquote>
      *
      * @param path  路径
@@ -423,11 +364,14 @@ public class JSON {
     }
 
     /**
+     * 加载本地或网络JSON资源为对应的Map对象
      * <blockquote><pre>
-     *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
+     *     String local = "src\\test\\resources\\db.json";
+     *
      *     String network = "network_url";
-     *     Map<String,User> list = JSON.loadMap(local, User.class);
-     *     Map<String,BaiDu> list_baidu = JSON.loadMap(network, BaiDu.class);
+     *
+     *     Map<String,B> list = JSON.loadMap(local, B.class);
+     *     Map<String,B> list_baidu = JSON.loadMap(network, B.class);
      * </pre></blockquote>
      *
      * @param path  路径
@@ -450,11 +394,14 @@ public class JSON {
     }
 
     /**
+     * 加载本地或网络(需要请求参数)JSON资源为对应的Map对象
      * <blockquote><pre>
-     *     String local = "D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json"
+     *     String local = "src\\test\\resources\\db.json";
+     *
      *     String network = "network_url";
-     *     Map<String,User> list = JSON.loadMap(local, User.class);
-     *     Map<String,BaiDu> list_baidu = JSON.loadMap(network, BaiDu.class);
+     *
+     *     Map<String,B> list = JSON.loadMap(local, B.class);
+     *     Map<String,B> list_baidu = JSON.loadMap(network, B.class);
      * </pre></blockquote>
      *
      * @param path  路径
@@ -480,7 +427,7 @@ public class JSON {
     /**
      * 设置缩进量
      * <blockquote><pre>
-     *     // 设置单位缩进量为1个单位, 默认为两个单位, 且默认缩进字符为 ' '
+     *     设置单位缩进量为1个单位, 默认为两个单位, 且默认缩进字符为 ' '
      *     JSON.setBeforeTab(1);
      * </pre></blockquote>
      *
@@ -493,9 +440,9 @@ public class JSON {
     /**
      * 设置缩进字符
      * <blockquote><pre>
-     *     // 设置单位缩进量为1个单位, 默认为两个单位, 且默认缩进字符为 ' '
+     *     设置单位缩进量为1个单位, 默认为两个单位, 且默认缩进字符为 ' '
      *     JSON.setBeforeTab(1);
-     *     // 设置默认字符为 '\t'
+     *     设置默认字符为 '\t'
      *     JSON.setTabCharacter('\t');
      * </pre></blockquote>
      *
@@ -509,7 +456,7 @@ public class JSON {
     /**
      * 设置Long类型的Map或List以字符串输出
      * <blockquote><pre>
-     *     // 设置以字符串形式输出
+     *     设置以字符串形式输出
      *     JSON.setLongToString(true);
      * </pre></blockquote>
      *
