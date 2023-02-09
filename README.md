@@ -47,10 +47,6 @@ public class Test {
 }
 ```
 
-#### 更多用法 [`Doc.md`](docs/Doc.md)
-
-#### `jpkit` [`官方API`](https://backpackerxl.github.io/jpkit/)
-
 #### Maven install
 
 - 需要修改maven的setting文件中的<servers>标签中加入如下内容
@@ -80,3 +76,7 @@ public class Test {
 > 现在即可愉快的使用jpkit, token可以在iuss中问我要或者发邮件，
 > 网易邮箱: backpackerxh@163.com
 > QQ邮箱: 946115360@qq.com
+
+#### 更多用法 [`Doc.md`](docs/Doc.md)
+
+#### `jpkit` [`官方API`](https://backpackerxl.github.io/jpkit/)
