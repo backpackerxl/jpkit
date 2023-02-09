@@ -18,20 +18,21 @@ public class Test {
      */
     @Test
     public void useJPKit() {
-        // json 字符串
-        String json = "...";
-        // 将json解析为JBase
-        JBase parse = (JBase) JSON.parse(json);
-        // 将json解析为Java Bean
-        B user = JSON.parse(json, B.class);
         // java bean
         B user = new B();
+        // ...设置属性值
         // 常规转化
         String s = JSON.stringify(user).terse();
         // 格式化转化
         String s = JSON.stringify(user).pretty();
         // 保存在本地, 默认格式化保存, 无返回值
         JSON.stringify(user).save();
+        // json 字符串
+        String json = "...";
+        // 将json解析为JBase
+        JBase parse = (JBase) JSON.parse(json);
+        // 将json解析为Java Bean
+        B user = JSON.parse(json, B.class);
         // 本地json
         String user_path = "src\\main\\resources\\db.json";
         // 网络json
