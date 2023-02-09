@@ -6,6 +6,9 @@ import com.zzwl.jpkit.utils.ArrayUtil;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * @since 1.0
+ */
 public class JDate extends JBase {
     private final Date value;
     public final static String YYYY_MM_DD = "yyyy-MM-dd";
@@ -38,9 +41,9 @@ public class JDate extends JBase {
      * JArray to Date[]
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Date[]
      */
-    public static Object getArr(JBase jBase) {
+    public static Date[] getArr(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             Date[] res = new Date[value.size()];
             for (int i = 0; i < value.size(); i++) {
@@ -55,9 +58,9 @@ public class JDate extends JBase {
      *
      * @param jBase 数据源
      * @param style 样式
-     * @return Object
+     * @return Date[]
      */
-    public static Object getArr(JBase jBase, String style) {
+    public static Date[] getArr(JBase jBase, String style) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             Date[] res = new Date[value.size()];
             for (int i = 0; i < value.size(); i++) {
@@ -71,9 +74,9 @@ public class JDate extends JBase {
      * List<JBase> 转 List<Date>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return List<Date>
      */
-    public static Object getList(JBase jBase) {
+    public static List<Date> getList(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             List<Date> res = new ArrayList<>(value.size());
             for (JBase base : value) {
@@ -87,9 +90,9 @@ public class JDate extends JBase {
      * List<JBase> 转 List<Date>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return List<Date>
      */
-    public static Object getList(JBase jBase, String style) {
+    public static List<Date> getList(JBase jBase, String style) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             List<Date> res = new ArrayList<>(value.size());
             for (JBase base : value) {
@@ -103,9 +106,9 @@ public class JDate extends JBase {
      * Map<String, JBase> 转 Map<String,Date>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Map<String, Date>
      */
-    public static Object getMap(JBase jBase) {
+    public static Map<String, Date> getMap(JBase jBase) {
         return ArrayUtil.doMapByJObject(jBase, (value) -> {
             Map<String, Date> res = new HashMap<>(value.size());
             for (String base : value.keySet()) {
@@ -119,9 +122,9 @@ public class JDate extends JBase {
      * Map<String, JBase> 转 Map<String,Date>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Map<String, Date>
      */
-    public static Object getMap(JBase jBase, String style) {
+    public static Map<String, Date> getMap(JBase jBase, String style) {
         return ArrayUtil.doMapByJObject(jBase, (value) -> {
             Map<String, Date> res = new HashMap<>(value.size());
             for (String base : value.keySet()) {

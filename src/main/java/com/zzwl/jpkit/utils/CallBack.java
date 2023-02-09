@@ -1,5 +1,8 @@
 package com.zzwl.jpkit.utils;
 
+/**
+ * @since 1.0
+ */
 @FunctionalInterface
 public interface CallBack {
     /**

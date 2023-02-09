@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @since 1.0
+ */
 public class JBool extends JBase {
     private final Boolean value;
     public final static String BOOLEAN = "boolean";
@@ -19,9 +22,9 @@ public class JBool extends JBase {
      * JArray to Boolean[]
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Boolean[]
      */
-    public static Object getArr(JBase jBase) {
+    public static Boolean[] getArr(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             Boolean[] res = new Boolean[value.size()];
             for (int i = 0; i < value.size(); i++) {
@@ -35,9 +38,9 @@ public class JBool extends JBase {
      * JArray to boolean[]
      *
      * @param jBase 数据源
-     * @return Object
+     * @return boolean[]
      */
-    public static Object get_Arr(JBase jBase) {
+    public static boolean[] get_Arr(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             boolean[] res = new boolean[value.size()];
             for (int i = 0; i < value.size(); i++) {
@@ -51,9 +54,9 @@ public class JBool extends JBase {
      * List<JBase> 转 List<Boolean>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return List<Boolean>
      */
-    public static Object getList(JBase jBase) {
+    public static List<Boolean> getList(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             List<Boolean> res = new ArrayList<>(value.size());
             for (JBase base : value) {
@@ -67,9 +70,9 @@ public class JBool extends JBase {
      * Map<String, JBase> 转 Map<String,Boolean>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Map<String, Boolean>
      */
-    public static Object getMap(JBase jBase) {
+    public static Map<String, Boolean> getMap(JBase jBase) {
         return ArrayUtil.doMapByJObject(jBase, (value) -> {
             Map<String, Boolean> res = new HashMap<>(value.size());
             for (String base : value.keySet()) {

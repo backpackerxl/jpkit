@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @since 1.0
+ */
 public class JFloat extends JBase {
 
     private final Float value;
@@ -30,9 +33,9 @@ public class JFloat extends JBase {
      * JArray to Float[]
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Float[]
      */
-    public static Object getArr(JBase jBase) {
+    public static Float[] getArr(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             Float[] res = new Float[value.size()];
             for (int i = 0; i < value.size(); i++) {
@@ -46,9 +49,9 @@ public class JFloat extends JBase {
      * JArray to float[]
      *
      * @param jBase 数据源
-     * @return Object
+     * @return float[]
      */
-    public static Object get_Arr(JBase jBase) {
+    public static float[] get_Arr(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             float[] res = new float[value.size()];
             for (int i = 0; i < value.size(); i++) {
@@ -63,9 +66,9 @@ public class JFloat extends JBase {
      * List<JBase> 转 List<Float>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return List<Float>
      */
-    public static Object getList(JBase jBase) {
+    public static List<Float> getList(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             List<Float> res = new ArrayList<>(value.size());
             for (JBase base : value) {
@@ -79,9 +82,9 @@ public class JFloat extends JBase {
      * Map<String, JBase> 转 Map<String,Float>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Map<String, Float>
      */
-    public static Object getMap(JBase jBase) {
+    public static Map<String, Float> getMap(JBase jBase) {
         return ArrayUtil.doMapByJObject(jBase, (value) -> {
             Map<String, Float> res = new HashMap<>(value.size());
             for (String base : value.keySet()) {

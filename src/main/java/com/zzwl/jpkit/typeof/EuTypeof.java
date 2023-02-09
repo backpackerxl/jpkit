@@ -3,6 +3,9 @@ package com.zzwl.jpkit.typeof;
 
 import java.util.Date;
 
+/**
+ * @since 1.0
+ */
 public enum EuTypeof {
     /**
      * Integer[] 数组的类型名称

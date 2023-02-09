@@ -12,6 +12,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * @since 1.0
+ */
 public final class NetUtil {
     public final static String HTTP = "http://";
     public final static String HTTPS = "https://";
@@ -133,7 +136,7 @@ public final class NetUtil {
     }
 
     /**
-     * 将数据与肮转化为表单类型的数据
+     * 将请求参数转化为表单类型的数据
      *
      * @param data 数据源
      * @return 表单类型的数据

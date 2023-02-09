@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @since 1.0
+ */
 public class JByte extends JBase {
 
     private final Byte value;
@@ -30,9 +33,9 @@ public class JByte extends JBase {
      * JArray to Byte[]
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Byte[]
      */
-    public static Object getArr(JBase jBase) {
+    public static Byte[] getArr(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             Byte[] res = new Byte[value.size()];
             for (int i = 0; i < value.size(); i++) {
@@ -46,9 +49,9 @@ public class JByte extends JBase {
      * JArray to byte[]
      *
      * @param jBase 数据源
-     * @return Object
+     * @return byte[]
      */
-    public static Object get_Arr(JBase jBase) {
+    public static byte[] get_Arr(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             byte[] res = new byte[value.size()];
             for (int i = 0; i < value.size(); i++) {
@@ -62,9 +65,9 @@ public class JByte extends JBase {
      * List<JBase> 转 List<Byte>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return List<Byte>
      */
-    public static Object getList(JBase jBase) {
+    public static List<Byte> getList(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             List<Byte> res = new ArrayList<>(value.size());
             for (JBase base : value) {
@@ -78,9 +81,9 @@ public class JByte extends JBase {
      * Map<String, JBase> 转 Map<String,Byte>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Map<String, Byte>
      */
-    public static Object getMap(JBase jBase) {
+    public static Map<String, Byte> getMap(JBase jBase) {
         return ArrayUtil.doMapByJObject(jBase, (value) -> {
             Map<String, Byte> res = new HashMap<>(value.size());
             for (String base : value.keySet()) {

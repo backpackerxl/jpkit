@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @since 1.0
+ */
 public class JLong extends JBase {
     private final Long value;
 
@@ -26,9 +29,9 @@ public class JLong extends JBase {
      *
      * @param jBase 数据源
      * @param field 当前字段
-     * @return Object
+     * @return Long[]
      */
-    public static Object getArr(JBase jBase, Field field) {
+    public static Long[] getArr(JBase jBase, Field field) {
         String typeName = field.getType().getTypeName();
         boolean tag = (typeName.equals(Long[].class.getTypeName()) || typeName.equals(long[].class.getTypeName())) && field.isAnnotationPresent(JFString.class);
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
@@ -51,9 +54,9 @@ public class JLong extends JBase {
      *
      * @param jBase 数据源
      * @param field 当前字段
-     * @return Object
+     * @return long[]
      */
-    public static Object get_Arr(JBase jBase, Field field) {
+    public static long[] get_Arr(JBase jBase, Field field) {
         String typeName = field.getType().getTypeName();
         boolean tag = (typeName.equals(Long[].class.getTypeName()) || typeName.equals(long[].class.getTypeName())) && field.isAnnotationPresent(JFString.class);
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
@@ -76,9 +79,9 @@ public class JLong extends JBase {
      *
      * @param jBase 数据源
      * @param field 当前字段
-     * @return Object
+     * @return List<Long>
      */
-    public static Object getList(JBase jBase, Field field) {
+    public static List<Long> getList(JBase jBase, Field field) {
         boolean tag = isTag(field);
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             List<Long> res = new ArrayList<>(value.size());
@@ -100,9 +103,9 @@ public class JLong extends JBase {
      *
      * @param jBase 数据源
      * @param field 当前字段
-     * @return Object
+     * @return Map<String, Long>
      */
-    public static Object getMap(JBase jBase, Field field) {
+    public static Map<String, Long> getMap(JBase jBase, Field field) {
         boolean tag = isTag(field);
         return ArrayUtil.doMapByJObject(jBase, (value) -> {
             Map<String, Long> res = new HashMap<>(value.size());

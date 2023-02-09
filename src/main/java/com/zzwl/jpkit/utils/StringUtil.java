@@ -10,6 +10,9 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @since 1.0
+ */
 public class StringUtil {
 
     private final static String boolPrefix = "is";
@@ -81,7 +84,7 @@ public class StringUtil {
      * @param regex  正则
      * @param target 字符串
      * @param func   处理函数
-     * @return 结果
+     * @return 替换结果
      */
     public static String replace(String regex, String target, Function<String, String> func) {
         Pattern compile = Pattern.compile(regex);
@@ -99,7 +102,7 @@ public class StringUtil {
      * @param regex  正则
      * @param target 字符串
      * @param func   处理函数
-     * @return 结果
+     * @return 替换结果
      */
     public static String replaceAll(String regex, String target, Function<String, String> func) {
         Pattern compile = Pattern.compile(regex);

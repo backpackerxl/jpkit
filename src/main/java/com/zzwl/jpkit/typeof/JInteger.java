@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @since 1.0
+ */
 public class JInteger extends JBase {
 
     private final Integer value;
@@ -19,9 +22,9 @@ public class JInteger extends JBase {
      * JArray to Integer[]
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Integer[]
      */
-    public static Object getArr(JBase jBase) {
+    public static Integer[] getArr(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             Integer[] res = new Integer[value.size()];
             for (int i = 0; i < value.size(); i++) {
@@ -35,9 +38,9 @@ public class JInteger extends JBase {
      * JArray to int[]
      *
      * @param jBase 数据源
-     * @return Object
+     * @return int[]
      */
-    public static Object get_Arr(JBase jBase) {
+    public static int[] get_Arr(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             int[] res = new int[value.size()];
             for (int i = 0; i < value.size(); i++) {
@@ -51,9 +54,9 @@ public class JInteger extends JBase {
      * List<JBase> 转 List<Integer>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return List<Integer>
      */
-    public static Object getList(JBase jBase) {
+    public static List<Integer> getList(JBase jBase) {
         return ArrayUtil.doArrayByJArray(jBase, (value) -> {
             List<Integer> res = new ArrayList<>(value.size());
             for (JBase base : value) {
@@ -67,9 +70,9 @@ public class JInteger extends JBase {
      * Map<String, JBase> 转 Map<String,Integer>
      *
      * @param jBase 数据源
-     * @return Object
+     * @return Map<String, Integer>
      */
-    public static Object getMap(JBase jBase) {
+    public static Map<String, Integer> getMap(JBase jBase) {
         return ArrayUtil.doMapByJObject(jBase, (value) -> {
             Map<String, Integer> res = new HashMap<>(value.size());
             for (String base : value.keySet()) {
