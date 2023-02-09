@@ -133,7 +133,7 @@ public class JSONTest {
     @Test
     public void testListAndMap() {
         List<User> users = new ArrayList<>();
-        String path = "src\\main\\resources\\db.json";
+        String path = "src\\test\\resources\\db.json";
 
         users.add(new User(1004207420089456666L, "zzwl", 300, true, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
         users.add(new User(2L, "zzwl", 400, false, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"}));
@@ -158,7 +158,7 @@ public class JSONTest {
 
 
         String url = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
-        String local = "src\\main\\resources\\db.json";
+        String local = "src\\test\\resources\\db.json";
 
 //        JBase net = (JBase) JSON.load(url);
         JBase net_local = (JBase) JSON.load(local);
