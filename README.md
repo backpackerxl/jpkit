@@ -60,16 +60,9 @@ public class Test {
 </server>
 ```
 
-- 在项目的pom文件中加入如下内容
-```xml
-
-<dependency>
-    <groupId>com.zzwl</groupId>
-    <artifactId>jpkit</artifactId>
-    <version>0.0.1</version>
-</dependency>
-```
-
+- 在项目的pom文件中加入依赖库
+[`jpkit依赖`](https://github.com/Backpackerxl/jpkit/packages/)
+- 加入依赖库仓库
 ```xml
 <repositories>
 <repository>
