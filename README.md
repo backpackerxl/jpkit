@@ -50,3 +50,33 @@ public class Test {
 #### 更多用法 [`Doc.md`](docs/Doc.md)
 
 #### `jpkit` [`官方API`](https://backpackerxl.github.io/jpkit/)
+
+#### Maven install
+
+- 需要修改maven的setting文件，加入如下内容
+
+```xml
+
+<server>
+    <id>github</id>
+    <username>Backpackerxl</username>
+    <password>token</password>
+</server>
+```
+
+- 在项目的pom文件中加入如下内容
+
+```xml
+
+<repositories>
+    <repository>
+        <id>github</id>
+        <name>GitHub Backpackerxl Apache Maven Packages</name>
+        <url>https://maven.pkg.github.com/backpackerxl/jpkit</url>
+    </repository>
+</repositories>
+```
+
+> 现在即可愉快的使用jpkit, token可以在iuss中问我要或者发邮件，
+> 网易邮箱: backpackerxh@163.com
+> QQ邮箱: 946115360@qq.com
