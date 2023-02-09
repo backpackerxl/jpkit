@@ -6,7 +6,15 @@
 
     <groupId>com.zzwl</groupId>
     <artifactId>jpkit</artifactId>
-    <version>0.0.2</version>
+    <version>1.0.0</version>
+
+    <developers>
+        <developer>
+            <id>xiongli</id>
+            <name>xiongli</name>
+            <email>backpackerxh@163.com</email>
+        </developer>
+    </developers>
     <build>
         <plugins>
             <!--生成doc jar包-->
