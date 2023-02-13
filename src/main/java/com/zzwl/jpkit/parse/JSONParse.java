@@ -4,6 +4,7 @@ import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.exception.JCharacterException;
 import com.zzwl.jpkit.exception.JTypeofException;
 import com.zzwl.jpkit.typeof.*;
+import com.zzwl.jpkit.utils.StringUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -134,7 +135,7 @@ public class JSONParse {
             }
             s.append(nextChar);
         }
-        return new JString(s.toString());
+        return new JString(StringUtil.unicodeToString(s.toString()));
     }
 
     /**

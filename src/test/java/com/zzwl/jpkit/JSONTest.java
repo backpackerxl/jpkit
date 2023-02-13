@@ -4,6 +4,7 @@ import com.zzwl.jpkit.bean.Options;
 import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.parse.ObjectParse;
+import com.zzwl.jpkit.plugs.bytecode.SerializablePlug;
 import com.zzwl.jpkit.typeof.*;
 import com.zzwl.jpkit.utils.StringUtil;
 import com.zzwl.jpkit.vo.*;
@@ -143,7 +144,7 @@ public class JSONTest {
 
         JSON.setTabLength(1);
         JSON.setTabCharacter('\t');
-        JSON.stringify(users).save(path, 1);
+        JSON.stringify(users).save(path, 2);
 
         System.out.println(JSON.stringify(users).terse(1));
         System.out.println(JSON.stringify(users).pretty(1));
@@ -183,7 +184,7 @@ public class JSONTest {
 
     @Test
     public void testObjectParse() {
-        String json = "{\n" + "  \"id\": \"1\",\n" + "  \"username\": \"zzwl\",\n" + "  \"user_code\": 300,\n" + "  \"admin\": true,\n" + "  \"create_time\": \"2023-01-31\",\n" + "  \"nums\": [\n" + "    4545,\n" + "    2121,\n" + "    3636\n" + "  ],\n" + "  \"strings\": [\n" + "    \"zz\",\n" + "    \"xx\",\n" + "    \"ww\"\n" + "  ],\n" + "  \"ints\": null,\n" + "  \"longs\": [\n" + "    \"5164161651651165151\",\n" + "    \"56156151655616556\",\n" + "    \"165156516156156\"\n" + "  ],\n" + "  \"longList\": [\n" + "    \"1651465163113313131\",\n" + "    \"165146516423313131\",\n" + "    \"165146516453313131\"\n" + "  ]\n" + "}";
+        String json = "{\n" + "  \"id\": \"1\",\n" + "  \"username\": \"zzwl\",\n" + "  \"user_code\": 300,\n" + "  \"admin\": true,\n" + "  \"create_time\": \"2023-01-31\",\n" + "  \"nums\": [\n" + "    4545,\n" + "    2121,\n" + "    3636\n" + "  ],\n" + "  \"strings\": [\n" + "    \"zz\",\n" + "    \"xx\",\n" + "    \"ww\"\n" + "  ],\n" + "  \"ints\": [11,22,666],\n" + "  \"longs\": [\n" + "    \"5164161651651165151\",\n" + "    \"56156151655616556\",\n" + "    \"165156516156156\"\n" + "  ],\n" + "  \"longList\": [\n" + "    \"1651465163113313131\",\n" + "    \"165146516423313131\",\n" + "    \"165146516453313131\"\n" + "  ]\n" + "}";
 //        JObject parse = (JObject) JSON.parse(json);
 //        System.out.println(parse);
         User user = JSON.parse(json, User.class);
@@ -261,6 +262,10 @@ public class JSONTest {
         System.out.println(parse);
     }
 
+    /**
+     * 网络JSON测试没有问题, 但是有些接口在打包部署时测试不通过,不能打包
+     */
+
 //    @Test
 //    public void testNetWorkGET() {
 //        String url = "http://localhost:8083/business/dutyrecord/list/c85d8bab8827641f8047dd50e6cd78e1";
@@ -293,7 +298,6 @@ public class JSONTest {
 //        ITypeof<Object> load = JSON.load(url, options);
 //        System.out.println(JSON.stringify(load).pretty());
 //    }
-
     @Test
     public void testOption() {
         Options options = Options.getInstance().setPram("User-Agent", "aviuahviauhv").setPram("time", new Date().toString()).setPram("server", "Java VM").setData("key", "asvav5566ava");
@@ -362,5 +366,34 @@ public class JSONTest {
 
         System.out.println(StringUtil.replace("[a-z]+", "4464sdsf56446fgg", String::toUpperCase));
 //        System.out.println(load);
+    }
+
+    @Test
+    public void testTypeOfLong() throws NoSuchFieldException {
+        LongVo longVo = new LongVo(546L, 1L);
+        System.out.println(longVo);
+
+        LongVo vo = JSON.parse(longVo.toString(), LongVo.class);
+
+        System.out.println(vo);
+    }
+
+    @Test
+    public void testUnicode(){
+        StringVo stringVo = new StringVo(StringUtil.stringToUnicode("你好,北京!"));
+
+        System.out.println(stringVo);
+        StringVo stringVo1 = JSON.parse(stringVo.toString(), StringVo.class);
+
+        System.out.println(stringVo1);
+    }
+
+    @Test
+    public void testByteCode(){
+        StringVo zzwl_plus = new StringVo("zzwl_plus");
+//        new SerializablePlug(zzwl_plus).writeObjectClassToClasses();
+
+        String json = new StringVoSerializable().write(zzwl_plus);
+        System.out.println(json);
     }
 }

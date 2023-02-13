@@ -1,12 +1,11 @@
 package com.zzwl.jpkit.typeof;
 
 import com.zzwl.jpkit.exception.JTypeofException;
+import com.zzwl.jpkit.plugs.impl.JBaseEntryImpl;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @since 1.0
@@ -32,13 +31,7 @@ public class JChar extends JBase {
      * @return Character[]
      */
     public static Character[] getArr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            Character[] res = new Character[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = new JChar(value.get(i)).getValue();
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByArray(jBase, new Character[]{}, (jb) -> new JChar(jb).getValue());
     }
 
     /**
@@ -48,13 +41,12 @@ public class JChar extends JBase {
      * @return char[]
      */
     public static char[] get_Arr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            char[] res = new char[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = new JChar(value.get(i)).getValue();
-            }
-            return res;
-        });
+        Character[] arr = getArr(jBase);
+        char[] res = new char[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            res[i] = arr[i];
+        }
+        return res;
     }
 
     /**
@@ -64,13 +56,7 @@ public class JChar extends JBase {
      * @return List<Character>
      */
     public static List<Character> getList(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            List<Character> res = new ArrayList<>(value.size());
-            for (JBase base : value) {
-                res.add(new JChar(base).getValue());
-            }
-            return res;
-        });
+        return Arrays.stream(getArr(jBase)).collect(Collectors.toList());
     }
 
     /**
@@ -80,13 +66,7 @@ public class JChar extends JBase {
      * @return Map<String, Character>
      */
     public static Map<String, Character> getMap(JBase jBase) {
-        return ArrayUtil.doMapByJObject(jBase, (value) -> {
-            Map<String, Character> res = new HashMap<>(value.size());
-            for (String base : value.keySet()) {
-                res.put(base, new JChar(value.get(base)).getValue());
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByMap(jBase, (jb) -> new JBaseEntryImpl<>(jb.getKey(), new JChar(jb.getValue()).getValue()));
     }
 
     @Override

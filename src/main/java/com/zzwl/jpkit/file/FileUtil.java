@@ -33,4 +33,24 @@ public final class FileUtil {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * 写文件操作
+     *
+     * @param res 内容
+     * @param p   路径
+     */
+    public static void write(String res, String p) {
+        Path path = Paths.get(p);
+        try {
+            if (Files.exists(path)) {
+                Files.delete(path);
+            }
+            Files.createFile(path);
+            byte[] bytes = res.getBytes();
+            Files.write(path, bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

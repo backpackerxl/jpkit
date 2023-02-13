@@ -1,12 +1,12 @@
 package com.zzwl.jpkit.typeof;
 
+import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.core.JSON;
+import com.zzwl.jpkit.plugs.impl.JBaseEntryImpl;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @since 1.0
@@ -30,13 +30,7 @@ public class JObject extends JBase {
      * @return Object[]
      */
     public static Object[] getArr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            Object[] res = new Object[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = value.get(i).getValue();
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByArray(jBase, new Object[]{}, ITypeof::getValue);
     }
 
     /**
@@ -46,13 +40,7 @@ public class JObject extends JBase {
      * @return List<Object>
      */
     public static List<Object> getList(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            List<Object> res = new ArrayList<>(value.size());
-            for (JBase base : value) {
-                res.add(base.getValue());
-            }
-            return res;
-        });
+        return Arrays.stream(getArr(jBase)).collect(Collectors.toList());
     }
 
     /**
@@ -62,13 +50,7 @@ public class JObject extends JBase {
      * @return Map<String, Object>
      */
     public static Map<String, Object> getMap(JBase jBase) {
-        return ArrayUtil.doMapByJObject(jBase, (value) -> {
-            Map<String, Object> res = new HashMap<>(value.size());
-            for (String base : value.keySet()) {
-                res.put(base, value.get(base).getValue());
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByMap(jBase, (jb) -> new JBaseEntryImpl<>(jb.getKey(), jb.getValue().getValue()));
     }
 
     @Override

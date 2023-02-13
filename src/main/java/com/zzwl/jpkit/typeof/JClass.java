@@ -1,11 +1,10 @@
 package com.zzwl.jpkit.typeof;
 
+import com.zzwl.jpkit.plugs.impl.JBaseEntryImpl;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @since 1.0
@@ -28,13 +27,7 @@ public class JClass extends JBase {
      * @return Class<?>[]
      */
     public static Class<?>[] getArr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            Class<?>[] res = new Class[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = new JClass(value.get(i)).getValue();
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByArray(jBase, new Class[]{}, (jb) -> new JClass(jb).getValue());
     }
 
     /**
@@ -44,13 +37,7 @@ public class JClass extends JBase {
      * @return List<Class < ?>>
      */
     public static List<Class<?>> getList(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            List<Class<?>> res = new ArrayList<>(value.size());
-            for (JBase base : value) {
-                res.add(new JClass(base).getValue());
-            }
-            return res;
-        });
+        return Arrays.stream(getArr(jBase)).collect(Collectors.toList());
     }
 
     /**
@@ -60,13 +47,7 @@ public class JClass extends JBase {
      * @return Map<String, Class < ?>>
      */
     public static Map<String, Class<?>> getMap(JBase jBase) {
-        return ArrayUtil.doMapByJObject(jBase, (value) -> {
-            Map<String, Class<?>> res = new HashMap<>(value.size());
-            for (String base : value.keySet()) {
-                res.put(base, new JClass(value.get(base)).getValue());
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByMap(jBase, (jb) -> new JBaseEntryImpl<>(jb.getKey(), new JClass(jb.getValue()).getValue()));
     }
 
     @Override

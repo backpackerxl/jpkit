@@ -1,11 +1,13 @@
 package com.zzwl.jpkit.plugs;
 
 import com.zzwl.jpkit.core.JSON;
+import com.zzwl.jpkit.plugs.impl.JBaseEntryImpl;
 import com.zzwl.jpkit.typeof.JBase;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @since 1.0
@@ -23,13 +25,7 @@ public class BasePlug {
      * @return 对应类型的对象
      */
     public static <T> T getObject(JBase jBase, Class<T> clazz) {
-        try {
-            return JSON.parse(jBase.toString(), clazz);
-        } catch (ClassCastException e) {
-            // log 记录转化失败 e.printStackTrace();
-            e.printStackTrace();
-            return null;
-        }
+        return JSON.parse(jBase, clazz);
     }
 
     /**
@@ -39,13 +35,7 @@ public class BasePlug {
      * @return 对应类型的数组
      */
     public static Object[] getArray(JBase jBase, Class<?> clazz) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            Object[] res = (Object[]) Array.newInstance(clazz, value.size());
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = JSON.parse(value.get(i).toString(), clazz);
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByArray(jBase, (Object[]) Array.newInstance(clazz, 0), (jb) -> JSON.parse(jb, clazz));
     }
 
     /**
@@ -55,13 +45,7 @@ public class BasePlug {
      * @return 对应类型的List
      */
     public static <T> List<T> getList(JBase jBase, Class<T> clazz) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            List<T> res = new ArrayList<>(value.size());
-            for (JBase base : value) {
-                res.add(JSON.parse(base.toString(), clazz));
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByList(jBase, (jb) -> JSON.parse(jb, clazz));
     }
 
     /**
@@ -71,12 +55,6 @@ public class BasePlug {
      * @return 对应类型的Map
      */
     public static <T> Map<String, T> getMap(JBase jBase, Class<T> target) {
-        return ArrayUtil.doMapByJObject(jBase, (value) -> {
-            Map<String, T> res = new HashMap<>(value.size());
-            for (String base : value.keySet()) {
-                res.put(base, JSON.parse(value.get(base).toString(), target));
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByMap(jBase, (jb) -> new JBaseEntryImpl<>(jb.getKey(), JSON.parse(jb.getValue(), target)));
     }
 }

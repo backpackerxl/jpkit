@@ -1,10 +1,12 @@
 package com.zzwl.jpkit.typeof;
 
 import com.zzwl.jpkit.exception.JTypeofException;
+import com.zzwl.jpkit.plugs.impl.JBaseEntryImpl;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @since 1.0
@@ -44,13 +46,7 @@ public class JDate extends JBase {
      * @return Date[]
      */
     public static Date[] getArr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            Date[] res = new Date[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = new JDate(value.get(i)).getValue();
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByArray(jBase, new Date[]{}, (jb) -> new JDate(jb).getValue());
     }
 
     /**
@@ -61,13 +57,7 @@ public class JDate extends JBase {
      * @return Date[]
      */
     public static Date[] getArr(JBase jBase, String style) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            Date[] res = new Date[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = new JDate(value.get(i), style).getValue();
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByArray(jBase, new Date[]{}, (jb) -> new JDate(jb, style).getValue());
     }
 
     /**
@@ -77,13 +67,7 @@ public class JDate extends JBase {
      * @return List<Date>
      */
     public static List<Date> getList(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            List<Date> res = new ArrayList<>(value.size());
-            for (JBase base : value) {
-                res.add(new JDate(base).getValue());
-            }
-            return res;
-        });
+        return Arrays.stream(getArr(jBase)).collect(Collectors.toList());
     }
 
     /**
@@ -93,13 +77,7 @@ public class JDate extends JBase {
      * @return List<Date>
      */
     public static List<Date> getList(JBase jBase, String style) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            List<Date> res = new ArrayList<>(value.size());
-            for (JBase base : value) {
-                res.add(new JDate(base, style).getValue());
-            }
-            return res;
-        });
+        return Arrays.stream(getArr(jBase, style)).collect(Collectors.toList());
     }
 
     /**
@@ -109,13 +87,7 @@ public class JDate extends JBase {
      * @return Map<String, Date>
      */
     public static Map<String, Date> getMap(JBase jBase) {
-        return ArrayUtil.doMapByJObject(jBase, (value) -> {
-            Map<String, Date> res = new HashMap<>(value.size());
-            for (String base : value.keySet()) {
-                res.put(base, new JDate(value.get(base)).getValue());
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByMap(jBase, (jb) -> new JBaseEntryImpl<>(jb.getKey(), new JDate(jb.getValue()).getValue()));
     }
 
     /**
@@ -125,13 +97,7 @@ public class JDate extends JBase {
      * @return Map<String, Date>
      */
     public static Map<String, Date> getMap(JBase jBase, String style) {
-        return ArrayUtil.doMapByJObject(jBase, (value) -> {
-            Map<String, Date> res = new HashMap<>(value.size());
-            for (String base : value.keySet()) {
-                res.put(base, new JDate(value.get(base), style).getValue());
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByMap(jBase, (jb) -> new JBaseEntryImpl<>(jb.getKey(), new JDate(jb.getValue(), style).getValue()));
     }
 
     @Override

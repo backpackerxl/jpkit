@@ -1,11 +1,11 @@
 package com.zzwl.jpkit.typeof;
 
+import com.zzwl.jpkit.core.ITypeof;
+import com.zzwl.jpkit.plugs.impl.JBaseEntryImpl;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @since 1.0
@@ -24,13 +24,7 @@ public class JString extends JBase {
      * @return String[]
      */
     public static String[] getArr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            String[] res = new String[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = ((JString) value.get(i)).getValue();
-            }
-            return res;
-        });
+        return (String[]) ArrayUtil.doArrayByArray(jBase, new String[]{}, ITypeof::getValue);
     }
 
     /**
@@ -40,13 +34,7 @@ public class JString extends JBase {
      * @return List<String>
      */
     public static List<String> getList(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            List<String> res = new ArrayList<>(value.size());
-            for (JBase base : value) {
-                res.add(((JString) base).getValue());
-            }
-            return res;
-        });
+        return Arrays.stream(getArr(jBase)).collect(Collectors.toList());
     }
 
     /**
@@ -56,13 +44,7 @@ public class JString extends JBase {
      * @return Map<String, String>
      */
     public static Map<String, String> getMap(JBase jBase) {
-        return ArrayUtil.doMapByJObject(jBase, (value) -> {
-            Map<String, String> res = new HashMap<>(value.size());
-            for (String base : value.keySet()) {
-                res.put(base, ((JString) value.get(base)).getValue());
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByMap(jBase, (jb) -> new JBaseEntryImpl<>(jb.getKey(), ((JString) jb).getValue()));
     }
 
     @Override

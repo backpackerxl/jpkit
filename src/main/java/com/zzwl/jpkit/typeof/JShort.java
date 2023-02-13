@@ -1,12 +1,14 @@
 package com.zzwl.jpkit.typeof;
 
 import com.zzwl.jpkit.exception.JTypeofException;
+import com.zzwl.jpkit.plugs.impl.JBaseEntryImpl;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.nio.ShortBuffer;
+import java.util.*;
+import java.util.function.IntFunction;
+import java.util.stream.Collectors;
 
 /**
  * @since 1.0
@@ -31,13 +33,7 @@ public class JShort extends JBase {
      * @return Short[]
      */
     public static Short[] getArr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            Short[] res = new Short[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = new JShort(value.get(i)).getValue();
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByArray(jBase, new Short[]{}, (jb) -> new JShort(jb).getValue());
     }
 
     /**
@@ -47,13 +43,12 @@ public class JShort extends JBase {
      * @return short[]
      */
     public static short[] get_Arr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            short[] res = new short[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = new JShort(value.get(i)).getValue();
-            }
-            return res;
-        });
+        Short[] shorts = getArr(jBase);
+        short[] res = new short[shorts.length];
+        for (int i = 0; i < shorts.length; i++) {
+            res[i] = shorts[i];
+        }
+        return res;
     }
 
 
@@ -64,13 +59,7 @@ public class JShort extends JBase {
      * @return List<Short>
      */
     public static List<Short> getList(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            List<Short> res = new ArrayList<>(value.size());
-            for (JBase base : value) {
-                res.add(new JShort(base).getValue());
-            }
-            return res;
-        });
+        return Arrays.stream(getArr(jBase)).collect(Collectors.toList());
     }
 
     /**
@@ -80,13 +69,7 @@ public class JShort extends JBase {
      * @return Map<String, Short>
      */
     public static Map<String, Short> getMap(JBase jBase) {
-        return ArrayUtil.doMapByJObject(jBase, (value) -> {
-            Map<String, Short> res = new HashMap<>(value.size());
-            for (String base : value.keySet()) {
-                res.put(base, new JShort(value.get(base)).getValue());
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByMap(jBase, (jb) -> new JBaseEntryImpl<>(jb.getKey(), new JShort(jb.getValue()).getValue()));
     }
 
     @Override

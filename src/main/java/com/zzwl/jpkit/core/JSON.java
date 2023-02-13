@@ -96,7 +96,7 @@ public class JSON {
     public static <B> B parse(String json, Class<B> clazz) {
         ITypeof<Object> typeof = parse(json);
         if (typeof instanceof JArray) {
-            throw new RuntimeException("load error, please use JSON.parseList(String json, Class<B> clazz)");
+            throw new RuntimeException("parse error, please use JSON.parseList(String json, Class<B> clazz)");
         }
         return parse(typeof, clazz);
     }
@@ -122,7 +122,7 @@ public class JSON {
      */
     public static <B> B parse(ITypeof<Object> typeof, Class<B> clazz) {
         if (typeof instanceof JArray) {
-            throw new RuntimeException("load error, please use JSON.parseList(String json, Class<B> clazz)");
+            throw new RuntimeException("parse error, please use JSON.parseList(String json, Class<B> clazz)");
         }
         return new ObjectParse(typeof).parse(clazz);
     }
@@ -156,7 +156,7 @@ public class JSON {
     public static <B> List<B> parseList(String json, Class<B> clazz) {
         ITypeof<Object> parse = parse(json);
         if (parse instanceof JObject) {
-            throw new RuntimeException("load error, please use JSON.parseMap(String json, Class<B> clazz)");
+            throw new RuntimeException("parseList error, please use JSON.parseMap(String json, Class<B> clazz)");
         }
         List<B> list = new ArrayList<>();
         JArray arr = (JArray) parse;
@@ -199,7 +199,7 @@ public class JSON {
     public static <B> Map<String, B> parseMap(String json, Class<B> clazz) {
         ITypeof<Object> parse = parse(json);
         if (parse instanceof JArray) {
-            throw new RuntimeException("load error, please use JSON.parseList(String json, Class<B> clazz)");
+            throw new RuntimeException("parseMap error, please use JSON.parseList(String json, Class<B> clazz)");
         }
         Map<String, B> map = new HashMap<>();
         JObject jo = (JObject) parse;

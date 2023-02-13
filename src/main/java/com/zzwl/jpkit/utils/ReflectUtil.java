@@ -155,11 +155,8 @@ public class ReflectUtil {
             o = String.format("\"%s\"", o);
         } else if (o instanceof List) {
             if (field.isAnnotationPresent(JFString.class)) {
-                JFString jfString = field.getDeclaredAnnotation(JFString.class);
-                if (jfString.type().getTypeName().equals(Long.class.getTypeName())) {
-                    // 打开Long to String
-                    BToJSON.setLongToStr(true);
-                }
+                // 打开Long to String
+                BToJSON.setLongToStr(true);
             }
             if (isPretty) {
                 o = JSON.stringify(o).pretty();
@@ -168,11 +165,8 @@ public class ReflectUtil {
             }
         } else if (o instanceof Map) {
             if (field.isAnnotationPresent(JFString.class)) {
-                JFString jfString = field.getDeclaredAnnotation(JFString.class);
-                if (jfString.type().getTypeName().equals(Long.class.getTypeName())) {
-                    // 打开Long to String
-                    BToJSON.setLongToStr(true);
-                }
+                // 打开Long to String
+                BToJSON.setLongToStr(true);
             }
             if (isPretty) {
                 o = JSON.stringify(o).pretty();
@@ -200,10 +194,11 @@ public class ReflectUtil {
                 method.invoke(obj, value);
             }
             setTag = false;
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            // log set error
+        } catch (NoSuchMethodException | IllegalArgumentException | InvocationTargetException |
+                 IllegalAccessException e) {
+            // log set error "the set " + field.getName() + " method because " + e
             setTag = true;
-            //throw new RuntimeException(e);
+            //  throw new RuntimeException("the set " + field.getName() + " method because " + e);
         }
     }
 
@@ -287,35 +282,39 @@ public class ReflectUtil {
      */
     private static Object getValue(Object source, JBase jBase, Field field) {
         Class<?> type = field.getType();
-        String typeName = type.getName();
-        if ((typeName.equals(Long.class.getTypeName()) || typeName.equals(long.class.getTypeName())) && field.isAnnotationPresent(JFString.class)) {
-            return Long.valueOf(((JString) jBase).getValue());
+        if (type.equals(Long.class) || type.equals(long.class)) {
+            if (field.isAnnotationPresent(JFString.class)) {
+                return Long.valueOf(((JString) jBase).getValue());
+            }
+            if (jBase instanceof JInteger) {
+                return Long.valueOf(((JInteger) jBase).getValue());
+            }
         }
 
         if (isBaseTypeof(field)) {
             return jBase.getValue();
         }
 
-        if (field.getType().equals(Byte.class) || field.getType().equals(byte.class)) {
+        if (type.equals(Byte.class) || type.equals(byte.class)) {
             return new JByte(jBase).getValue();
         }
 
-        if (field.getType().equals(Character.class) || field.getType().equals(char.class)) {
+        if (type.equals(Character.class) || type.equals(char.class)) {
             return new JChar(jBase).getValue();
         }
 
-        if (field.getType().equals(Float.class) || field.getType().equals(float.class)) {
+        if (type.equals(Float.class) || type.equals(float.class)) {
             return new JFloat(jBase).getValue();
         }
 
-        if (field.getType().equals(Short.class) || field.getType().equals(short.class)) {
+        if (type.equals(Short.class) || type.equals(short.class)) {
             return new JShort(jBase).getValue();
         }
-        if (typeName.equals(Class.class.getTypeName())) {
+        if (type.equals(Class.class)) {
             // Object
             return new JClass(jBase).getValue();
         }
-        if (typeName.equals(Date.class.getName())) {
+        if (type.equals(Date.class)) {
             if (field.isAnnotationPresent(JFormat.class)) {
                 JFormat format = field.getDeclaredAnnotation(JFormat.class);
                 if (format.value().equals("#")) {
@@ -329,7 +328,7 @@ public class ReflectUtil {
             Class<?> sourceClass = source.getClass();
             return getPlugsObject(jBase, field, sourceClass);
         }
-        if (field.getType().isArray()) {
+        if (type.isArray()) {
             // Integer[] ...
             Class<?> mySelf = isMySelf(field);
             if (!Objects.isNull(mySelf) && JBase.isNotBase(mySelf)) {
@@ -337,7 +336,7 @@ public class ReflectUtil {
             }
             return ArrayUtil.getArr(jBase, field);
         }
-        if (typeName.equals(List.class.getTypeName())) {
+        if (type.equals(List.class)) {
             // List
             Class<?> mySelf = isMySelf(field);
             if (!Objects.isNull(mySelf) && JBase.isNotBase(mySelf)) {
@@ -345,7 +344,7 @@ public class ReflectUtil {
             }
             return ArrayUtil.getList(jBase, field);
         }
-        if (typeName.equals(Map.class.getTypeName())) {
+        if (type.equals(Map.class)) {
             // Map
             Class<?> mySelf = isMySelf(field);
             if (!Objects.isNull(mySelf) && JBase.isNotBase(mySelf)) {
@@ -353,8 +352,8 @@ public class ReflectUtil {
             }
             return ArrayUtil.getMap(jBase, field);
         }
-        if (JBase.isNotBase(field.getType())) {
-            return BasePlug.getObject(jBase, field.getType());
+        if (JBase.isNotBase(type)) {
+            return BasePlug.getObject(jBase, type);
         }
         return jBase.getValue();
     }

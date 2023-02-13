@@ -1,12 +1,11 @@
 package com.zzwl.jpkit.typeof;
 
 import com.zzwl.jpkit.exception.JTypeofException;
+import com.zzwl.jpkit.plugs.impl.JBaseEntryImpl;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @since 1.0
@@ -36,13 +35,7 @@ public class JByte extends JBase {
      * @return Byte[]
      */
     public static Byte[] getArr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            Byte[] res = new Byte[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = new JByte(value.get(i)).getValue();
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByArray(jBase, new Byte[]{}, (jb) -> new JByte(jb).getValue());
     }
 
     /**
@@ -52,13 +45,12 @@ public class JByte extends JBase {
      * @return byte[]
      */
     public static byte[] get_Arr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            byte[] res = new byte[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = new JByte(value.get(i)).getValue();
-            }
-            return res;
-        });
+        Byte[] arr = getArr(jBase);
+        byte[] res = new byte[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            res[i] = arr[i];
+        }
+        return res;
     }
 
     /**
@@ -68,13 +60,7 @@ public class JByte extends JBase {
      * @return List<Byte>
      */
     public static List<Byte> getList(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            List<Byte> res = new ArrayList<>(value.size());
-            for (JBase base : value) {
-                res.add(new JByte(base).getValue());
-            }
-            return res;
-        });
+        return Arrays.stream(getArr(jBase)).collect(Collectors.toList());
     }
 
     /**
@@ -84,13 +70,7 @@ public class JByte extends JBase {
      * @return Map<String, Byte>
      */
     public static Map<String, Byte> getMap(JBase jBase) {
-        return ArrayUtil.doMapByJObject(jBase, (value) -> {
-            Map<String, Byte> res = new HashMap<>(value.size());
-            for (String base : value.keySet()) {
-                res.put(base, new JByte(value.get(base)).getValue());
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByMap(jBase, (jb) -> new JBaseEntryImpl<>(jb.getKey(), new JByte(jb.getValue()).getValue()));
     }
 
     @Override

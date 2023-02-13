@@ -1,12 +1,11 @@
 package com.zzwl.jpkit.typeof;
 
 import com.zzwl.jpkit.exception.JTypeofException;
+import com.zzwl.jpkit.plugs.impl.JBaseEntryImpl;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @since 1.0
@@ -36,13 +35,7 @@ public class JFloat extends JBase {
      * @return Float[]
      */
     public static Float[] getArr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            Float[] res = new Float[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = new JFloat(value.get(i)).getValue();
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByArray(jBase, new Float[]{}, (jb) -> new JFloat(jb).getValue());
     }
 
     /**
@@ -52,13 +45,12 @@ public class JFloat extends JBase {
      * @return float[]
      */
     public static float[] get_Arr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            float[] res = new float[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = new JFloat(value.get(i)).getValue();
-            }
-            return res;
-        });
+        Float[] arr = getArr(jBase);
+        float[] res = new float[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            res[i] = arr[i];
+        }
+        return res;
     }
 
 
@@ -69,13 +61,7 @@ public class JFloat extends JBase {
      * @return List<Float>
      */
     public static List<Float> getList(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            List<Float> res = new ArrayList<>(value.size());
-            for (JBase base : value) {
-                res.add(new JFloat(base).getValue());
-            }
-            return res;
-        });
+        return Arrays.stream(getArr(jBase)).collect(Collectors.toList());
     }
 
     /**
@@ -85,13 +71,7 @@ public class JFloat extends JBase {
      * @return Map<String, Float>
      */
     public static Map<String, Float> getMap(JBase jBase) {
-        return ArrayUtil.doMapByJObject(jBase, (value) -> {
-            Map<String, Float> res = new HashMap<>(value.size());
-            for (String base : value.keySet()) {
-                res.put(base, new JFloat(value.get(base)).getValue());
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByMap(jBase, (jb) -> new JBaseEntryImpl<>(jb.getKey(), new JFloat(jb.getValue()).getValue()));
     }
 
     @Override

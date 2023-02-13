@@ -75,7 +75,22 @@ public class StringUtil {
      * @return 浏览器中文编码
      */
     public static String getEncodeString(String s) {
-        return replaceAll("[一-龥]+", s, StringUtil::getEncode);
+        if (s == null) {
+            return null;
+        }
+        Pattern compile = Pattern.compile("[一-龥]+");
+        Matcher matcher = compile.matcher(s);
+        if (!matcher.find()) {
+            return s;
+        }
+        String res = s;
+        String temp = matcher.group();
+        res = res.replace(temp, getEncode(temp));
+        while (matcher.find()) {
+            String t = matcher.group();
+            res = res.replace(t, getEncode(t));
+        }
+        return res;
     }
 
     /**
@@ -87,6 +102,9 @@ public class StringUtil {
      * @return 替换结果
      */
     public static String replace(String regex, String target, Function<String, String> func) {
+        if (regex == null) {
+            return null;
+        }
         Pattern compile = Pattern.compile(regex);
         Matcher matcher = compile.matcher(target);
         if (matcher.find()) {
@@ -105,8 +123,16 @@ public class StringUtil {
      * @return 替换结果
      */
     public static String replaceAll(String regex, String target, Function<String, String> func) {
+        if (target == null) {
+            return null;
+        }
         Pattern compile = Pattern.compile(regex);
         Matcher matcher = compile.matcher(target);
+        if (!matcher.find()) {
+            return target;
+        }
+        String temp = matcher.group();
+        target = target.replace(temp, func.apply(temp));
         while (matcher.find()) {
             String group = matcher.group();
             target = target.replace(group, func.apply(group));
@@ -126,5 +152,46 @@ public class StringUtil {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * 将Unicode转化为正常字符
+     *
+     * @param s Unicode字符串
+     * @return 正常字符串
+     */
+    public static String unicodeToString(String s) {
+        if (s == null) {
+            return null;
+        }
+        Pattern compile = Pattern.compile("\\\\u([\\w]{2,4})");
+        Matcher matcher = compile.matcher(s);
+        if (!matcher.find()) {
+            return s;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append((char) Integer.parseInt(matcher.group(1), 16));
+        while (matcher.find()) {
+            sb.append((char) Integer.parseInt(matcher.group(1), 16));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 将正常字符转化为Unicode
+     *
+     * @param s 正常字符串
+     * @return Unicode字符串
+     */
+    public static String stringToUnicode(String s) {
+        if (s == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        char[] chars = s.toCharArray();
+        for (char c : chars) {
+            sb.append('\\').append('u').append(Integer.toHexString(c));
+        }
+        return sb.toString();
     }
 }

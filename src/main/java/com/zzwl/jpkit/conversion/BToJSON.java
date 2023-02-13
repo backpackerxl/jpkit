@@ -1,6 +1,7 @@
 package com.zzwl.jpkit.conversion;
 
 import com.zzwl.jpkit.core.JSON;
+import com.zzwl.jpkit.file.FileUtil;
 import com.zzwl.jpkit.typeof.JBase;
 import com.zzwl.jpkit.utils.ArrayUtil;
 import com.zzwl.jpkit.utils.ReflectUtil;
@@ -423,21 +424,12 @@ public final class BToJSON<B> {
      * @param pretty 是否格式化
      */
     public void save(String p, boolean pretty) {
-        Path path = Paths.get(p);
-        try {
-            if (Files.exists(path)) {
-                Files.delete(path);
-            }
-            Files.createFile(path);
-            byte[] bytes = terse().getBytes();
-            if (pretty) {
-                bytes = pretty().getBytes();
-                tab = 0;
-            }
-            Files.write(path, bytes);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        String res = terse();
+        if (pretty) {
+            res = pretty();
+            tab = 0;
         }
+        FileUtil.write(res, p);
     }
 
     /**
@@ -466,21 +458,12 @@ public final class BToJSON<B> {
      * @param limit  保存条数
      */
     public void save(String p, boolean pretty, int limit) {
-        Path path = Paths.get(p);
-        try {
-            if (Files.exists(path)) {
-                Files.delete(path);
-            }
-            Files.createFile(path);
-            byte[] bytes = terse(limit).getBytes();
-            if (pretty) {
-                bytes = pretty(limit).getBytes();
-                tab = 0;
-            }
-            Files.write(path, bytes);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        String res = terse(limit);
+        if (pretty) {
+            res = pretty(limit);
+            tab = 0;
         }
+        FileUtil.write(res, p);
     }
 
     /**

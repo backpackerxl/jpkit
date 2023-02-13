@@ -1,11 +1,11 @@
 package com.zzwl.jpkit.typeof;
 
+import com.zzwl.jpkit.core.ITypeof;
+import com.zzwl.jpkit.plugs.impl.JBaseEntryImpl;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @since 1.0
@@ -25,13 +25,7 @@ public class JBool extends JBase {
      * @return Boolean[]
      */
     public static Boolean[] getArr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            Boolean[] res = new Boolean[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = ((JBool) value.get(i)).getValue();
-            }
-            return res;
-        });
+        return (Boolean[]) ArrayUtil.doArrayByArray(jBase, new Boolean[]{}, ITypeof::getValue);
     }
 
     /**
@@ -41,13 +35,12 @@ public class JBool extends JBase {
      * @return boolean[]
      */
     public static boolean[] get_Arr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            boolean[] res = new boolean[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = ((JBool) value.get(i)).getValue();
-            }
-            return res;
-        });
+        Boolean[] arr = getArr(jBase);
+        boolean[] res = new boolean[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            res[i] = arr[i];
+        }
+        return res;
     }
 
     /**
@@ -57,13 +50,7 @@ public class JBool extends JBase {
      * @return List<Boolean>
      */
     public static List<Boolean> getList(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            List<Boolean> res = new ArrayList<>(value.size());
-            for (JBase base : value) {
-                res.add(((JBool) base).getValue());
-            }
-            return res;
-        });
+        return Arrays.stream(getArr(jBase)).collect(Collectors.toList());
     }
 
     /**
@@ -73,13 +60,7 @@ public class JBool extends JBase {
      * @return Map<String, Boolean>
      */
     public static Map<String, Boolean> getMap(JBase jBase) {
-        return ArrayUtil.doMapByJObject(jBase, (value) -> {
-            Map<String, Boolean> res = new HashMap<>(value.size());
-            for (String base : value.keySet()) {
-                res.put(base, ((JBool) value.get(base)).getValue());
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByMap(jBase, (jb) -> new JBaseEntryImpl<>(jb.getKey(), ((JBool) jb).getValue()));
     }
 
     @Override

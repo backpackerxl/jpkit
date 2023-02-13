@@ -8,11 +8,9 @@ import com.zzwl.jpkit.exception.JTypeofException;
 import com.zzwl.jpkit.typeof.*;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @since 1.0
@@ -384,7 +382,7 @@ public class ArrayUtil {
     }
 
     /**
-     * 处理数组和List的通用回调方法
+     * 处理基础数组
      *
      * @param jBase 数据源
      * @param func  回调函数
@@ -402,6 +400,53 @@ public class ArrayUtil {
     }
 
     /**
+     * 处理List
+     *
+     * @param jBase 数据源
+     * @param func  回调
+     * @param <T>   相应类型
+     * @return 返回对应数据源
+     */
+    public static <T> List<T> doArrayByList(JBase jBase, Function<JBase, T> func) {
+        try {
+            JArray jArray = (JArray) jBase;
+            List<T> res = null;
+            List<JBase> value = jArray.getValue();
+            if (value != null && value.size() > 0) {
+                res = value.stream().map(func).collect(Collectors.toList());
+            }
+            return res;
+        } catch (Exception e) {
+            // log: error the source not cast array
+            throw new JTypeofException("error the source not cast array, because " + e.getMessage());
+        }
+    }
+
+    /**
+     * 处理包装数组
+     *
+     * @param jBase 数据源
+     * @param func  回调
+     * @param <T>   相应类型
+     * @return 返回对应数组
+     */
+    public static <T> T[] doArrayByArray(JBase jBase, T[] ts, Function<JBase, T> func) {
+        try {
+            JArray jArray = (JArray) jBase;
+            T[] res = null;
+            List<JBase> value = jArray.getValue();
+            if (value != null && value.size() > 0) {
+                res = value.stream().map(func).collect(Collectors.toList()).toArray(ts);
+            }
+            return res;
+        } catch (Exception e) {
+            // log: error the source not cast array
+            throw new JTypeofException("error the source not cast array, because " + e.getMessage());
+        }
+    }
+
+
+    /**
      * 处理Map的通用回调方法
      *
      * @param jBase 数据源
@@ -413,6 +458,31 @@ public class ArrayUtil {
             JObject jObject = (JObject) jBase;
             Map<String, JBase> value = jObject.getValue();
             return func.apply(value);
+        } catch (Exception e) {
+            // log: error the source not cast array
+            throw new JTypeofException("error the source not cast array, because " + e.getMessage());
+        }
+    }
+
+    /**
+     * 处理Map
+     *
+     * @param jBase 数据源
+     * @param func  回调
+     * @param <T>   相应类型
+     * @return 返回对应Map
+     */
+    public static <T> Map<String, T> doArrayByMap(JBase jBase, Function<Map.Entry<String, JBase>, Map.Entry<String, T>> func) {
+        try {
+            JObject jObject = (JObject) jBase;
+            Map<String, JBase> value = jObject.getValue();
+            Map<String, T> res = null;
+            if (value != null && value.size() > 0) {
+                Map<String, T> finalRes = new HashMap<>();
+                value.entrySet().stream().map(func).forEach(val -> finalRes.put(val.getKey(), val.getValue()));
+                res = finalRes;
+            }
+            return res;
         } catch (Exception e) {
             // log: error the source not cast array
             throw new JTypeofException("error the source not cast array, because " + e.getMessage());

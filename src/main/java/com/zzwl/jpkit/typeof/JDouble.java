@@ -1,11 +1,11 @@
 package com.zzwl.jpkit.typeof;
 
+import com.zzwl.jpkit.core.ITypeof;
+import com.zzwl.jpkit.plugs.impl.JBaseEntryImpl;
 import com.zzwl.jpkit.utils.ArrayUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @since 1.0
@@ -29,13 +29,7 @@ public class JDouble extends JBase {
      * @return Double[]
      */
     public static Double[] getArr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            Double[] res = new Double[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = ((JDouble) value.get(i)).getValue();
-            }
-            return res;
-        });
+        return (Double[]) ArrayUtil.doArrayByArray(jBase, new Double[]{}, ITypeof::getValue);
     }
 
     /**
@@ -45,13 +39,7 @@ public class JDouble extends JBase {
      * @return double[]
      */
     public static double[] get_Arr(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            double[] res = new double[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = ((JDouble) value.get(i)).getValue();
-            }
-            return res;
-        });
+        return Arrays.stream(getArr(jBase)).mapToDouble(Double::doubleValue).toArray();
     }
 
     /**
@@ -61,13 +49,7 @@ public class JDouble extends JBase {
      * @return List<Double>
      */
     public static List<Double> getList(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            List<Double> res = new ArrayList<>(value.size());
-            for (JBase base : value) {
-                res.add(((JDouble) base).getValue());
-            }
-            return res;
-        });
+        return Arrays.stream(getArr(jBase)).collect(Collectors.toList());
     }
 
     /**
@@ -77,13 +59,7 @@ public class JDouble extends JBase {
      * @return Map<String, Double>
      */
     public static Map<String, Double> getMap(JBase jBase) {
-        return ArrayUtil.doMapByJObject(jBase, (value) -> {
-            Map<String, Double> res = new HashMap<>(value.size());
-            for (String base : value.keySet()) {
-                res.put(base, ((JDouble) value.get(base)).getValue());
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByMap(jBase, (jb) -> new JBaseEntryImpl<>(jb.getKey(), ((JDouble) jb.getValue()).getValue()));
     }
 
     @Override
