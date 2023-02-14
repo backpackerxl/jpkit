@@ -382,24 +382,6 @@ public class ArrayUtil {
     }
 
     /**
-     * 处理基础数组
-     *
-     * @param jBase 数据源
-     * @param func  回调函数
-     * @return 结果
-     */
-    public static <T> T doArrayByJArray(JBase jBase, Function<List<JBase>, T> func) {
-        try {
-            JArray jArray = (JArray) jBase;
-            List<JBase> value = jArray.getValue();
-            return func.apply(value);
-        } catch (Exception e) {
-            // log: error the source not cast array
-            throw new JTypeofException("error the source not cast array, because " + e.getMessage());
-        }
-    }
-
-    /**
      * 处理List
      *
      * @param jBase 数据源
@@ -445,24 +427,6 @@ public class ArrayUtil {
         }
     }
 
-
-    /**
-     * 处理Map的通用回调方法
-     *
-     * @param jBase 数据源
-     * @param func  回调函数
-     * @return 结果
-     */
-    public static <T> T doMapByJObject(JBase jBase, Function<Map<String, JBase>, T> func) {
-        try {
-            JObject jObject = (JObject) jBase;
-            Map<String, JBase> value = jObject.getValue();
-            return func.apply(value);
-        } catch (Exception e) {
-            // log: error the source not cast array
-            throw new JTypeofException("error the source not cast array, because " + e.getMessage());
-        }
-    }
 
     /**
      * 处理Map

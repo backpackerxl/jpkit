@@ -9,7 +9,6 @@ import com.zzwl.jpkit.utils.ArrayUtil;
 import com.zzwl.jpkit.vo.MySQL;
 import com.zzwl.jpkit.vo.Type;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MySQLPlug {
@@ -22,13 +21,7 @@ public class MySQLPlug {
      */
     @JPMethod(BasePlug.GET_LIST)
     public List<MySQL> getList(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            List<MySQL> res = new ArrayList<>(value.size());
-            for (JBase base : value) {
-                res.add(JSON.parse(base.toString(), MySQL.class));
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByList(jBase, (jb) -> JSON.parse(jb, MySQL.class));
     }
 
     /**
@@ -39,12 +32,6 @@ public class MySQLPlug {
      */
     @JPMethod(BasePlug.GET_ARR)
     public Type[] getArray(JBase jBase) {
-        return ArrayUtil.doArrayByJArray(jBase, (value) -> {
-            Type[] res = new Type[value.size()];
-            for (int i = 0; i < value.size(); i++) {
-                res[i] = JSON.parse(value.get(i).toString(), Type.class);
-            }
-            return res;
-        });
+        return ArrayUtil.doArrayByArray(jBase, new Type[]{}, (jb) -> JSON.parse(jb, Type.class));
     }
 }

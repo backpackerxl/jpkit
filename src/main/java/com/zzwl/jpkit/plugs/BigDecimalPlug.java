@@ -8,6 +8,7 @@ import com.zzwl.jpkit.utils.ArrayUtil;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @since 1.0
@@ -43,7 +44,7 @@ public class BigDecimalPlug {
      */
     @JPMethod(BasePlug.GET_LIST)
     public List<BigDecimal> getList(JBase jBase) {
-        return ArrayUtil.doArrayByList(jBase, (base) -> new BigDecimal(base.getValue().toString()));
+        return Arrays.stream(getArray(jBase)).collect(Collectors.toList());
     }
 
     /**
