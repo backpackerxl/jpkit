@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
  */
 public class JBool extends JBase {
     private final Boolean value;
-    public final static String BOOLEAN = "boolean";
 
     public JBool(boolean value) {
         this.value = value;

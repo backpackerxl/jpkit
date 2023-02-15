@@ -33,7 +33,7 @@ public class ArrayUtil {
         if (isPretty) {
             // 设置缩进
             BToJSON.setTab(BToJSON.getTab() + BToJSON.getBeforeTab());
-            white = StringUtil.getWhiteByNumber(BToJSON.getTab());
+            white = StringUtil.getWhiteByNumber(BToJSON.getTab(), BToJSON.getTabCharacter());
             s.append("\n");
         }
         if (o instanceof int[] && !isPretty) {
@@ -87,7 +87,7 @@ public class ArrayUtil {
                 s.append(white).append(i).append(",\n");
             }
             BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
-            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab(), BToJSON.getTabCharacter()));
         }
 
         if (o instanceof long[]) {
@@ -102,7 +102,7 @@ public class ArrayUtil {
                 }
             }
             BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
-            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab(), BToJSON.getTabCharacter()));
         }
 
         if (o instanceof short[]) {
@@ -111,7 +111,7 @@ public class ArrayUtil {
                 s.append(white).append(i).append(",\n");
             }
             BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
-            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab(), BToJSON.getTabCharacter()));
         }
 
         if (o instanceof double[]) {
@@ -120,7 +120,7 @@ public class ArrayUtil {
                 s.append(white).append(i).append(",\n");
             }
             BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
-            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab(), BToJSON.getTabCharacter()));
         }
 
         if (o instanceof float[]) {
@@ -129,7 +129,7 @@ public class ArrayUtil {
                 s.append(white).append(i).append(",\n");
             }
             BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
-            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab(), BToJSON.getTabCharacter()));
         }
 
         if (o instanceof byte[]) {
@@ -138,7 +138,7 @@ public class ArrayUtil {
                 s.append(white).append(i).append(",\n");
             }
             BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
-            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab(), BToJSON.getTabCharacter()));
         }
 
         if (o instanceof char[]) {
@@ -147,7 +147,7 @@ public class ArrayUtil {
                 s.append(white).append("\"").append(i).append("\",\n");
             }
             BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
-            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab(), BToJSON.getTabCharacter()));
         }
 
         if (o instanceof boolean[]) {
@@ -156,7 +156,7 @@ public class ArrayUtil {
                 s.append(white).append(i).append(",\n");
             }
             BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
-            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab(), BToJSON.getTabCharacter()));
         }
 
         try {
@@ -184,7 +184,7 @@ public class ArrayUtil {
             if (isPretty) {
                 // 恢复缩进
                 BToJSON.setTab(BToJSON.getTab() - BToJSON.getBeforeTab());
-                return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab()));
+                return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(BToJSON.getTab(), BToJSON.getTabCharacter()));
             } else {
                 return String.format("%s%s", StringUtil.substringByNumber(s.toString(), 1), "]");
             }

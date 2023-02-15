@@ -1,9 +1,7 @@
 package com.zzwl.jpkit.vo;
 
-import com.zzwl.jpkit.anno.JData;
 import com.zzwl.jpkit.core.JSON;
 
-@JData
 public class StringVo {
     private String s;
 

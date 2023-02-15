@@ -259,7 +259,7 @@ public final class BToJSON<B> {
             // 设置缩进
             setTab(getTab() + getBeforeTab());
             // 获取缩进
-            String white = StringUtil.getWhiteByNumber(getTab());
+            String white = StringUtil.getWhiteByNumber(getTab(), getTabCharacter());
             if (longToStr) {
                 for (B b : bs) {
                     s.append(white).append("\"").append(JSON.stringify(b).pretty()).append("\",\n");
@@ -273,7 +273,7 @@ public final class BToJSON<B> {
             setLongToStr(false);
             // 将缩进恢复
             setTab(getTab() - getBeforeTab());
-            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab()));
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab(), getTabCharacter()));
         }
         // 处理 Map 类型
         if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(Map.class.getTypeName()))) {
@@ -287,7 +287,7 @@ public final class BToJSON<B> {
             // 设置缩进
             setTab(getTab() + getBeforeTab());
             // 获取缩进
-            String white = StringUtil.getWhiteByNumber(getTab());
+            String white = StringUtil.getWhiteByNumber(getTab(), getTabCharacter());
             if (longToStr) {
                 for (String key : bs.keySet()) {
                     s.append(white).append("\"").append(key).append("\": \"").append(JSON.stringify(bs.get(key)).pretty()).append("\",\n");
@@ -301,7 +301,7 @@ public final class BToJSON<B> {
             setLongToStr(false);
             // 将缩进恢复
             setTab(getTab() - getBeforeTab());
-            return String.format("%s\n%s}", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab()));
+            return String.format("%s\n%s}", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab(), getTabCharacter()));
         }
         // 处理基础数据类型,除 String, char, Date
         if (JBase.isBase(bean)) {
@@ -311,8 +311,8 @@ public final class BToJSON<B> {
         ReflectUtil.setIsPretty(true);
         // 设置缩进
         setTab(getTab() + getBeforeTab());
-        String white = StringUtil.getWhiteByNumber(getTab());
-        return String.format("{\n%s\n%s}", StringUtil.substringByNumber(ReflectUtil.doBeanByField(bean, (name, obj) -> String.format("%s\"%s\": %s,\n", white, name, obj)), 2), StringUtil.getWhiteByNumber(getTab()));
+        String white = StringUtil.getWhiteByNumber(getTab(), getTabCharacter());
+        return String.format("{\n%s\n%s}", StringUtil.substringByNumber(ReflectUtil.doBeanByField(bean, (name, obj) -> String.format("%s\"%s\": %s,\n", white, name, obj)), 2), StringUtil.getWhiteByNumber(getTab(), getTabCharacter()));
     }
 
     /**
@@ -338,7 +338,7 @@ public final class BToJSON<B> {
             // 设置缩进
             setTab(getTab() + getBeforeTab());
             // 获取缩进
-            String white = StringUtil.getWhiteByNumber(getTab());
+            String white = StringUtil.getWhiteByNumber(getTab(), getTabCharacter());
             if (bs.size() <= limit || limit <= 0) {
                 return pretty();
             }
@@ -366,7 +366,7 @@ public final class BToJSON<B> {
             setLongToStr(false);
             // 将缩进恢复
             setTab(getTab() - getBeforeTab());
-            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab()));
+            return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab(), getTabCharacter()));
         }
         if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(Map.class.getTypeName()))) {
             StringBuilder s = new StringBuilder();
@@ -379,7 +379,7 @@ public final class BToJSON<B> {
             // 设置缩进
             setTab(getTab() + getBeforeTab());
             // 获取缩进
-            String white = StringUtil.getWhiteByNumber(getTab());
+            String white = StringUtil.getWhiteByNumber(getTab(), getTabCharacter());
             if (bs.size() <= limit || limit <= 0) {
                 return terse();
             }
@@ -405,7 +405,7 @@ public final class BToJSON<B> {
             setLongToStr(false);
             // 将缩进恢复
             setTab(getTab() - getBeforeTab());
-            return String.format("%s\n%s}", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab()));
+            return String.format("%s\n%s}", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab(), getTabCharacter()));
         }
         return pretty();
     }

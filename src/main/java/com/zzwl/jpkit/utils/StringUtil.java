@@ -1,8 +1,5 @@
 package com.zzwl.jpkit.utils;
 
-import com.zzwl.jpkit.conversion.BToJSON;
-import com.zzwl.jpkit.typeof.JBool;
-
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
@@ -33,7 +30,7 @@ public class StringUtil {
     public static String getMethodNameByFieldType(String prefix, Type type, String name) {
         String typeName = type.getTypeName();
         String format = String.format("%s%s%s", prefix, name.substring(0, 1).toUpperCase(), name.substring(1));
-        if (typeName.equals(JBool.BOOLEAN)) {
+        if (typeName.equals("boolean")) {
             if (prefix.equals(basicSetPrefix)) {
                 return format;
             }
@@ -60,10 +57,10 @@ public class StringUtil {
      * @param num 空白字符数量
      * @return 空白占位符字符串
      */
-    public static String getWhiteByNumber(int num) {
+    public static String getWhiteByNumber(int num, char c) {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < num; i++) {
-            s.append(BToJSON.getTabCharacter());
+            s.append(c);
         }
         return s.toString();
     }
