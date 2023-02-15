@@ -89,7 +89,7 @@ public final class BToJSON<B> {
             return String.format("\"%s\"", ((Class<?>) bean).getTypeName());
         }
         // 处理 List
-        if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(List.class.getTypeName()))) {
+        if (bean instanceof List) {
             StringBuilder s = new StringBuilder();
             List<B> bs = (List<B>) bean;
             if (bs.size() == 0) {
@@ -109,7 +109,7 @@ public final class BToJSON<B> {
             return String.format("[%s]", StringUtil.substringByNumber(s.toString(), 1));
         }
         // 处理 Map
-        if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(Map.class.getTypeName()))) {
+        if (bean instanceof Map) {
             StringBuilder s = new StringBuilder();
             Map<String, B> bs = (Map<String, B>) bean;
             if (bs.size() == 0) {
@@ -152,7 +152,7 @@ public final class BToJSON<B> {
         // 当格式化json字符串方法调用后, 再调用紧凑型json字符串方法会导致紧凑型json字符串方法输出样式错乱,
         // 因此必须重置ReflectUtil::isPretty变量
         ReflectUtil.setIsPretty(false);
-        if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(List.class.getTypeName()))) {
+        if (bean instanceof List) {
             StringBuilder s = new StringBuilder();
             List<B> bs = (List<B>) bean;
             if (bs.size() == 0) {
@@ -184,7 +184,7 @@ public final class BToJSON<B> {
             return String.format("[%s]", StringUtil.substringByNumber(s.toString(), 1));
         }
         // 处理 Map
-        if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(Map.class.getTypeName()))) {
+        if (bean instanceof Map) {
             StringBuilder s = new StringBuilder();
             Map<String, B> bs = (Map<String, B>) bean;
             if (bs.size() == 0) {
@@ -248,7 +248,7 @@ public final class BToJSON<B> {
             return String.format("\"%s\"", ((Class<?>) bean).getTypeName());
         }
         // 处理 List 类型
-        if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(List.class.getTypeName()))) {
+        if (bean instanceof List) {
             StringBuilder s = new StringBuilder();
             List<B> bs = (List<B>) bean;
             if (bs.size() == 0) {
@@ -276,7 +276,7 @@ public final class BToJSON<B> {
             return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab(), getTabCharacter()));
         }
         // 处理 Map 类型
-        if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(Map.class.getTypeName()))) {
+        if (bean instanceof Map) {
             StringBuilder s = new StringBuilder();
             Map<String, B> bs = (Map<String, B>) bean;
             if (bs.size() == 0) {
@@ -327,7 +327,7 @@ public final class BToJSON<B> {
      * @return JSON字符串
      */
     public String pretty(int limit) {
-        if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(List.class.getTypeName()))) {
+        if (bean instanceof List) {
             StringBuilder s = new StringBuilder();
             List<B> bs = (List<B>) bean;
             if (bs.size() == 0) {
@@ -368,7 +368,7 @@ public final class BToJSON<B> {
             setTab(getTab() - getBeforeTab());
             return String.format("%s\n%s]", StringUtil.substringByNumber(s.toString(), 2), StringUtil.getWhiteByNumber(getTab(), getTabCharacter()));
         }
-        if (Arrays.stream(bean.getClass().getInterfaces()).anyMatch(aClass -> aClass.getTypeName().equals(Map.class.getTypeName()))) {
+        if (bean instanceof Map) {
             StringBuilder s = new StringBuilder();
             Map<String, B> bs = (Map<String, B>) bean;
             if (bs.size() == 0) {

@@ -111,14 +111,14 @@ public class JSONTest {
 
     @Test
     public void testCollection() {
-        List<Integer> list = new ArrayList<>();
+        List<Integer> list = new LinkedList<>();
 
         list.add(456);
         list.add(234);
         list.add(789);
         list.add(123);
 
-        System.out.println(JSON.stringify(list).terse());
+        System.out.println(JSON.stringify(list).pretty());
 
         Map<String, Boolean> map = new HashMap<>();
 
