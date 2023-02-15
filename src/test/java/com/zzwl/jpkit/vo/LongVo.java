@@ -1,6 +1,5 @@
 package com.zzwl.jpkit.vo;
 
-import com.zzwl.jpkit.anno.JFString;
 import com.zzwl.jpkit.anno.JRename;
 import com.zzwl.jpkit.core.JSON;
 
