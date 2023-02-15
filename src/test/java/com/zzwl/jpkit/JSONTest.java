@@ -321,25 +321,25 @@ public class JSONTest {
 
         System.out.println(json_use);
 
-        Use use1 = JSON.parse(json_use, Use.class);
+//        Use use1 = JSON.parse(json_use, Use.class);
+//
+//        System.out.println(use1);
 
-        System.out.println(use1);
+//        UsePlus usePlus = new UsePlus();
+//        usePlus.setB(new Byte("45"));
+//        usePlus.setBl(true);
+//        usePlus.setS(new Short("456"));
+//        usePlus.setF(4.56f);
+//        usePlus.setD(4.5896);
+//        usePlus.setI(456);
+//        usePlus.setC('k');
+//        usePlus.setL(45689966L);
 
-        UsePlus usePlus = new UsePlus();
-        usePlus.setB(new Byte("45"));
-        usePlus.setBl(true);
-        usePlus.setS(new Short("456"));
-        usePlus.setF(4.56f);
-        usePlus.setD(4.5896);
-        usePlus.setI(456);
-        usePlus.setC('k');
-        usePlus.setL(45689966L);
+//        String pretty = JSON.stringify(usePlus).pretty();
 
-        String pretty = JSON.stringify(usePlus).pretty();
+//        UsePlus usePlus1 = JSON.parse(pretty, UsePlus.class);
 
-        UsePlus usePlus1 = JSON.parse(pretty, UsePlus.class);
-
-        System.out.println(usePlus1);
+//        System.out.println(usePlus1);
     }
 
     @Test

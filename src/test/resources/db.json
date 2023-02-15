@@ -4,7 +4,25 @@
 		"username": "zzwl",
 		"user_code": 300,
 		"admin": true,
-		"create_time": "2023-02-09",
+		"create_time": "2023-02-15",
+		"nums": [
+			789,
+			526
+		],
+		"strings": [
+			"gg",
+			"hh"
+		],
+		"ints": null,
+		"longs": null,
+		"longList": null
+	},
+	{
+		"id": "2",
+		"username": "zzwl",
+		"user_code": 400,
+		"admin": false,
+		"create_time": "2023-02-15",
 		"nums": [
 			789,
 			526

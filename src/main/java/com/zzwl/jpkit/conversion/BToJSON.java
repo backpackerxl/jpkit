@@ -25,6 +25,7 @@ public final class BToJSON<B> {
     private static Integer beforeTab = 2;
     // 转化json过程中的缩进填充字符, 可通过set方法配置, 默认为空格
     private static char tabCharacter = ' ';
+    // 是否将long类型当字符串处理
     private static boolean longToStr = false;
 
     public BToJSON(B bean) {
