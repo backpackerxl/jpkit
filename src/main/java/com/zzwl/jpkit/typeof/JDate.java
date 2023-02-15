@@ -20,6 +20,7 @@ public class JDate extends JBase {
     public final static String MM_DD = "MM-dd";
     public final static String YYYY_MM = "yyyy-MM";
     public final static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
+    public final static String MM_DD_HH_MM = "MM-dd HH:mm";
     public final static String HH_MM_SS = "HH:mm:ss";
     public final static String HH_MM = "HH:mm";
 
