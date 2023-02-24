@@ -102,10 +102,16 @@ public final class NetUtil {
             if (method.equals(POST)) {
                 out = new PrintWriter(con.getOutputStream());
                 String s = pram.get("Content-Type");
-                if (s != null && s.contains("json")) {
-                    out.write(JSON.stringify(data).terse());
+                if (pram.get("write").equalsIgnoreCase("json")) {
+                    for (String k : data.keySet()) {
+                        out.write(String.valueOf(data.get(k)));
+                    }
                 } else {
-                    out.write(getFormData(data));
+                    if (s != null && s.contains("json")) {
+                        out.write(JSON.stringify(data).terse());
+                    } else {
+                        out.write(getFormData(data));
+                    }
                 }
                 out.flush();
             }
