@@ -64,15 +64,17 @@ public class Test {
 ```
 
 - 在项目的pom文件中加入依赖库
-[`jpkit依赖`](https://github.com/Backpackerxl/jpkit/packages/)
+  [`jpkit依赖`](https://github.com/Backpackerxl/jpkit/packages/)
 - 加入依赖库仓库
+
 ```xml
+
 <repositories>
-<repository>
-    <id>github</id>
-    <name>GitHub Backpackerxl Apache Maven Packages</name>
-    <url>https://maven.pkg.github.com/backpackerxl/jpkit</url>
-</repository>
+    <repository>
+        <id>github</id>
+        <name>GitHub Backpackerxl Apache Maven Packages</name>
+        <url>https://maven.pkg.github.com/backpackerxl/jpkit</url>
+    </repository>
 </repositories>
 ```
 
@@ -83,3 +85,5 @@ public class Test {
 #### 更多用法 [`Doc.md`](docs/Doc.md)
 
 #### `jpkit` [`官方API`](https://backpackerxl.github.io/jpkit/)
+
+#### `jpkit` 应用示例代码 [`JCurlApp`](src/test/java/com/zzwl/jpkit/plug/JCurlApp.java)
