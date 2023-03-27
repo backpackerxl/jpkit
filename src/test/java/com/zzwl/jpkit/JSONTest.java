@@ -1,11 +1,16 @@
 package com.zzwl.jpkit;
 
 import com.zzwl.jpkit.bean.Options;
+import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.parse.ObjectParse;
 import com.zzwl.jpkit.typeof.*;
 import com.zzwl.jpkit.utils.StringUtil;
 import com.zzwl.jpkit.vo.*;
+import org.databene.contiperf.PerfTest;
+import org.databene.contiperf.Required;
+import org.databene.contiperf.junit.ContiPerfRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -15,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class JSONTest {
+    @Rule
+    public ContiPerfRule i = new ContiPerfRule();
 
     @Test
     public void start() {
@@ -44,12 +51,16 @@ public class JSONTest {
     }
 
     @Test
+    @PerfTest(invocations = 1000, threads = 40)
+    @Required(max = 1200, average = 250, totalTime = 60000)
     public void testString() throws NoSuchFieldException {
         Field field = User.class.getDeclaredField("admin");
         System.out.println(StringUtil.getMethodNameByFieldType(StringUtil.basicGetPrefix, field.getType(), field.getName()));
     }
 
     @Test
+    @PerfTest(invocations = 1000, threads = 40)
+//    @Required(max = 1200, average = 250, totalTime = 60000)
     public void testStringify() {
         Integer[] nums = new Integer[]{4545, 2121, 3636};
         String[] ss = new String[]{"zz", "xx", "ww"};
@@ -61,13 +72,35 @@ public class JSONTest {
         list.add(165146516423313131L);
         list.add(165146516453313131L);
         zzwl.setLongList(list);
-//        JSON.setLongToString(true);
-//        System.out.println(JSON.stringify(list).pretty());
-        System.out.println("=================");
         String s = JSON.stringify(zzwl).terse();
         System.out.println(s);
-        System.out.println(zzwl);
+        System.out.println("=================");
+        String s1 = JSON.stringify(zzwl).pretty();
+        System.out.println(s1);
 
+    }
+
+    @Test
+    public void testSaveS() {
+        Integer[] nums = new Integer[]{4545, 2121, 3636};
+        String[] ss = new String[]{"zz", "xx", "ww"};
+        User zzwl = new User(1L, "zzwl", 300, true, new Date(), nums, ss);
+        long[] longs = new long[]{5164161651651165151L, 56156151655616556L, 165156516156156L};
+        zzwl.setLongs(longs);
+        List<Long> list = new ArrayList<>();
+        list.add(1651465163113313131L);
+        list.add(165146516423313131L);
+        list.add(165146516453313131L);
+        zzwl.setLongList(list);
+        JSON.stringify(zzwl).save("src\\test\\resources\\tdb.json");
+
+    }
+
+    @Test
+    @PerfTest(invocations = 1000, threads = 40)
+    public void testRead() {
+        JBase load = (JBase) JSON.load("http://10.1.1.51:8104/config.json");
+        System.out.println(load);
     }
 
     @Test
@@ -181,12 +214,33 @@ public class JSONTest {
 
 
     @Test
+    @PerfTest(invocations = 1000, threads = 40)
     public void testObjectParse() {
-        String json = "{\n" + "  \"id\": \"1\",\n" + "  \"username\": \"zzwl\",\n" + "  \"user_code\": 300,\n" + "  \"admin\": true,\n" + "  \"create_time\": \"2023-01-31\",\n" + "  \"nums\": [\n" + "    4545,\n" + "    2121,\n" + "    3636\n" + "  ],\n" + "  \"strings\": [\n" + "    \"zz\",\n" + "    \"xx\",\n" + "    \"ww\"\n" + "  ],\n" + "  \"ints\": [11,22,666],\n" + "  \"longs\": [\n" + "    \"5164161651651165151\",\n" + "    \"56156151655616556\",\n" + "    \"165156516156156\"\n" + "  ],\n" + "  \"longList\": [\n" + "    \"1651465163113313131\",\n" + "    \"165146516423313131\",\n" + "    \"165146516453313131\"\n" + "  ]\n" + "}";
-//        JObject parse = (JObject) JSON.parse(json);
+        String json = "{\n" +
+                "  \"id\": \"1\",\n" +
+                "  \"username\": \"zzwl\",\n" +
+                "  \"user_code\": 300,\n" +
+                "  \"admin\": true,\n" +
+                "  \"create_time\": \"2023-03-16\",\n" +
+                "  \"nums\": [\n" +
+                "    4545,\n" +
+                "    2121,\n" +
+                "    3636\n" +
+                "  ],\n" + "  \"strings\": [\n" + "    \"zz\",\n" +
+                "    \"xx\",\n" +
+                "    \"ww\"\n" +
+                "  ],\n" +
+                "  \"ints\": null,\n" + "  \"longs\": [\n" +
+                "    \"5164161651651165151\",\n" +
+                "    \"56156151655616556\",\n" +
+                "    \"165156516156156\"\n" + "  ],\n" +
+                "  \"longList\": [\n" +
+                "    \"1651465163113313131\",\n" + "    \"165146516423313131\",\n" + "  " +
+                "  \"165146516453313131\"\n" + "  ]\n" + "}";
+        JObject parse = (JObject) JSON.parse(json);
 //        System.out.println(parse);
         User user = JSON.parse(json, User.class);
-        System.out.println(user);
+//        System.out.println(user);
     }
 
     @Test
@@ -377,7 +431,7 @@ public class JSONTest {
     }
 
     @Test
-    public void testUnicode(){
+    public void testUnicode() {
         StringVo stringVo = new StringVo(StringUtil.stringToUnicode("你好,北京!"));
 
         System.out.println(stringVo);
@@ -387,11 +441,24 @@ public class JSONTest {
     }
 
     @Test
-    public void testByteCode(){
+    public void testByteCode() {
         StringVo zzwl_plus = new StringVo("zzwl_plus");
 //        new SerializablePlug(zzwl_plus).writeObjectClassToClasses();
 
         String json = new StringVoSerializable().write(zzwl_plus);
         System.out.println(json);
+    }
+
+    @Test
+    public void testStr() {
+        String s = "dsvdsvvvvvvvvvvvvvvvvvvvsdsdfv.dvds.lk";
+
+        int count = s.length() / 5;
+
+        for (int i = 0; i < count; i++) {
+            System.out.println(s.substring(i * 5, i * 5 + 5));
+        }
+
+        System.out.println(s.substring(5 * count));
     }
 }
