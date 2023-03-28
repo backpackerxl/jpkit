@@ -14,9 +14,6 @@
 - 下载导入`jpkit`的jar包
 
 ```java
-
-import com.zzwl.jpkit.typeof.JBase;
-
 public class Test {
     /**
      * jpkit 基础用法
@@ -30,6 +27,8 @@ public class Test {
         String s = JSON.stringify(user).terse();
         // 格式化转化
         String s = JSON.stringify(user).pretty();
+        // 将中文以Unicode形式转化
+        String s = JSON.stringify(user).ucpJSON();
         // 保存在本地, 默认格式化保存, 无返回值
         JSON.stringify(user).save();
         // json 字符串
