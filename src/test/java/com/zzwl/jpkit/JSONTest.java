@@ -63,7 +63,7 @@ public class JSONTest {
 //    @Required(max = 1200, average = 250, totalTime = 60000)
     public void testStringify() {
         Integer[] nums = new Integer[]{4545, 2121, 3636};
-        String[] ss = new String[]{"zz", "xx", "ww"};
+        String[] ss = new String[]{"北京，你好！", "xx", "ww"};
         User zzwl = new User(1L, "zzwl", 300, true, new Date(), nums, ss);
         long[] longs = new long[]{5164161651651165151L, 56156151655616556L, 165156516156156L};
         zzwl.setLongs(longs);
@@ -81,10 +81,11 @@ public class JSONTest {
     }
 
     @Test
+//    @PerfTest(invocations = 1000, threads = 40)
     public void testSaveS() {
         Integer[] nums = new Integer[]{4545, 2121, 3636};
-        String[] ss = new String[]{"zz", "xx", "ww"};
-        User zzwl = new User(1L, "zzwl", 300, true, new Date(), nums, ss);
+        String[] ss = new String[]{"ii北京 yes，欢迎你!", "北京", "上海"};
+        User zzwl = new User(1L, "智中物联", 300, true, new Date(), nums, ss);
         long[] longs = new long[]{5164161651651165151L, 56156151655616556L, 165156516156156L};
         zzwl.setLongs(longs);
         List<Long> list = new ArrayList<>();
@@ -92,8 +93,16 @@ public class JSONTest {
         list.add(165146516423313131L);
         list.add(165146516453313131L);
         zzwl.setLongList(list);
-        JSON.stringify(zzwl).save("src\\test\\resources\\tdb.json");
+        String json = JSON.stringify(zzwl).ucpJSON();
+        System.out.println(json);
 
+//        JSON.stringify(zzwl).save("src\\test\\resources\\tdb.json");
+
+//        System.out.println(JSON.load("src\\test\\resources\\tdb.json"));
+    }
+    @Test
+    public void testReg(){
+        System.out.println(StringUtil.isChinese("ii uiop,"));
     }
 
     @Test
@@ -460,5 +469,39 @@ public class JSONTest {
         }
 
         System.out.println(s.substring(5 * count));
+    }
+
+    @Test
+    public void testPS() {
+        String res = "{\n" +
+                "  \"id\": \"1\",\n" +
+                "  \"username\": \"智中物联\",\n" +
+                "  \"user_code\": 300,\n" +
+                "  \"admin\": true,\n" +
+                "  \"create_time\": \"2023-03-27\",\n" +
+                "  \"nums\": [\n" +
+                "    4545,\n" +
+                "    2121,\n" +
+                "    3636\n" +
+                "  ],\n" +
+                "  \"strings\": [\n" +
+                "    \"北京，你好!\",\n" +
+                "    \"xx\",\n" +
+                "    \"ww\"\n" +
+                "  ],\n" +
+                "  \"ints\": null,\n" +
+                "  \"longs\": [\n" +
+                "    \"5164161651651165151\",\n" +
+                "    \"56156151655616556\",\n" +
+                "    \"165156516156156\"\n" +
+                "  ],\n" +
+                "  \"longList\": [\n" +
+                "    \"1651465163113313131\",\n" +
+                "    \"165146516423313131\",\n" +
+                "    \"165146516453313131\"\n" +
+                "  ]\n" +
+                "}";
+        String s = StringUtil.doChinese(res, false);
+        System.out.println(s);
     }
 }

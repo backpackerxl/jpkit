@@ -1,8 +1,11 @@
 package com.zzwl.jpkit.utils;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -166,12 +169,13 @@ public class StringUtil {
         if (!matcher.find()) {
             return s;
         }
-        StringBuilder sb = new StringBuilder();
-        sb.append((char) Integer.parseInt(matcher.group(1), 16));
+        String temp = matcher.group(1);
+        s = s.replace("\\\\u" + temp, String.valueOf((char) Integer.parseInt(temp, 16)));
         while (matcher.find()) {
-            sb.append((char) Integer.parseInt(matcher.group(1), 16));
+            String t = matcher.group(1);
+            s = s.replace("\\\\u" + t, String.valueOf((char) Integer.parseInt(t, 16)));
         }
-        return sb.toString();
+        return s;
     }
 
     /**
@@ -187,8 +191,44 @@ public class StringUtil {
         StringBuilder sb = new StringBuilder();
         char[] chars = s.toCharArray();
         for (char c : chars) {
-            sb.append('\\').append('u').append(Integer.toHexString(c));
+            sb.append('\\').append('\\').append('u').append(Integer.toHexString(c));
         }
         return sb.toString();
+    }
+
+    /**
+     * 是否以Unicode的形式存储中文
+     *
+     * @param s       字符串
+     * @param unicode 是否转化
+     * @return unicode形式的中文字符串
+     */
+    public static String doChinese(String s, boolean unicode) {
+        if (!unicode) {
+            return s;
+        }
+        Pattern compile = Pattern.compile("\"(.*?)\"");
+        Matcher matcher = compile.matcher(s);
+        while (matcher.find()) {
+            String s1 = matcher.group(1);
+            if (isChinese(s1)) {
+                s = s.replace(s1, stringToUnicode(s1));
+            }
+        }
+        return s;
+    }
+
+    /**
+     * 判断是否为中文包含中文标点
+     *
+     * @param s 字符串
+     * @return 是否为中文
+     */
+    public static boolean isChinese(String s) {
+        try {
+            return s.length() != s.getBytes("GBK").length;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

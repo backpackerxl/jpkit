@@ -411,19 +411,58 @@ public final class BToJSON<B> {
     }
 
     /**
+     * 返回unicode形式的JSON字符串
+     *
+     * @return JSON字符串
+     */
+    public String ucJSON() {
+        return StringUtil.doChinese(terse(), true);
+    }
+
+    /**
+     * 返回unicode形式的JSON字符串
+     *
+     * @param limit 返回条数
+     * @return JSON字符串
+     */
+    public String ucJSON(int limit) {
+        return StringUtil.doChinese(terse(limit), true);
+    }
+
+    /**
+     * 返回unicode形式的格式化JSON字符串
+     *
+     * @return JSON格式化字符串
+     */
+    public String ucpJSON() {
+        return StringUtil.doChinese(pretty(), true);
+    }
+
+    /**
+     * 返回unicode形式的格式化JSON字符串
+     *
+     * @param limit 返回条数
+     * @return JSON字符串
+     */
+    public String ucpJSON(int limit) {
+        return StringUtil.doChinese(pretty(limit), true);
+    }
+
+    /**
      * 保存json文件
      * <blockquote><pre>
      *     1.当 savePretty 为true时保存为格式化的json, 反之则为紧凑型json
      *     JSON.stringify(user).save("src\\test\\resources\\db.json", false);
      * </pre></blockquote>
      *
-     * @param p      路径
-     * @param pretty 是否格式化
+     * @param p       路径
+     * @param pretty  是否格式化
+     * @param unicode 是否以Unicode的形式保存中文
      */
-    public void save(String p, boolean pretty) {
-        String res = terse();
+    public void save(String p, boolean pretty, boolean unicode) {
+        String res = StringUtil.doChinese(terse(), unicode);
         if (pretty) {
-            res = pretty();
+            res = StringUtil.doChinese(pretty(), unicode);
             tab = 0;
         }
         FileUtil.write(res, p);
@@ -439,7 +478,7 @@ public final class BToJSON<B> {
      * @param p 路径
      */
     public void save(String p) {
-        save(p, true);
+        save(p, true, true);
     }
 
     /**
@@ -450,14 +489,15 @@ public final class BToJSON<B> {
      *     JSON.stringify(user).save("src\\test\\resources\\db.json", false, 1);
      * </pre></blockquote>
      *
-     * @param p      路径
-     * @param pretty 是否格式化
-     * @param limit  保存条数
+     * @param p       路径
+     * @param pretty  是否格式化
+     * @param limit   保存条数
+     * @param unicode 是否以Unicode的形式保存中文
      */
-    public void save(String p, boolean pretty, int limit) {
-        String res = terse(limit);
+    public void save(String p, boolean pretty, int limit, boolean unicode) {
+        String res = StringUtil.doChinese(terse(limit), unicode);
         if (pretty) {
-            res = pretty(limit);
+            res = StringUtil.doChinese(pretty(limit), unicode);
             tab = 0;
         }
         FileUtil.write(res, p);
@@ -475,6 +515,6 @@ public final class BToJSON<B> {
      * @param limit 保存条数
      */
     public void save(String p, int limit) {
-        save(p, true, limit);
+        save(p, true, limit, true);
     }
 }
