@@ -1,11 +1,8 @@
 package com.zzwl.jpkit.utils;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Executable;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
