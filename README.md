@@ -1,7 +1,7 @@
 # `jpkit`
 
 [![Security Status](https://www.oscs1024.com/platform/badge/murphysecurity/murphysec.svg?t=1)](https://www.murphysec.com/accept?code=a111c7f25ae06b96daa00627832e6b68&type=1&from=2&t=2)
-[![](https://badgen.net/badge/releases/v1.0.1/purple?icon=github)](https://github.com/Backpackerxl/jpkit/releases/tag/v1.0.1)
+[![](https://badgen.net/badge/releases/v1.0.1/purple?icon=github)](https://github.com/Backpackerxl/jpkit/releases/tag/jpkit1.0.1)
 [![](https://badgen.net/badge/maven/v1.0.0/cyan?icon=maven)](https://github.com/Backpackerxl/jpkit/packages/1773341)
 [![](https://badgen.net/badge/license/Apache%20License%202.0/blue?icon=gitlab)](https://github.com/Backpackerxl/jpkit/blob/main/LICENSE)
 
