@@ -51,35 +51,21 @@ public class Test {
 
 #### Maven install
 
-- 需要修改maven的setting文件中的<servers>标签中加入如下内容
-
-```xml
-
-<server>
-    <id>github</id>
-    <username>Backpackerxl</username>
-    <password>token</password>
-</server>
+**依次执行一下命令**
+```
+git clone https://github.com/Backpackerxl/jpkit.git
+cd jpkit
+mvn install
 ```
 
-- 在项目的pom文件中加入依赖库
-  [`jpkit依赖`](https://github.com/Backpackerxl/jpkit/packages/)
-- 加入依赖库仓库
-
+**在需要使用的项目中加入依赖**
 ```xml
-
-<repositories>
-    <repository>
-        <id>github</id>
-        <name>GitHub Backpackerxl Apache Maven Packages</name>
-        <url>https://maven.pkg.github.com/backpackerxl/jpkit</url>
-    </repository>
-</repositories>
+<dependency>
+    <groupId>com.zzwl</groupId>
+    <artifactId>jpkit</artifactId>
+    <version>${version}</version>
+</dependency>
 ```
-
-> 现在即可愉快的使用jpkit, token可以在issues中问我要或者发邮件，
-> 网易邮箱: backpackerxh@163.com
-> QQ邮箱: 946115360@qq.com
 
 #### 更多用法 [`Doc.md`](docs/Doc.md)
 
