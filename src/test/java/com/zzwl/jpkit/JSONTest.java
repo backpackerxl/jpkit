@@ -78,7 +78,7 @@ public class JSONTest {
         System.out.println(s1);
 
     }
-
+    //"http://stll.zgsqzx.cn/stll_api/video/videoPlay/VideoList" -P -H "Authorization:Bearer 64df85c7-caa0-4d6a-a15f-412ffea98407" -D "time:2023-04-11" -D "channelCode:51182400001320000042" -D "recordType:Device" -D "videoCode:51182400001180000001"
     @Test
 //    @PerfTest(invocations = 1000, threads = 40)
     public void testSaveS() {
