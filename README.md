@@ -52,14 +52,29 @@ public class Test {
 #### Maven install
 
 **依次执行一下命令**
+
+- 克隆项目
+
 ```
 git clone https://github.com/Backpackerxl/jpkit.git
+```
+
+- 进入项目目录
+
+```
 cd jpkit
+```
+
+- 为本地仓库安装工具包
+
+```
 mvn install
 ```
 
 **在需要使用的项目中加入依赖**
+
 ```xml
+
 <dependency>
     <groupId>com.zzwl</groupId>
     <artifactId>jpkit</artifactId>
