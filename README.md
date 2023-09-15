@@ -12,7 +12,18 @@
 #### 快速开始
 
 - 下载导入`jpkit`的jar包
-
+- 准备java bean
+> 这里将会使用到lombok插件
+```java
+@Data // lombok插件
+public class B{
+    private String name;
+    private String desc;
+    private Double age;
+    private String author;
+    private Boolean release;
+}
+```
 ```java
 public class Test {
     /**
@@ -22,29 +33,46 @@ public class Test {
     public void useJPKit() {
         // java bean
         B user = new B();
-        // ...设置属性值
+        user.setName("jpkit");
+        user.setDesc("jpkit 是一个JSON转化工具！");
+        user.setAge(0.6);
+        user.setAuthor("backpackerxl");
+        user.setRelease(true);
         // 常规转化
+        /**
+        * 输出：
+        * {"name":"jpkit","desc":"jpkit 是一个JSON转化工具！","age":0.6,"author":"backpackerxl","release":true}
+        **/
         String s = JSON.stringify(user).terse();
         // 格式化转化
+        /**
+        * 输出：
+        * {
+        *    "name": "jpkit",
+        *    "desc": "jpkit 是一个JSON转化工具！",
+        *    "age": 0.6,
+        *    "author": "backpackerxl",
+        *    "release": true
+        * }
+        **/
         String s = JSON.stringify(user).pretty();
         // 将中文以Unicode形式转化
         String s = JSON.stringify(user).ucpJSON();
         // 保存在本地, 默认格式化保存, 无返回值
-        JSON.stringify(user).save();
+        String path = "src\\main\\resources\\b.json";
+        JSON.stringify(user).save(path);
         // json 字符串
-        String json = "...";
+        String json = "{\"name\":\"jpkit\",\"desc\":\"jpkit 是一个JSON转化工具！\",\"age\":0.6,\"author\":\"backpackerxl\",\"release\":true}";
         // 将json解析为JBase
         JBase parse = (JBase) JSON.parse(json);
         // 将json解析为Java Bean
         B user = JSON.parse(json, B.class);
-        // 本地json
-        String user_path = "src\\main\\resources\\db.json";
         // 网络json
-        String url = "https://xxxx.json";
+        String url = "https://fanyi.baidu.com/pc/config";
         // 加载网络json
         JBase net_local = (JBase) JSON.load(url);
-        // 加载为java对象
-        B net_local = JSON.load(user_path, B.class);
+         // 本地json 加载为java对象
+        B b = JSON.load(path, B.class);
     }
 }
 ```
