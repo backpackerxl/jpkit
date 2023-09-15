@@ -1,10 +1,11 @@
 package com.zzwl.jpkit.utils;
 
-import com.zzwl.jpkit.anno.JCollectType;
 import com.zzwl.jpkit.anno.JFormat;
 import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.exception.JTypeofException;
+import com.zzwl.jpkit.plugs.BasePlug;
+import com.zzwl.jpkit.plugs.JBasePlug;
 import com.zzwl.jpkit.typeof.*;
 
 import java.lang.reflect.Field;
@@ -206,14 +207,22 @@ public class ArrayUtil {
     /**
      * List 转 Array
      *
-     * @param jBase 转换源
-     * @param field 当前字段
+     * @param jBase     转换源
+     * @param field     当前字段
+     * @param auxiliary 自定义插件类型
      * @return 转化后的包装类型数组
      */
-    public static Object getArr(JBase jBase, Field field) {
+    @SafeVarargs
+    public static Object getArr(JBase jBase, Field field, Class<? extends JBasePlug<?>>... auxiliary) {
         EuTypeof instance = EuTypeof.getInstance(field.getType().getTypeName());
         if (Objects.isNull(instance)) {
-            return null;
+            String clazzStr = field.getType().getTypeName().replace("[]", "");
+            try {
+                Class<?> aClass = Class.forName(clazzStr);
+                return BasePlug.getArray(jBase, aClass, auxiliary);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         }
         switch (instance) {
             case INT_ARR:
@@ -278,14 +287,11 @@ public class ArrayUtil {
      * @param field 当前字段
      * @return 转化后的包装类型List
      */
-    public static Object getList(JBase jBase, Field field) {
-        if (!field.isAnnotationPresent(JCollectType.class)) {
-            return null;
-        }
-        JCollectType jCollectType = field.getDeclaredAnnotation(JCollectType.class);
-        EuTypeof instance = EuTypeof.getInstance(String.format("%s%s", jCollectType.type().getTypeName(), "[]"));
+    @SafeVarargs
+    public static Object getList(JBase jBase, Field field, Class<?> filedClass, Class<? extends JBasePlug<?>>... aux) {
+        EuTypeof instance = EuTypeof.getInstance(String.format("%s%s", filedClass.getTypeName(), "[]"));
         if (Objects.isNull(instance)) {
-            return null;
+            return BasePlug.getList(jBase, filedClass, aux);
         }
         switch (instance) {
             case INTEGER_ARR:
@@ -333,14 +339,11 @@ public class ArrayUtil {
      * @param field 当前字段
      * @return 转化后的包装类型Map
      */
-    public static Object getMap(JBase jBase, Field field) {
-        if (field.isAnnotationPresent(JCollectType.class)) {
-            return null;
-        }
-        JCollectType jCollectType = field.getDeclaredAnnotation(JCollectType.class);
-        EuTypeof instance = EuTypeof.getInstance(String.format("%s%s", jCollectType.type().getTypeName(), "[]"));
+    @SafeVarargs
+    public static Object getMap(JBase jBase, Field field, Class<?> filedClass, Class<? extends JBasePlug<?>>... aux) {
+        EuTypeof instance = EuTypeof.getInstance(String.format("%s%s", filedClass.getTypeName(), "[]"));
         if (Objects.isNull(instance)) {
-            return null;
+            return BasePlug.getMap(jBase, filedClass, aux);
         }
         switch (instance) {
             case INTEGER_ARR:

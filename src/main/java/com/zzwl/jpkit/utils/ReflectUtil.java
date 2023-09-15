@@ -1,13 +1,14 @@
 package com.zzwl.jpkit.utils;
 
-import com.zzwl.jpkit.anno.*;
+import com.zzwl.jpkit.anno.JFString;
+import com.zzwl.jpkit.anno.JFormat;
+import com.zzwl.jpkit.anno.JIgnore;
+import com.zzwl.jpkit.anno.JRename;
 import com.zzwl.jpkit.bean.FieldBean;
-import com.zzwl.jpkit.bean.JPConfigAnno;
-import com.zzwl.jpkit.bean.JPConfigAnnoContext;
 import com.zzwl.jpkit.conversion.BToJSON;
 import com.zzwl.jpkit.core.JSON;
-import com.zzwl.jpkit.parse.ObjectParse;
 import com.zzwl.jpkit.plugs.BasePlug;
+import com.zzwl.jpkit.plugs.JBasePlug;
 import com.zzwl.jpkit.typeof.*;
 
 import java.lang.reflect.Field;
@@ -19,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @since 1.0
@@ -139,6 +142,14 @@ public class ReflectUtil {
         if (Objects.isNull(o)) {
             return null;
         }
+        if (!JObject.isBase(o)) {
+            // 处理自定义对象的JSON序列化
+            if (isPretty) {
+                return JSON.stringify(o).pretty();
+            } else {
+                return JSON.stringify(o).terse();
+            }
+        }
         if (field.isAnnotationPresent(JFormat.class) && o instanceof Date) {
             JFormat jDateFormat = field.getDeclaredAnnotation(JFormat.class);
             if (jDateFormat.value().equals("#")) {
@@ -236,10 +247,13 @@ public class ReflectUtil {
     /**
      * 为对象字段赋值
      *
-     * @param obj  对象
-     * @param func 自定义处理函数
+     * @param obj       对象
+     * @param func      自定义处理函数
+     * @param res       自定义插件
+     * @param auxiliary 自定义插件
      */
-    public static void setBeanByField(Object obj, Function<String, JBase> func) {
+    @SafeVarargs
+    public static void setBeanByField(Object obj, Map<String, JBasePlug<?>> res, Function<String, JBase> func, Class<? extends JBasePlug<?>>... auxiliary) {
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
             if (!field.isAnnotationPresent(JIgnore.class)) {
@@ -250,7 +264,7 @@ public class ReflectUtil {
                     setValueByMethod(obj, field, null);
                     continue;
                 }
-                setValueByMethod(obj, field, getValue(obj, jBase, field));
+                setValueByMethod(obj, field, getValue(jBase, field, res, auxiliary));
                 // 若利用方法设置不到属性值，就利用属性设置但此方法会打破属性的私有性
                 if (setTag) {
                     try {
@@ -260,7 +274,7 @@ public class ReflectUtil {
                             field.set(obj, null);
                             continue;
                         }
-                        Object value = getValue(obj, jBase, field);
+                        Object value = getValue(jBase, field, res, auxiliary);
                         if (!Objects.isNull(value)) {
                             field.set(obj, value);
                         }
@@ -275,12 +289,14 @@ public class ReflectUtil {
     /**
      * 为setValue提供准确的类型值
      *
-     * @param source 包装对象
-     * @param jBase  数据源
-     * @param field  字段
+     * @param jBase     数据源
+     * @param field     字段
+     * @param res       自定义插件容器
+     * @param auxiliary 自定义插件
      * @return 对应类型
      */
-    private static Object getValue(Object source, JBase jBase, Field field) {
+    @SafeVarargs
+    private static Object getValue(JBase jBase, Field field, Map<String, JBasePlug<?>> res, Class<? extends JBasePlug<?>>... auxiliary) {
         Class<?> type = field.getType();
         if (type.equals(Long.class) || type.equals(long.class)) {
             if (field.isAnnotationPresent(JFString.class)) {
@@ -324,85 +340,45 @@ public class ReflectUtil {
                 }
             }
         }
-        if (field.isAnnotationPresent(JParse.class)) {
-            Class<?> sourceClass = source.getClass();
-            return getPlugsObject(jBase, field, sourceClass);
-        }
+
         if (type.isArray()) {
             // Integer[] ...
-            Class<?> mySelf = isMySelf(field);
-            if (!Objects.isNull(mySelf) && JBase.isNotBase(mySelf)) {
-                return BasePlug.getArray(jBase, mySelf);
+            // 先判断有没有自定义插件
+            String key = field.getType().getTypeName().replace("[]", "");
+            JBasePlug<?> jBasePlug = res.get(key);
+            if (jBasePlug != null) {
+                return jBasePlug.getArray(jBase);
             }
-            return ArrayUtil.getArr(jBase, field);
+            return ArrayUtil.getArr(jBase, field, auxiliary);
         }
         if (type.equals(List.class)) {
-            // List
-            Class<?> mySelf = isMySelf(field);
-            if (!Objects.isNull(mySelf) && JBase.isNotBase(mySelf)) {
-                return BasePlug.getList(jBase, mySelf);
+            // List先判断是否含有自定义插件
+            Class<?> filedClass = getListOrMapFiledClass(field);
+            JBasePlug<?> jBasePlug = res.get(filedClass.getTypeName());
+            if (jBasePlug != null) {
+                return jBasePlug.getList(jBase);
             }
-            return ArrayUtil.getList(jBase, field);
+            return ArrayUtil.getList(jBase, field, filedClass, auxiliary);
         }
         if (type.equals(Map.class)) {
-            // Map
-            Class<?> mySelf = isMySelf(field);
-            if (!Objects.isNull(mySelf) && JBase.isNotBase(mySelf)) {
-                return BasePlug.getMap(jBase, mySelf);
+            // Map先判断是否含有自定义插件
+            Class<?> filedClass = getListOrMapFiledClass(field);
+            JBasePlug<?> jBasePlug = res.get(filedClass.getTypeName());
+            if (jBasePlug != null) {
+                return jBasePlug.getMap(jBase);
             }
-            return ArrayUtil.getMap(jBase, field);
+            return ArrayUtil.getMap(jBase, field, filedClass, auxiliary);
         }
         if (JBase.isNotBase(type)) {
-            return BasePlug.getObject(jBase, type);
+            return BasePlug.getObject(jBase, type, auxiliary);
+        }
+        // 先判断有没有自定义插件
+        String key = field.getType().getTypeName();
+        JBasePlug<?> jBasePlug = res.get(key);
+        if (jBasePlug != null) {
+            return jBasePlug.getObject(jBase);
         }
         return jBase.getValue();
-    }
-
-    /**
-     * 判断是否为自身转化
-     *
-     * @param field 字段
-     * @return 是否为自身转化
-     */
-    private static Class<?> isMySelf(Field field) {
-        if (field.isAnnotationPresent(JCollectType.class)) {
-            return field.getDeclaredAnnotation(JCollectType.class).type();
-        }
-        return null;
-    }
-
-    /**
-     * 获取插件提供的类型值
-     *
-     * @param jBase       数据源
-     * @param field       字段
-     * @param sourceClass 包装对象的Class
-     * @return 对应类型
-     */
-    private static Object getPlugsObject(JBase jBase, Field field, Class<?> sourceClass) {
-        JPConfigAnno jpConfigAnno;
-        jpConfigAnno = JPConfigAnnoContext.getAnnoConfigContext().getContext().get(sourceClass.getTypeName());
-        if (Objects.isNull(jpConfigAnno)) {
-            ObjectParse.init(sourceClass);
-        }
-        JParse jParse = field.getDeclaredAnnotation(JParse.class);
-        if (!sourceClass.isAnnotationPresent(JPConfig.class)) {
-            return null;
-        }
-        Class<?> plug = sourceClass.getDeclaredAnnotation(JPConfig.class).plugs()[jParse.pos()];
-        String methodName = String.format(ObjectParse.TEMPLATE, plug.getTypeName(), field.getType().getTypeName(), jParse.method());
-        Object[] objects = jpConfigAnno.getMethodStore().get(methodName);
-        if (Objects.isNull(objects)) {
-            return null;
-        }
-        Method method = (Method) objects[1];
-        try {
-            return method.invoke(objects[0], jBase);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            // log
-            e.printStackTrace();
-            return null;
-        }
     }
 
     /**
@@ -414,5 +390,28 @@ public class ReflectUtil {
     private static boolean isBaseTypeof(Field field) {
         Class<?> type = field.getType();
         return type.equals(Boolean.class) || type.equals(boolean.class) || type.equals(Double.class) || type.equals(double.class) || type.equals(Integer.class) || type.equals(int.class) || type.equals(Long.class) || type.equals(long.class) || type.equals(String.class) || type.equals(Object.class);
+    }
+
+    /**
+     * 获取list或Map的动态类型
+     *
+     * @param field 字段
+     * @return Class<?> 类型
+     */
+    public static Class<?> getListOrMapFiledClass(Field field) {
+        String name = field.getGenericType().getTypeName();
+        Pattern compile = Pattern.compile(".*?<(.*?)>");
+        Matcher matcher = compile.matcher(name);
+        if (matcher.find()) {
+            String group = matcher.group(1);
+            String[] split = group.split(",");
+            String clazz = split[split.length - 1].trim();
+            try {
+                return Class.forName(clazz);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return Object.class;
     }
 }

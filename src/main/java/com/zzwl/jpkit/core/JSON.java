@@ -6,6 +6,7 @@ import com.zzwl.jpkit.file.FileUtil;
 import com.zzwl.jpkit.network.NetUtil;
 import com.zzwl.jpkit.parse.JSONParse;
 import com.zzwl.jpkit.parse.ObjectParse;
+import com.zzwl.jpkit.plugs.JBasePlug;
 import com.zzwl.jpkit.typeof.JArray;
 import com.zzwl.jpkit.typeof.JBase;
 import com.zzwl.jpkit.typeof.JObject;
@@ -102,6 +103,24 @@ public class JSON {
     }
 
     /**
+     * JSON解析为Java普通对象，支持自定义类型解析
+     *
+     * @param json  JSON字符串
+     * @param clazz 类型
+     * @param aux   自定义插件类型
+     * @param <B>   对象类型
+     * @return 解析后的对象
+     */
+    @SafeVarargs
+    public static <B> B parse(String json, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
+        ITypeof<Object> typeof = parse(json);
+        if (typeof instanceof JArray) {
+            throw new RuntimeException("parse error, please use JSON.parseList(String json, Class<B> clazz)");
+        }
+        return parse(typeof, clazz, aux);
+    }
+
+    /**
      * JSON解析为Java普通对象
      * <blockquote><pre>
      *     String json =
@@ -117,14 +136,16 @@ public class JSON {
      *
      * @param typeof JBase 对象
      * @param clazz  类型
+     * @param aux    自定义插件类型
      * @param <B>    转换成功后的类型
      * @return 解析好的对象
      */
-    public static <B> B parse(ITypeof<Object> typeof, Class<B> clazz) {
+    @SafeVarargs
+    public static <B> B parse(ITypeof<Object> typeof, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
         if (typeof instanceof JArray) {
             throw new RuntimeException("parse error, please use JSON.parseList(String json, Class<B> clazz)");
         }
-        return new ObjectParse(typeof).parse(clazz);
+        return new ObjectParse(typeof).parse(clazz, aux);
     }
 
     /**
@@ -162,6 +183,32 @@ public class JSON {
         JArray arr = (JArray) parse;
         for (JBase jBase : arr.getValue()) {
             list.add(parse(jBase, clazz));
+        }
+        return list;
+    }
+
+    /**
+     * JSON解析为Java的List<B>对象
+     * <blockquote><pre>
+     *  please see other example
+     * </pre></blockquote>
+     *
+     * @param json  JSON字符串
+     * @param clazz 类型
+     * @param aux   ...
+     * @param <B>   转成功后的类型
+     * @return 解析好的对象
+     */
+    @SafeVarargs
+    public static <B> List<B> parseList(String json, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
+        ITypeof<Object> parse = parse(json);
+        if (parse instanceof JObject) {
+            throw new RuntimeException("parseList error, please use JSON.parseMap(String json, Class<B> clazz)");
+        }
+        List<B> list = new ArrayList<>();
+        JArray arr = (JArray) parse;
+        for (JBase jBase : arr.getValue()) {
+            list.add(parse(jBase, clazz, aux));
         }
         return list;
     }
@@ -206,6 +253,33 @@ public class JSON {
         Map<String, JBase> value = jo.getValue();
         for (String s : value.keySet()) {
             map.put(s, parse(value.get(s), clazz));
+        }
+        return map;
+    }
+
+    /**
+     * JSON解析为Java的Map<String ,B> 对象
+     * <blockquote><pre>
+     *  please see other example
+     * </pre></blockquote>
+     *
+     * @param json  JSON字符串
+     * @param clazz 类型
+     * @param aux   ...
+     * @param <B>   转成功后的类型
+     * @return 解析好的Map
+     */
+    @SafeVarargs
+    public static <B> Map<String, B> parseMap(String json, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
+        ITypeof<Object> parse = parse(json);
+        if (parse instanceof JArray) {
+            throw new RuntimeException("parseMap error, please use JSON.parseList(String json, Class<B> clazz)");
+        }
+        Map<String, B> map = new HashMap<>();
+        JObject jo = (JObject) parse;
+        Map<String, JBase> value = jo.getValue();
+        for (String s : value.keySet()) {
+            map.put(s, parse(value.get(s), clazz, aux));
         }
         return map;
     }
@@ -420,6 +494,157 @@ public class JSON {
         Map<String, JBase> value = jo.getValue();
         for (String s : value.keySet()) {
             map.put(s, parse(value.get(s), clazz));
+        }
+        return map;
+    }
+
+    /**
+     * 加载本地或网络JSON资源为对应的Java Bean对象
+     * <blockquote><pre>
+     *     please see other example
+     * </pre></blockquote>
+     *
+     * @param path  路径
+     * @param clazz 类型
+     * @param aux   ...
+     * @param <B>   转化的类型
+     * @return 转化后的类型
+     */
+    @SafeVarargs
+    public static <B> B load(String path, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
+        ITypeof<Object> load = load(path);
+        if (load instanceof JArray) {
+            throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
+        }
+        return parse(load, clazz, aux);
+    }
+
+    /**
+     * 加载本地或网络(需要请求参数)JSON资源为对应的Java Bean对象
+     * <blockquote><pre>
+     *     please see other example
+     * </pre></blockquote>
+     *
+     * @param path  路径
+     * @param clazz 类型
+     * @param pram  requestPram
+     * @param aux   ...
+     * @param <B>   转化的类型
+     * @return 转化后的类型
+     */
+    @SafeVarargs
+    public static <B> B load(String path, Options pram, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
+        ITypeof<Object> load = load(path, pram);
+        if (load instanceof JArray) {
+            throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
+        }
+        return parse(load, clazz, aux);
+    }
+
+    /**
+     * 加载本地或网络JSON资源为对应的List对象
+     * <blockquote><pre>
+     *     please see other example
+     * </pre></blockquote>
+     *
+     * @param path  路径
+     * @param clazz 类型
+     * @param aux   ...
+     * @param <B>   转化的类型
+     * @return 转化后的List
+     */
+    @SafeVarargs
+    public static <B> List<B> loadList(String path, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
+        ITypeof<Object> load = load(path);
+        if (load instanceof JObject) {
+            throw new RuntimeException("load error, please use JSON.load(path, Class<B> clazz)");
+        }
+        List<B> list = new ArrayList<>();
+        JArray arr = (JArray) load;
+        for (JBase jBase : arr.getValue()) {
+            list.add(parse(jBase, clazz, aux));
+        }
+        return list;
+    }
+
+    /**
+     * 加载本地或网络(需要请求参数)JSON资源为对应的List对象
+     * <blockquote><pre>
+     *     please see other example
+     * </pre></blockquote>
+     *
+     * @param path  路径
+     * @param clazz 类型
+     * @param pram  pram
+     * @param aux   ...
+     * @param <B>   转化的类型
+     * @return 转化后的List
+     */
+    @SafeVarargs
+    public static <B> List<B> loadList(String path, Options pram, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
+        ITypeof<Object> load = load(path, pram);
+        if (load instanceof JObject) {
+            throw new RuntimeException("load error, please use JSON.load(path, Class<B> clazz)");
+        }
+        List<B> list = new ArrayList<>();
+        JArray arr = (JArray) load;
+        for (JBase jBase : arr.getValue()) {
+            list.add(parse(jBase, clazz, aux));
+        }
+        return list;
+    }
+
+    /**
+     * 加载本地或网络JSON资源为对应的Map对象
+     * <blockquote><pre>
+     *     please see other example
+     * </pre></blockquote>
+     *
+     * @param path  路径
+     * @param clazz 类型
+     * @param <B>   转化的类型
+     * @param aux   ...
+     * @return 转化后的Map
+     */
+    @SafeVarargs
+    public static <B> Map<String, B> loadMap(String path, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
+        ITypeof<Object> load = load(path);
+        if (load instanceof JArray) {
+            throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
+        }
+        Map<String, B> map = new HashMap<>();
+        JObject jo = (JObject) load;
+        Map<String, JBase> value = jo.getValue();
+        for (String s : value.keySet()) {
+            map.put(s, parse(value.get(s), clazz, aux));
+        }
+        return map;
+    }
+
+    /**
+     * 加载本地或网络(需要请求参数)JSON资源为对应的Map对象
+     * <blockquote><pre>
+     *     please see other example
+     * </pre></blockquote>
+     *
+     * @param path  路径
+     * @param clazz 类型
+     * @param pram  pram
+     * @param aux   ...
+     * @param <B>   转化的类型
+     * @return 转化后的Map
+     */
+    @SafeVarargs
+    public static <B> Map<String, B> loadMap(String path, Options pram, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
+        ITypeof<Object> load = load(path, pram);
+        if (load instanceof JArray) {
+            throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
+        }
+        Map<String, B> map = new HashMap<>();
+        JObject jo = (JObject) load;
+        Map<String, JBase> value = jo.getValue();
+        for (String s : value.keySet()) {
+            map.put(s, parse(value.get(s), clazz, aux));
         }
         return map;
     }

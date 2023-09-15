@@ -12,49 +12,89 @@ import java.util.Map;
 /**
  * @since 1.0
  */
-public class BasePlug {
-    public final static String GET_OBJECT = "getObject";
-    public final static String GET_ARR = "getArray";
-    public final static String GET_LIST = "getList";
-    public final static String GET_MAP = "getMap";
+public abstract class BasePlug<E> {
 
     /**
      * JBase to Object
      *
-     * @param jBase 数据源
+     * @param jBase     数据源
+     * @param clazz     数据类型
+     * @param auxiliary 自定义插件
      * @return 对应类型的对象
      */
-    public static <T> T getObject(JBase jBase, Class<T> clazz) {
-        return JSON.parse(jBase, clazz);
+    @SafeVarargs
+    public static <T> T getObject(JBase jBase, Class<T> clazz, Class<? extends JBasePlug<?>>... auxiliary) {
+        return JSON.parse(jBase, clazz, auxiliary);
     }
 
     /**
      * List<JBase> to Object[]
      *
-     * @param jBase 数据源
+     * @param jBase     数据源
+     * @param clazz     数据类型
+     * @param auxiliary 自定义插件
      * @return 对应类型的数组
      */
-    public static Object[] getArray(JBase jBase, Class<?> clazz) {
-        return ArrayUtil.doArrayByArray(jBase, (Object[]) Array.newInstance(clazz, 0), (jb) -> JSON.parse(jb, clazz));
+    @SafeVarargs
+    public static Object[] getArray(JBase jBase, Class<?> clazz, Class<? extends JBasePlug<?>>... auxiliary) {
+        return ArrayUtil.doArrayByArray(jBase, (Object[]) Array.newInstance(clazz, 0), (jb) -> JSON.parse(jb, clazz, auxiliary));
     }
 
     /**
      * List<JBase> to List<Object>
      *
-     * @param jBase 数据源
+     * @param jBase     数据源
+     * @param clazz     数据类型
+     * @param auxiliary 自定义插件
      * @return 对应类型的List
      */
-    public static <T> List<T> getList(JBase jBase, Class<T> clazz) {
-        return ArrayUtil.doArrayByList(jBase, (jb) -> JSON.parse(jb, clazz));
+    @SafeVarargs
+    public static <T> List<T> getList(JBase jBase, Class<T> clazz, Class<? extends JBasePlug<?>>... auxiliary) {
+        return ArrayUtil.doArrayByList(jBase, (jb) -> JSON.parse(jb, clazz, auxiliary));
     }
 
     /**
      * Map<String, JBase> to Map<String, Object>
      *
-     * @param jBase 数据源
+     * @param jBase     数据源
+     * @param target    数据类型
+     * @param auxiliary 自定义插件
      * @return 对应类型的Map
      */
-    public static <T> Map<String, T> getMap(JBase jBase, Class<T> target) {
-        return ArrayUtil.doArrayByMap(jBase, (jb) -> new JBaseEntryImpl<>(jb.getKey(), JSON.parse(jb.getValue(), target)));
+    @SafeVarargs
+    public static <T> Map<String, T> getMap(JBase jBase, Class<T> target, Class<? extends JBasePlug<?>>... auxiliary) {
+        return ArrayUtil.doArrayByMap(jBase, (jb) -> new JBaseEntryImpl<>(jb.getKey(), JSON.parse(jb.getValue(), target, auxiliary)));
     }
+
+    /**
+     * JBase to E
+     *
+     * @param jb 数据源
+     * @return BigDecimal
+     */
+    public abstract E getObject(JBase jb);
+
+    /**
+     * List<JBase> to E[]
+     *
+     * @param jBase 数据源
+     * @return E[]
+     */
+    public abstract E[] getArray(JBase jBase);
+
+    /**
+     * List<JBase> to List<E>
+     *
+     * @param jBase 数据源
+     * @return List<E>
+     */
+    public abstract List<E> getList(JBase jBase);
+
+    /**
+     * Map<String,JBase> to Map<String, E>
+     *
+     * @param jBase 数据源
+     * @return Map<String, E>
+     */
+    public abstract Map<String, E> getMap(JBase jBase);
 }

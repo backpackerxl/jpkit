@@ -1,26 +1,24 @@
 package com.zzwl.jpkit.parse;
 
-import com.zzwl.jpkit.anno.JPConfig;
-import com.zzwl.jpkit.anno.JPMethod;
-import com.zzwl.jpkit.bean.JPConfigAnno;
-import com.zzwl.jpkit.bean.JPConfigAnnoContext;
 import com.zzwl.jpkit.core.ITypeof;
+import com.zzwl.jpkit.plugs.JBasePlug;
 import com.zzwl.jpkit.typeof.JBase;
 import com.zzwl.jpkit.typeof.JObject;
 import com.zzwl.jpkit.utils.ReflectUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @since 1.0
  */
 public class ObjectParse {
     private final JBase jBase;
-    public final static String TEMPLATE = "%s$%s$%s";
 
     public ObjectParse(ITypeof<Object> typeof) {
         this.jBase = (JBase) typeof;
@@ -34,36 +32,41 @@ public class ObjectParse {
      * @param <B>   转化后的类型
      * @return 转化好的对象
      */
-    public <B> B parse(Class<B> clazz) {
+    @SafeVarargs
+    public final <B> B parse(Class<B> clazz, Class<? extends JBasePlug<?>>... auxiliary) {
         Object bean = createBean(clazz);
-        if (!JPConfigAnnoContext.getAnnoConfigContext().getContext().containsKey(clazz.getTypeName())) {
-            init(clazz);
+        Map<String, JBasePlug<?>> res = new HashMap<>();
+        if (auxiliary.length > 0) {
+            init(res, auxiliary);
         }
         JObject jo = (JObject) this.jBase;
-        ReflectUtil.setBeanByField(bean, (name) -> jo.getValue().get(name));
+        ReflectUtil.setBeanByField(bean, res, (name) -> jo.getValue().get(name), auxiliary);
         return (B) bean;
+    }
+
+    /**
+     * 获取父类的泛型类型
+     *
+     * @param clazz 泛型类型
+     * @return 泛型类型
+     */
+    private static String getSuperClazz(Class<? extends JBasePlug<?>> clazz) {
+        String name = clazz.getGenericSuperclass().getTypeName();
+        Pattern compile = Pattern.compile(".*?<(.*?)>");
+        Matcher matcher = compile.matcher(name);
+        if (matcher.find()) {
+            return matcher.group(1).trim();
+        }
+        return Object.class.getTypeName();
     }
 
     /**
      * 通过注解初始化自定义插件信息
      */
-    public static void init(Class<?> clazz) {
-        if (clazz.isAnnotationPresent(JPConfig.class)) {
-            Map<String, JPConfigAnno> context = JPConfigAnnoContext.getAnnoConfigContext().getContext();
-            JPConfig jpConfig = clazz.getDeclaredAnnotation(JPConfig.class);
-            JPConfigAnno configAnno = new JPConfigAnno();
-            Map<String, Object[]> methodStore = configAnno.getMethodStore();
-            for (Class<?> plug : jpConfig.plugs()) {
-                for (Method method : plug.getDeclaredMethods()) {
-                    if (method.isAnnotationPresent(JPMethod.class)) {
-                        Object[] objects = new Object[2];
-                        objects[0] = createBean(plug);
-                        objects[1] = method;
-                        methodStore.put(String.format(TEMPLATE, plug.getTypeName(), method.getReturnType().getTypeName(), method.getDeclaredAnnotation(JPMethod.class).value()), objects);
-                    }
-                }
-            }
-            context.put(clazz.getTypeName(), configAnno);
+    @SafeVarargs
+    public static void init(Map<String, JBasePlug<?>> res, Class<? extends JBasePlug<?>>... auxiliary) {
+        for (Class<? extends JBasePlug<?>> jBasePlugClazz : auxiliary) {
+            res.put(getSuperClazz(jBasePlugClazz), (JBasePlug<?>) createBean(jBasePlugClazz));
         }
     }
 

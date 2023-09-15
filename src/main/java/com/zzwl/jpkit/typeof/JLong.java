@@ -1,9 +1,9 @@
 package com.zzwl.jpkit.typeof;
 
-import com.zzwl.jpkit.anno.JCollectType;
 import com.zzwl.jpkit.anno.JFString;
 import com.zzwl.jpkit.plugs.impl.JBaseEntryImpl;
 import com.zzwl.jpkit.utils.ArrayUtil;
+import com.zzwl.jpkit.utils.ReflectUtil;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -80,10 +80,7 @@ public class JLong extends JBase {
      */
     private static boolean isTag(Field field) {
         String typeName = field.getType().getTypeName();
-        if (field.isAnnotationPresent(JCollectType.class)) {
-            return field.isAnnotationPresent(JFString.class) && field.getDeclaredAnnotation(JCollectType.class).type().equals(Long.class);
-        }
-        return (typeName.equals(Long[].class.getTypeName()) || typeName.equals(long[].class.getTypeName())) && field.isAnnotationPresent(JFString.class);
+        return ((typeName.equals(Long[].class.getTypeName()) || typeName.equals(long[].class.getTypeName())) && field.isAnnotationPresent(JFString.class)) || (field.isAnnotationPresent(JFString.class) && ReflectUtil.getListOrMapFiledClass(field).equals(Long.class));
     }
 
     @Override

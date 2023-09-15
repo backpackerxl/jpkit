@@ -1,6 +1,5 @@
 package com.zzwl.jpkit.vo;
 
-import com.zzwl.jpkit.anno.JCollectType;
 import com.zzwl.jpkit.anno.JFString;
 import com.zzwl.jpkit.anno.JFormat;
 import com.zzwl.jpkit.anno.JRename;
@@ -27,11 +26,9 @@ public class User {
     //    @JIgnore
     private String[] strings;
     private int[] ints;
-
     @JFString
     private long[] longs;
     @JFString // 将Long 类型转JSON时当字符串进行处理
-    @JCollectType(type = Long.class) // 标记List的泛型类型
     private List<Long> longList;
 
     public int[] getInts() {

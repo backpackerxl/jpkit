@@ -3,7 +3,9 @@ package com.zzwl.jpkit;
 import com.zzwl.jpkit.bean.Options;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.parse.ObjectParse;
+import com.zzwl.jpkit.plugs.BigDecimalPlug;
 import com.zzwl.jpkit.typeof.*;
+import com.zzwl.jpkit.utils.ReflectUtil;
 import com.zzwl.jpkit.utils.StringUtil;
 import com.zzwl.jpkit.vo.*;
 import org.databene.contiperf.PerfTest;
@@ -78,6 +80,7 @@ public class JSONTest {
         System.out.println(s1);
 
     }
+
     //"http://stll.zgsqzx.cn/stll_api/video/videoPlay/VideoList" -P -H "Authorization:Bearer 64df85c7-caa0-4d6a-a15f-412ffea98407" -D "time:2023-04-11" -D "channelCode:51182400001320000042" -D "recordType:Device" -D "videoCode:51182400001180000001"
     @Test
 //    @PerfTest(invocations = 1000, threads = 40)
@@ -99,8 +102,9 @@ public class JSONTest {
 
 //        System.out.println(JSON.load("src\\test\\resources\\tdb.json"));
     }
+
     @Test
-    public void testReg(){
+    public void testReg() {
         System.out.println(StringUtil.isChinese("ii uiop,"));
     }
 
@@ -295,20 +299,29 @@ public class JSONTest {
 
         mySQL.setMap(map);
         List<MySQL> mySQLList = new ArrayList<>();
-        mySQLList.add(new MySQL("mysql", "8.0.23", new BigDecimal("0.25689"), bigDecimals1));
+        MySQL mysql = new MySQL("mysql", "8.0.23", new BigDecimal("0.25689"), bigDecimals1);
+        Type type = new Type(1561645451651L, int.class.getTypeName(), Integer.class);
+        mysql.setType(type);
+        mysql.setBigDecimals(bigDecimals);
+        mysql.setMap(map);
+        mySQLList.add(mysql);
         mySQL.setMySQLList(mySQLList);
         Type[] types = new Type[]{new Type(156161651651651L, String.class.getTypeName(), String.class), new Type(4464646L, String.class.getTypeName(), String.class)};
         mySQL.setTypes(types);
-        mySQL.setType(new Type(1561645451651L, int.class.getTypeName(), Integer.class));
-        System.out.println(JSON.stringify(Class.class).terse());
-        System.out.println(mySQL);
+        mySQL.setType(type);
+        System.out.println(JSON.stringify(mySQL).terse());
+        System.out.println("=======================");
+//        System.out.println(mySQL);
     }
 
     @Test
     public void testSubParse() {
         long start = new Date().getTime();
+        String example = "{\"server\":\"mysql\",\"version\":\"5.7.35\",\"bigDecimal\":0.25689,\"bigs\":[0.316,0.25],\"bigDecimals\":[0.1,0.1566,0.2568,0.84894],\"map\":{\"one\":5.26,\"fore\":5.2667,\"two\":5.2556,\"three\":5.4426},\"mySQLList\":[{\"server\":\"mysql\",\"version\":\"8.0.23\",\"bigDecimal\":0.25689,\"bigs\":[0.316,0.25],\"bigDecimals\":[0.1,0.1566,0.2568,0.84894],\"map\":{\"one\":5.26,\"fore\":5.2667,\"two\":5.2556,\"three\":5.4426},\"mySQLList\":null,\"types\":null,\"type\":{\"id\":\"1561645451651\",\"name\":\"int\",\"aClass\":\"java.lang.Integer\"}}],\"types\":[{\"id\":\"156161651651651\",\"name\":\"java.lang.String\",\"aClass\":\"java.lang.String\"},{\"id\":\"4464646\",\"name\":\"java.lang.String\",\"aClass\":\"java.lang.String\"}],\"type\":{\"id\":\"1561645451651\",\"name\":\"int\",\"aClass\":\"java.lang.Integer\"}}";
         String json = "{\n" + "  \"server\": \"mysql\",\n" + "  \"version\": \"5.7.35\",\n" + "  \"bigDecimal\": 0.25689,\n" + "  \"bigs\": [\n" + "    0.316,\n" + "    0.25\n" + "  ],\n" + "  \"bigDecimals\": [\n" + "    0.1,\n" + "    0.1566,\n" + "    0.2568,\n" + "    0.84894\n" + "  ],\n" + "  \"map\": {\n" + "    \"one\": 5.26,\n" + "    \"fore\": 5.2667,\n" + "    \"two\": 5.2556,\n" + "    \"three\": 5.4426\n" + "  },\n" + "  \"mySQLList\": [\n" + "    {\n" + "      \"server\": \"mysql\",\n" + "      \"version\": \"8.0.23\",\n" + "      \"bigDecimal\": 0.25689,\n" + "      \"bigs\": [\n" + "        0.316,\n" + "        0.25\n" + "      ],\n" + "      \"bigDecimals\": null,\n" + "      \"map\": null,\n" + "      \"mySQLList\": null,\n" + "      \"types\": null,\n" + "      \"type\": null\n" + "    }\n" + "  ],\n" + "  \"types\": [\n" + "    {\n" + "      \"id\": \"156161651651651\",\n" + "      \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    },\n" + "    {\n" + "      \"id\": \"4464646\",\n" + "      \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    }\n" + "  ],\n" + "  \"type\": {\n" + "    \"id\": \"1561645451651\",\n" + "    \"name\": \"int\",\n" + "    \"aClass\": \"java.lang.Integer\"\n" + "  }\n" + "}";
-        MySQL parse = JSON.parse(json, MySQL.class);
+//        System.out.println(json);
+        System.out.println("=====================================");
+        MySQL parse = JSON.parse(example, MySQL.class, BigDecimalPlug.class);
         long end = new Date().getTime();
         System.out.println("解析耗时: " + (end - start));
         System.out.println(parse);
@@ -503,4 +516,32 @@ public class JSONTest {
         String s = StringUtil.doChinese(res, false);
         System.out.println(s);
     }
+
+    public static void main(String[] args) throws NoSuchFieldException {
+        Class<MySQL> mySQLClass = MySQL.class;
+        Field map = mySQLClass.getDeclaredField("bigs");
+        Field bigDecimal = mySQLClass.getDeclaredField("bigDecimal");
+        Field bigDecimals = mySQLClass.getDeclaredField("bigDecimals");
+        Field map1 = mySQLClass.getDeclaredField("map");
+        System.out.println(map.getType().getTypeName().replace("[]", ""));
+        System.out.println(map.getType().getName());
+        System.out.println(bigDecimal.getType().getName());
+        System.out.println(bigDecimals.getType().getTypeName());
+        System.out.println(map1.getType().getTypeName().equals(Map.class.getTypeName()));
+        System.out.println(ReflectUtil.getListOrMapFiledClass(map1));
+        System.out.println(ReflectUtil.getListOrMapFiledClass(bigDecimals));
+
+        System.out.println();
+
+        String name = BigDecimalPlug.class.getGenericSuperclass().getTypeName();
+        System.out.println(name);
+    }
+
+    @Test
+    public void testOppo() {
+        Type type = new Type(12142657L, "oppo", Oppo.class);
+        Oppo oppo = new Oppo(type);
+        System.out.println(JSON.stringify(oppo).terse());
+    }
+
 }
