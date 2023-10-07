@@ -20,6 +20,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.zzwl.jpkit.utils.StringUtil.getMethodNameByFieldType;
+import static com.zzwl.jpkit.utils.StringUtil.replace;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 public class JSONTest {
     @Rule
     public ContiPerfRule i = new ContiPerfRule();
@@ -56,7 +61,7 @@ public class JSONTest {
     @Required(max = 1200, average = 250, totalTime = 60000)
     public void testString() throws NoSuchFieldException {
         Field field = User.class.getDeclaredField("admin");
-        System.out.println(StringUtil.getMethodNameByFieldType(StringUtil.basicGetPrefix, field.getType(), field.getName()));
+        System.out.println(getMethodNameByFieldType(StringUtil.basicGetPrefix, field.getType(), field.getName()));
     }
 
     @Test
@@ -437,7 +442,7 @@ public class JSONTest {
 //        JBase load = (JBase) JSON.load(url, options);
 //        System.out.println(load);
 
-        System.out.println(StringUtil.replace("[a-z]+", "4464sdsf56446fgg", String::toUpperCase));
+        System.out.println(replace("[a-z]+", "4464sdsf56446fgg", String::toUpperCase));
 //        System.out.println(load);
     }
 
@@ -542,6 +547,48 @@ public class JSONTest {
         Type type = new Type(12142657L, "oppo", Oppo.class);
         Oppo oppo = new Oppo(type);
         System.out.println(JSON.stringify(oppo).terse());
+    }
+
+    @Test
+    public void testReplaceWithNullRegex() {
+        String result = replace(null, "hello", s -> s.toUpperCase());
+        assertEquals("hello", result);
+    }
+
+    @Test
+    public void testReplaceWithNullTarget() {
+        String result = replace("hello", null, s -> s.toUpperCase());
+        assertNull(result);
+    }
+
+    @Test
+    public void testReplaceWithNullFunction() {
+        String result = replace("hello", "hello", null);
+        assertEquals("hello", result);
+    }
+
+    @Test
+    public void testReplaceWithNoMatch() {
+        String result = replace("hello", "world", s -> s.toUpperCase());
+        assertEquals("world", result);
+    }
+
+    @Test
+    public void testReplaceWithMatch() {
+        String result = replace("hello", "hello world", s -> s.toUpperCase());
+        assertEquals("HELLO world", result);
+    }
+
+    @Test
+    public void testGetMethodNameByFieldType() {
+        String result = getMethodNameByFieldType("set", int.class, "age");
+        assertEquals("setAge", result);
+
+        result = getMethodNameByFieldType("get", boolean.class, "married");
+        assertEquals("isMarried", result);
+
+        result = getMethodNameByFieldType("set", String.class, "name");
+        assertEquals("setName", result);
     }
 
 }

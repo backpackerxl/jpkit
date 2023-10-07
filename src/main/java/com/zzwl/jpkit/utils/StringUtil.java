@@ -30,7 +30,7 @@ public class StringUtil {
     public static String getMethodNameByFieldType(String prefix, Type type, String name) {
         String typeName = type.getTypeName();
         String format = String.format("%s%s%s", prefix, name.substring(0, 1).toUpperCase(), name.substring(1));
-        if (typeName.equals("boolean")) {
+        if (typeName.equals(boolean.class.getTypeName()) || typeName.equals(Boolean.class.getTypeName())) {
             if (prefix.equals(basicSetPrefix)) {
                 return format;
             }
@@ -99,14 +99,19 @@ public class StringUtil {
      * @return 替换结果
      */
     public static String replace(String regex, String target, Function<String, String> func) {
-        if (regex == null) {
+        if (target == null) {
             return null;
+        }
+        if (regex == null) {
+            return target;
         }
         Pattern compile = Pattern.compile(regex);
         Matcher matcher = compile.matcher(target);
         if (matcher.find()) {
             String group = matcher.group();
-            target = target.replace(group, func.apply(group));
+            if (func != null) {
+                target = target.replace(group, func.apply(group));
+            }
         }
         return target;
     }
@@ -123,16 +128,23 @@ public class StringUtil {
         if (target == null) {
             return null;
         }
+        if (regex == null) {
+            return target;
+        }
         Pattern compile = Pattern.compile(regex);
         Matcher matcher = compile.matcher(target);
         if (!matcher.find()) {
             return target;
         }
         String temp = matcher.group();
-        target = target.replace(temp, func.apply(temp));
+        if (func != null) {
+            target = target.replace(temp, func.apply(temp));
+        }
         while (matcher.find()) {
             String group = matcher.group();
-            target = target.replace(group, func.apply(group));
+            if (func != null) {
+                target = target.replace(group, func.apply(group));
+            }
         }
         return target;
     }
