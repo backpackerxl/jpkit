@@ -5,7 +5,7 @@
 [![](https://badgen.net/badge/maven/v1.0.0/cyan?icon=maven)](https://github.com/Backpackerxl/jpkit/packages/1773341)
 [![](https://badgen.net/badge/license/Apache%20License%202.0/blue?icon=gitlab)](https://github.com/Backpackerxl/jpkit/blob/main/LICENSE)
 
-> 这是一个用于Java和JSON之间相互转换的工具。目前，它只针对JSON实现。在未来，将实现其他文本解析。
+> 这是一个用于Java和JSON之间相互转换的工具。目前，它只针对JSON实现。
 
 - `jpkit` 可以使用插件支持更多的Java类型的解析，在需要时可以快速添加，在不用时可以快速抛弃，实现了动态增强其解析能力
 
