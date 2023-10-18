@@ -1,0 +1,1395 @@
+{
+  "pageProps": {
+    "_nextI18Next": {
+      "initialI18nStore": {
+        "zh": {
+          "common": {
+            "404": {
+              "title": "力扣",
+              "pageNotFound": "页面不存在",
+              "message": "抱歉！我们找不到您想访问的页面..."
+            },
+            "meta": {
+              "title": "",
+              "description": "",
+              "keywords": ""
+            },
+            "ok": "好",
+            "cancel": "取消",
+            "confirm": "确认",
+            "update": "更新",
+            "submit": "提交",
+            "save": "保存",
+            "netFailed": "网络错误",
+            "header": {
+              "logo": {
+                "url": "",
+                "description": ""
+              },
+              "title": {
+                "problemset-all": ""
+              },
+              "action": {
+                "login": {
+                  "text": "",
+                  "url": ""
+                }
+              }
+            },
+            "conjunctions": {
+              "and": "and",
+              "or": "或"
+            },
+            "pages": {
+              "leetcode": "LeetCode",
+              "explore": "学习",
+              "problems": "题库",
+              "interview": {
+                "interview": "求职",
+                "onlineInterview": "在线面试",
+                "assessment": "Assessment"
+              },
+              "contest": "竞赛",
+              "discuss": "讨论",
+              "store": {
+                "store": "商店",
+                "redeem": "力扣周边",
+                "premium": "Plus 会员",
+                "shop": "精品商城"
+              },
+              "admin": {
+                "admin": "管理员",
+                "library": "题库",
+                "translation": "翻译",
+                "operations": "运营管理",
+                "scores": "点数",
+                "contribute": "贡献",
+                "backend": "后台管理",
+                "twoStepVerification": "二步验证",
+                "internalContest": "Internal Contest Dashboard",
+                "contestAdmin": "Contest Cheating Dashboard",
+                "dangerZone": "Danger Zone",
+                "review": "Review",
+                "contestDashboard": "Contest Dashboard"
+              },
+              "mobileApp": "下载 App",
+              "playground": "Playground",
+              "myPlayground": "我的 Playground",
+              "signIn": "登录",
+              "register": "注册",
+              "signOut": "退出"
+            },
+            "userMenu": {
+              "renew": "续订",
+              "getPremium": "升级 Plus 会员享专属特权",
+              "tryNewFeatures": "体验新功能",
+              "orders": "订单",
+              "resume": "个人资料",
+              "translateQuestions": "题目以中文展示",
+              "translateQuestionsEn": "题目以英文显示",
+              "enterprise": "企业招聘",
+              "revertToOldVersion": "经典模式",
+              "categories": {
+                "myList": "收藏夹",
+                "notebook": "笔记本",
+                "submissions": "我的题解",
+                "session": "进度管理",
+                "points": "积分",
+                "progress": "做题分析"
+              },
+              "unmockUser": "Unmock User",
+              "account": "个人设置",
+              "appearance": "外观",
+              "appearanceContent": {
+                "auto": "跟随系统",
+                "light": "浅色",
+                "dark": "深色"
+              }
+            },
+            "streakCounter": {
+              "finished": "干的好！明天再来挑战！",
+              "unfinished": "解决今天的「每日 1 题」，刷新你的连胜记录！",
+              "buyTimeTravelTicket": "购买补签卡",
+              "missedOneDayThisMonth": "这个月你错过了 1 天.",
+              "missedDaysThisMonth": "这个月你错过了 {{count}} 天."
+            },
+            "playground": {
+              "playground": "Playground",
+              "remainingPlaygrounds": "数量",
+              "renew": "升级",
+              "myPlaygrounds": "我的 Playgrounds",
+              "templates": {
+                "consoleApplication": "控制台程序",
+                "empty": "空白 Playground",
+                "frontend": "前端程序",
+                "machineLearning": "机器学习"
+              }
+            },
+            "links": {
+              "admin": {
+                "scores": "/library/scores",
+                "translation": "/contribution/translation/question/admin/",
+                "operations": "/management"
+              },
+              "premium": "/premium",
+              "discuss": "/circle",
+              "interview": "/company",
+              "shop": "https://detail.youzan.com/show/goods/newest?alias=271n43vr9hen7",
+              "onlineInterview": "https://leetcode.cn/interview",
+              "profileArticles": "/profile/articles",
+              "tryNewFeatures": "/new/",
+              "orders": "/order",
+              "explore": "/leetbook",
+              "resume": "/profile/info/",
+              "playground": "/playground",
+              "assessment": "/assessment/",
+              "account": "/profile/account"
+            },
+            "pagination": {
+              "perpage": " 条/页"
+            },
+            "expand": "展开",
+            "collapse": "收起",
+            "difficulty": {
+              "easy": "简单",
+              "medium": "中等",
+              "hard": "困难"
+            },
+            "data": {
+              "question": {
+                "difficulty": {
+                  "easy": "简单",
+                  "medium": "中等",
+                  "hard": "困难"
+                }
+              }
+            },
+            "markdown": {
+              "heading": "heading",
+              "quote": "Quote"
+            },
+            "mentions": {
+              "users": "用户",
+              "problems": "题目"
+            },
+            "confirmModal": {
+              "title": "确定执行此操作?",
+              "confirmBtn": "确定",
+              "cancelBtn": "取消"
+            },
+            "saving": "保存中...",
+            "saved": "保存成功",
+            "autoSaved": "已自动保存",
+            "loginRequired": "您尚未登录",
+            "verifiedRequired": "请绑定手机号或者邮箱后继续操作",
+            "phoneVerifiedRequired": "请绑定手机号后继续操作",
+            "maybeVerifiedRequired": "请绑定手机号后继续操作",
+            "copy": "复制",
+            "copied": "已复制",
+            "copyLink": "复制链接",
+            "dailyCheckIn": "+1 每日登录",
+            "//maybeVerifiedRequired": "maybeVerifiedRequired means email in LCUS and phone in LCCN",
+            "easterEgg": {
+              "rewardMessage": "恭喜您获得了 10 积分，Happy LeetCoding!"
+            },
+            "survey": {
+              "veryDissatisfied": "非常不满意",
+              "verySatisfied": "非常满意",
+              "next": "下一题",
+              "continue": "继续",
+              "submit": "提交",
+              "questionNo": "问卷题目 {{current}}/{{total}}",
+              "thanksMsg": "🎉 感谢您的反馈!"
+            },
+            "qdNav": {
+              "backTitle": "题库",
+              "expandPanel": "展开面板",
+              "preQuestion": "上一题",
+              "nextQuestion": "下一题",
+              "pickOne": "随机一题",
+              "openInNewTab": "在新的标签页打开"
+            },
+            "premiumModal": {
+              "learnMore": "了解更多权益",
+              "subscribe": "升级 Plus 会员"
+            },
+            "truncatedContent": {
+              "viewAll": "查看全部",
+              "viewLess": "收起",
+              "openRaw": "打开源码",
+              "showMore": "显示更多",
+              "showLess": "显示更少"
+            },
+            "safariNotUse": "当前 Safari 版本过低，为了更好的使用体验，请升级到最新版本"
+          },
+          "problemset": {
+            "meta": {
+              "title": "题库 - 力扣 (LeetCode) 全球极客挚爱的技术成长平台",
+              "description": "海量技术面试题库，拥有算法、数据结构、系统设计等 1000+题目，帮助你高效提升编程技能，轻松拿下世界 IT 名企 Dream Offer。",
+              "keywords": "力扣, 力扣中国, leetcode, lingkou, leetcode中国, leetcode官网, 剑指 offer, 程序员面试, 秋招, 在线编程, lc, leetcode题解, leetcode答案, 面经, 算法, 面试, 求职, 招聘, 校招, 社招, 内推, 笔试, 面试题, 面试经验, 刷题, leetcode题库, 机器学习, 算法岗, 数据结构, 代码, 互联网, 编程, 开发, 程序员, 工程师, 白板面试, 码农, 程序猿, 领扣, 领扣网, 领扣网络, 领扣中国, BAT, BAT面试, OJ, online judge, coding interview, 技术面试, leetcode中文版, leetcodechina",
+              "ogImage": "https://static.leetcode-cn.com/cn-legacy-assets/images/LeetCode_Sharing.png"
+            },
+            "companies": "热门企业题库",
+            "searchCompanyPlaceholder": "输入企业名称",
+            "emptyList": "暂无搜索结果"
+          },
+          "question-list": {
+            "table": {
+              "header": {
+                "status": "状态",
+                "title": "题目",
+                "solution": "题解",
+                "acceptance": "通过率",
+                "difficulty": "难度",
+                "frequency": "出现频率",
+                "company": "企业"
+              },
+              "tooltip": {
+                "frequency": "题目在真实面试的出题频率"
+              }
+            },
+            "filter": {
+              "key": {
+                "difficulty": "difficulty",
+                "status": "status",
+                "topics": "topicSlugs",
+                "companies": "companySlugs",
+                "list": "listId",
+                "solution": "editorialFilter",
+                "search": "search",
+                "premium": "premium"
+              },
+              "difficulty": "难度",
+              "status": "状态",
+              "list": "题单",
+              "tag": "标签",
+              "tagSearch": "筛选标签",
+              "expand": "展开全部",
+              "collapse": "收起全部",
+              "reset": "重置",
+              "searchPlaceholder": "搜索题目、编号或内容",
+              "noResult": "暂无搜索结果"
+            },
+            "settings": {
+              "showTopicTags": "显示标签",
+              "premiumQuestions": "Plus 会员题",
+              "showCompanyTags": "显示企业"
+            },
+            "allTopics": "全部题目",
+            "pickOne": "随机一题",
+            "difficulty": {
+              "easy": "简单",
+              "medium": "中等",
+              "hard": "困难"
+            },
+            "status": {
+              "todo": "未开始",
+              "solved": "已解答",
+              "attempted": "尝试过"
+            },
+            "topicTags": {
+              "expand": "展开",
+              "collapse": "收起"
+            },
+            "frequency": {
+              "lockNotice": "升级 Plus 会员查看题目热度"
+            },
+            "jsPopover": {
+              "title": "✨ 全新的题型上线！",
+              "body": "快来体验我们全新的 JavaScript 题目，提升前端基础能力，为面试做好准备！",
+              "noThanks": "暂不尝试",
+              "tryItNow": "立即体验"
+            },
+            "pandasPopover": {
+              "title": "✨ 全新的题型上线！",
+              "body": "快来体验我们全新的 pandas 题目，提升数据科学与机器学习基础能力，为面试做好准备！",
+              "noThanks": "暂不尝试",
+              "tryItNow": "立即体验"
+            }
+          },
+          "progress-calendar": {
+            "dailyChallenge": "每日 1 题",
+            "thisMonth": "本月",
+            "fill": "补",
+            "redeem": "兑换",
+            "rules": "活动规则",
+            "rule": "规则",
+            "timeTravelTicket": "补卡券",
+            "markRules": "打卡规则",
+            "remarkRules": "补卡规则",
+            "guideline": "注意事项",
+            "markRuleOptions": {
+              "option1": {
+                "title": "找到「每日 1 题」",
+                "desc": "每天 0 点，题库页列表第 1 页置顶更新当天打卡题目。"
+              },
+              "option2": {
+                "title": "提交当日打卡",
+                "desc": "成功提交则记为完成打卡，并获得 10 力扣积分。若这道题之前做过，需在打卡当天重新提交解答。"
+              },
+              "option3": {
+                "title": "完成整月打卡，获得勋章",
+                "desc": "完成整月「每日 1 题」打卡，可额外获得 全勤 100 力扣积分及「月度打卡勋章」。"
+              }
+            },
+            "remarkRuleOptions": {
+              "option1": {
+                "title": "积分兑换补卡券",
+                "desc": "日历点击「兑换」或直接前往力扣商店兑换补卡券，每月可兑 3 张。"
+              },
+              "option2": {
+                "title": "找到补卡题目",
+                "desc": "点击日历中缺卡的日期直接进入缺卡题目进行做题。补卡券使用范围：本年度任意月份的缺卡题目。"
+              },
+              "option3": {
+                "title": "完成补卡，达成全勤成就",
+                "desc": "成功提交缺卡题目，并确认使用补卡券。若补卡后完成整月打卡，可获得「月度打卡勋章」。"
+              }
+            },
+            "markGuideline": {
+              "option1": "每日打卡 10 积分将在完成任务后实时发放；",
+              "option2": "整月打卡 100 积分奖励在每月最后 1 天完成打卡任务时发放。",
+              "option3": "每月最后 1 天完成整月打卡后发放勋章，也可以在「个人主页」查看确认；",
+              "option4": "补卡后完成整月打卡即可获得勋章，可在「个人主页」查看确认。"
+            },
+            "remarkGuideline": {
+              "option1": "当月兑换的补卡券仅限当月使用，次月失效；",
+              "option2": "补卡券兑换时间：每月 第 1 天 0:00 至 最后一天 23:00；",
+              "option3": "补卡后达成全勤成就，可获得月度打卡勋章，但无全勤 100 积分奖励。",
+              "option4": "After using time travel ticket to complete a problem, you can earn the 10 LeetCoins for completing the problem. However, you’ll not be qualified to earn additional LeetCoins for completing the entire challenge."
+            },
+            "rightText": "本次活动最终解释权归领扣网络所有"
+          },
+          "progress-stats": {
+            "session": "当前进度",
+            "session.anonymous": "未命名进度",
+            "acceptanceRate": "提交通过率",
+            "noSubmission": "暂无提交",
+            "total": "全部"
+          },
+          "featured-list": {
+            "meta": {
+              "title": "{{title}} - 力扣（LeetCode）"
+            },
+            "featured": "精选题单",
+            "problemsSolved": "完成度：",
+            "listNotFound": "未找到题单",
+            "pickOne": "随机开始",
+            "share": "分享",
+            "showMore": "更多",
+            "showLess": "收起"
+          },
+          "study-plan": {
+            "entry": {
+              "title": "学习计划广场",
+              "description": "找个计划，开始刷题吧"
+            },
+            "metadata": {
+              "title": "「{{plan}}」 - 学习计划 - 力扣（LeetCode）全球极客挚爱的技术成长平台",
+              "description": "学习计划 - 力扣（LeetCode）全球极客挚爱的技术成长平台",
+              "keywords": "技术学习、刷题指南、两数之和、力扣、LeetCode、程序员、春招、秋招",
+              "completedTitle": "已完成学习计划 - 力扣（LeetCode）全球极客挚爱的技术成长平台",
+              "notFound": "未找到学习计划",
+              "catalogTitle": "学习计划 - 力扣（LeetCode）全球极客挚爱的技术成长平台"
+            },
+            "completedPlan": {
+              "title": "已完成计划",
+              "unfinished": "还没有完成的计划"
+            },
+            "return": "返回学习计划广场",
+            "completed": "已完成计划",
+            "catalog": {
+              "studyPlan": "学习计划广场",
+              "inProgress": "进行中的计划"
+            },
+            "studyPlanGroup": {
+              "problemsPerDay": "日均 {{questionCount}} 题",
+              "includesPremiumProblems": "含会员题",
+              "average": "Average",
+              "premiumAlt": "会员专享徽标",
+              "completedAlt": "已完成徽标",
+              "dayCycle": "周期 {{count}} 天",
+              "day": "天",
+              "daysPassed": "{{daysPassed}}/{{count}} 天",
+              "start": "开始",
+              "notStarted": "未开始",
+              "schedule": "计划进度",
+              "progress": "完成题目",
+              "inProgressAlt": "进行中徽标",
+              "hover": {
+                "subscribe": "开通会员",
+                "plus": "Plus 会员专享",
+                "start": "开启计划"
+              },
+              "collapse": "收起",
+              "expand": "全文",
+              "day_plural": "days",
+              "dayCycle_plural": "{{count}} days",
+              "dayRest_plural": "{{count}} days left"
+            },
+            "switchPlan": {
+              "title": "切换计划",
+              "confirm": "确定",
+              "cancel": "取消"
+            },
+            "studyPlan": {
+              "backToStudyPlan": "返回学习计划",
+              "notFound": "学习计划未找到",
+              "switchPlanHover": "切换计划",
+              "only": "当前计划仅限使用",
+              "languageSpecific": "语言进行答题，使用其他语言无法完成任务",
+              "notice": "下线公告：学习计划全新升级啦，当前旧版功能将于 2023 年 8 月 12 日下线，请合理调整学习安排哦。",
+              "newLink": "前往新版学习计划"
+            },
+            "studyPlanTask": {
+              "day": "第 {{count }} 天",
+              "completed": "已完成",
+              "acceptance": "通过率",
+              "locked": "待开启",
+              "startNow": "去做题",
+              "premiumOnly": "Plus 会员",
+              "startPremium": "开启 Plus 会员继续完成计划",
+              "premiumAlt": "会员专享徽标",
+              "hover": {
+                "subscribe": "开通会员",
+                "plus": "Plus 会员专享",
+                "start": "开启计划"
+              }
+            },
+            "share": {
+              "title": "邀你挑战 [{{plan}}] - 力扣（LeetCode）"
+            },
+            "noOngoingPlan": "还没有正在进行中的计划"
+          },
+          "new-study-plan": {
+            "detail": {
+              "metadata": {
+                "title": "{{plan}} - 学习计划 - 力扣（LeetCode）全球极客挚爱的技术成长平台",
+                "description": "学习计划 - 力扣（LeetCode）全球极客挚爱的技术成长平台",
+                "notFound": "未找到学习计划"
+              },
+              "weekTextAbbr": {
+                "sun": "周日",
+                "mon": "周一",
+                "tue": "周二",
+                "wed": "周三",
+                "thu": "周四",
+                "fri": "周五",
+                "sat": "周六"
+              },
+              "weekText": {
+                "sun": "周日",
+                "mon": "周一",
+                "tue": "周二",
+                "wed": "周三",
+                "thu": "周四",
+                "fri": "周五",
+                "sat": "周六"
+              },
+              "myPlan": "我的计划",
+              "problemLeft": "题待完成",
+              "problemsLeft": "题待完成",
+              "notification": "注意",
+              "setUpSp": "设置学习计划",
+              "solvedText": "完成",
+              "problem": "题",
+              "problems": "题",
+              "learnMore": "更多信息",
+              "you": "你",
+              "weeklyRanking": "周榜",
+              "weeklyRankingToolTip": "按本周完成题目数计算排名，每小时更新一次榜单数据（若本周未完成任何计划内题目，不计算排名）",
+              "solvePrev": "以下时间每天完成",
+              "solveNext": "道题",
+              "startTitle": "设置学习计划",
+              "confirmStartText": "计划保存后不可修改哦，确定保存吗？",
+              "quitTypeTipPrev": "请输入本计划标题：",
+              "quitTypeTipNext": " ",
+              "subscribeToUnlock": "升级 Plus 会员",
+              "subscribeToUnlockContent": "升级到 Plus 会员，可解锁该学习计划",
+              "start": "开始",
+              "share": "分享",
+              "backToExplore": "返回学习计划",
+              "goCurrentPage": "重新尝试该计划",
+              "premiumTip": "开通会员",
+              "copyLink": "复制链接",
+              "copiedSuccess": "已复制分享链接",
+              "more": "更多",
+              "quit": "退出",
+              "back": "返回",
+              "quitTitle": "关闭学习计划",
+              "quitContent": "当关闭此学习计划时，所有已解决问题的都会被重置，且无法恢复进度。你确定你要关闭吗？",
+              "showTags": "显示标签",
+              "summary": "概述",
+              "showMore": "展开",
+              "showLess": "收起",
+              "award": "勋章",
+              "awardCongratulation": "太棒啦！你已经获得此勋章",
+              "related": "相关计划",
+              "viewMore": "查看更多",
+              "todo": "待完成",
+              "attempted": "尝试过",
+              "solved": "已解答",
+              "markAsSolved": "标记为已解决",
+              "markAsSolvedTip": "你以前曾解决过这道题目，是否将其 '标记为已解决' ？",
+              "difficulty": "难度",
+              "congratulation": "🎉 恭喜你！",
+              "solvedAllProblemsText": "你已经解决了 {{title}} 中的所有问题！",
+              "checkBadge": "前往您的",
+              "profilePage": "个人主页",
+              "wearGlory": "并佩戴勋章！",
+              "checkMyStudyPlan": "回到我的学习计划",
+              "joinSuccessfully": "已加入",
+              "quitSuccessfully": "已退出",
+              "setSuccessfully": "已设置",
+              "errorTip": "遇到些问题，请再次尝试",
+              "quitTip": "若您退出该学习计划，所有已解决的问题都将被重置，且无法恢复。",
+              "pastSolved": "解答过",
+              "solution": "题解"
+            },
+            "list": {
+              "metadata": {
+                "title": "学习计划 - 在 LeetCode 上持续练习来获得面试的成功"
+              },
+              "title": "学习计划",
+              "ongoing": "进行中",
+              "myPlan": "我的学习计划",
+              "featured": "推荐",
+              "showMore": "展开",
+              "revertOldPlan": "查看旧版的学习计划",
+              "revertOldPlanTipTitle": "🌟 返回到旧版的学习计划",
+              "revertOldPlanTipDesc": "你可以点击该按钮前往旧版的学习计划",
+              "cancel": "取消",
+              "iSee": "知道了"
+            },
+            "myStudyPlan": {
+              "metadata": {
+                "title": "我的学习计划 - 力扣 (LeetCode) 全球极客挚爱的技术成长平台",
+                "desc": "加入到该学习计划可以追踪你的做题进度，有效地获得能力的提升！"
+              },
+              "title": "我的学习计划",
+              "ongoing": "进行中",
+              "history": "已结束的计划",
+              "noOngoingPlan": "暂无进行中的计划",
+              "noHistoryPlan": "暂无已结束的计划"
+            },
+            "common": {
+              "studyPlan": "学习计划",
+              "tryNow": "立即开启",
+              "noTanks": "暂不尝试",
+              "newPlan": "✨ 全新的学习计划！",
+              "newPlanDesc": "加入一个新的学习计划，最大限度地发挥你的学习潜力。追踪你的进展，专注于每天的问题，以取得持续增长",
+              "seeAll": "查看更多",
+              "totalProgress": "完成进度",
+              "progress": "完成进度",
+              "completed": "完成时间",
+              "giveUp": "退出时间",
+              "ongoing": "进行中",
+              "ongoingStudyPlan": "进行中的学习计划",
+              "later": "暂不参与",
+              "joinInQDTitle": "是否开始该学习计划？",
+              "joinInQD": "加入到该学习计划可以追踪你的做题进度，有效地获得能力的提升！",
+              "doNotRemind": "今天不再提示",
+              "exploreButton": "探索学习计划",
+              "notFoundText": "抱歉，无法找到该网页，请检查你的输入内容或重新探索一个新的学习计划"
+            },
+            "survey": {
+              "submit": "提交"
+            },
+            "satisfactionSurvey": {
+              "submitBtnText": "提交"
+            }
+          }
+        }
+      },
+      "initialLocale": "zh",
+      "ns": [
+        "common",
+        "problemset",
+        "question-list",
+        "progress-calendar",
+        "progress-stats",
+        "featured-list",
+        "study-plan",
+        "new-study-plan"
+      ],
+      "userConfig": {
+        "i18n": {
+          "defaultLocale": "zh",
+          "locales": [
+            "en",
+            "zh"
+          ]
+        },
+        "react": {
+          "useSuspense": false
+        },
+        "reloadOnPrerender": false,
+        "default": {
+          "i18n": {
+            "defaultLocale": "zh",
+            "locales": [
+              "en",
+              "zh"
+            ]
+          },
+          "react": {
+            "useSuspense": false
+          },
+          "reloadOnPrerender": false
+        }
+      }
+    },
+    "problemsetCategories": [
+      {
+        "info": {
+          "titleCn": "算法"
+        },
+        "title": "Algorithms",
+        "titleSlug": "algorithms"
+      },
+      {
+        "info": {
+          "titleCn": "数据库"
+        },
+        "title": "Database",
+        "titleSlug": "database"
+      },
+      {
+        "info": {
+          "titleCn": ""
+        },
+        "title": "Shell",
+        "titleSlug": "shell"
+      },
+      {
+        "info": {
+          "titleCn": "多线程"
+        },
+        "title": "Concurrency",
+        "titleSlug": "concurrency"
+      },
+      {
+        "info": {
+          "titleCn": ""
+        },
+        "title": "JavaScript",
+        "titleSlug": "javascript"
+      },
+      {
+        "info": {
+          "titleCn": "pandas"
+        },
+        "title": "pandas",
+        "titleSlug": "pandas"
+      }
+    ],
+    "adsPrimary": {
+      "positionTitle": "推荐",
+      "displayStyle": "TILED",
+      "ads": [
+        {
+          "identifier": "大话并发",
+          "title": "大话并发",
+          "imageLink": "https://pic.leetcode.cn/1671678041-lXzrOx-大话并发-题库.jpg",
+          "targetLink": "https://leetcode.cn/leetbook/detail/concurrency/",
+          "isTagShown": false,
+          "subtitle": "",
+          "extraInfo": "{}"
+        },
+        {
+          "identifier": "零起步学算法",
+          "title": "零起步学算法",
+          "imageLink": "https://pic.leetcode.cn/1671096802-YgKIJV-零起步学算法 题库:首页.png",
+          "targetLink": "https://leetcode.cn/leetbook/detail/learning-algorithms-with-leetcode/",
+          "isTagShown": false,
+          "subtitle": "",
+          "extraInfo": "{}"
+        },
+        {
+          "identifier": "Enlighten AI 机器学习",
+          "title": "Enlighten AI 机器学习",
+          "imageLink": "https://pic.leetcode.cn/1670420392-HsWoux-20221207-213706.png",
+          "targetLink": "https://leetcode.cn/leetbook/detail/enlighten-ai-machine-learning/",
+          "isTagShown": false,
+          "subtitle": "",
+          "extraInfo": "{}"
+        },
+        {
+          "identifier": "岗位面试模拟题集",
+          "title": "岗位面试模拟题集",
+          "imageLink": "https://pic.leetcode.cn/1670469513-zaLvON-岗位面试模拟题集 题库:首页.png",
+          "targetLink": "https://leetcode.cn/leetbook/detail/gang-wei-mian-shi-mo-ni-ti-ji/",
+          "isTagShown": false,
+          "subtitle": "",
+          "extraInfo": "{}"
+        },
+        {
+          "identifier": "数据库面试速通",
+          "title": "数据库面试速通",
+          "imageLink": "https://pic.leetcode.cn/1680175999-ZPMKSx-题库 (1).png",
+          "targetLink": "https://leetcode.cn/leetbook/detail/way-of-pass-sql-interview/",
+          "isTagShown": false,
+          "subtitle": "",
+          "extraInfo": "{}"
+        },
+        {
+          "identifier": "Enlighten AI 数学基础",
+          "title": "Enlighten AI 数学基础",
+          "imageLink": "https://pic.leetcode.cn/1670469461-HtdtuS-Enlighten AI 数学基础 题库:推荐.png",
+          "targetLink": "https://leetcode.cn/leetbook/detail/enlighten-ai-mathematical-foundation/",
+          "isTagShown": false,
+          "subtitle": "",
+          "extraInfo": "{}"
+        }
+      ]
+    },
+    "adsSidebar": {
+      "positionTitle": "(新)题库 - 右边栏",
+      "displayStyle": "TILED",
+      "ads": [
+        {
+          "identifier": "第 368 场周赛-阿里云",
+          "title": "第 368 场周赛-阿里云",
+          "imageLink": "https://pic.leetcode.cn/1697426978-AjgNbn-阿里云 480-240.png",
+          "targetLink": "https://leetcode.cn/contest/weekly-contest-368",
+          "isTagShown": false,
+          "subtitle": "",
+          "extraInfo": {"openType": 2, "frequencyLimit": 0}
+        },
+        {
+          "identifier": "七牛云-1024 节-题库右边栏",
+          "title": "七牛云-1024 节-题库右边栏",
+          "imageLink": "https://pic.leetcode.cn/1697611543-GYkRjx-20231018-144444.jpeg",
+          "targetLink": "https://www.qiniu.com/activity/detail/651297ed0d50912d3d53307b?from=0010",
+          "isTagShown": true,
+          "subtitle": "",
+          "extraInfo": "{}"
+        }
+      ]
+    },
+    "topicTags": [
+      {
+        "id": "VG9waWNUYWdOb2RlOjU0MA==",
+        "name": "Array",
+        "slug": "array",
+        "translatedName": "数组",
+        "questionCount": 1666
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU1Nw==",
+        "name": "String",
+        "slug": "string",
+        "translatedName": "字符串",
+        "questionCount": 718
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU0MQ==",
+        "name": "Hash Table",
+        "slug": "hash-table",
+        "translatedName": "哈希表",
+        "questionCount": 585
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU2Mg==",
+        "name": "Dynamic Programming",
+        "slug": "dynamic-programming",
+        "translatedName": "动态规划",
+        "questionCount": 534
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU1NQ==",
+        "name": "Math",
+        "slug": "math",
+        "translatedName": "数学",
+        "questionCount": 523
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQyOTU5",
+        "name": "Sorting",
+        "slug": "sorting",
+        "translatedName": "排序",
+        "questionCount": 388
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ1MA==",
+        "name": "Greedy",
+        "slug": "greedy",
+        "translatedName": "贪心",
+        "questionCount": 342
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ1Ng==",
+        "name": "Depth-First Search",
+        "slug": "depth-first-search",
+        "translatedName": "深度优先搜索",
+        "questionCount": 339
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ1Nw==",
+        "name": "Breadth-First Search",
+        "slug": "breadth-first-search",
+        "translatedName": "广度优先搜索",
+        "questionCount": 269
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU1OA==",
+        "name": "Binary Search",
+        "slug": "binary-search",
+        "translatedName": "二分查找",
+        "questionCount": 267
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ1NQ==",
+        "name": "Tree",
+        "slug": "tree",
+        "translatedName": "树",
+        "questionCount": 267
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjI3NDA4",
+        "name": "Matrix",
+        "slug": "matrix",
+        "translatedName": "矩阵",
+        "questionCount": 240
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjEwOTc4",
+        "name": "Database",
+        "slug": "database",
+        "translatedName": "数据库",
+        "questionCount": 234
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU2OTE=",
+        "name": "Binary Tree",
+        "slug": "binary-tree",
+        "translatedName": "二叉树",
+        "questionCount": 218
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU1Ng==",
+        "name": "Two Pointers",
+        "slug": "two-pointers",
+        "translatedName": "双指针",
+        "questionCount": 212
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ1Mw==",
+        "name": "Bit Manipulation",
+        "slug": "bit-manipulation",
+        "translatedName": "位运算",
+        "questionCount": 205
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ0NQ==",
+        "name": "Stack",
+        "slug": "stack",
+        "translatedName": "栈",
+        "questionCount": 175
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjYxMjY0",
+        "name": "Heap (Priority Queue)",
+        "slug": "heap-priority-queue",
+        "translatedName": "堆（优先队列）",
+        "questionCount": 168
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ2MA==",
+        "name": "Graph",
+        "slug": "graph",
+        "translatedName": "图",
+        "questionCount": 154
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ2Mw==",
+        "name": "Design",
+        "slug": "design",
+        "translatedName": "设计",
+        "questionCount": 151
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjM1NjQx",
+        "name": "Prefix Sum",
+        "slug": "prefix-sum",
+        "translatedName": "前缀和",
+        "questionCount": 145
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU3ODc2",
+        "name": "Simulation",
+        "slug": "simulation",
+        "translatedName": "模拟",
+        "questionCount": 143
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU2Mw==",
+        "name": "Backtracking",
+        "slug": "backtracking",
+        "translatedName": "回溯",
+        "questionCount": 125
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjk5NTY=",
+        "name": "Counting",
+        "slug": "counting",
+        "translatedName": "计数",
+        "questionCount": 113
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU0NDUw",
+        "name": "Sliding Window",
+        "slug": "sliding-window",
+        "translatedName": "滑动窗口",
+        "questionCount": 111
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU1NA==",
+        "name": "Linked List",
+        "slug": "linked-list",
+        "translatedName": "链表",
+        "questionCount": 104
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ1OQ==",
+        "name": "Union Find",
+        "slug": "union-find",
+        "translatedName": "并查集",
+        "questionCount": 90
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjMzMTAx",
+        "name": "Ordered Set",
+        "slug": "ordered-set",
+        "translatedName": "有序集合",
+        "questionCount": 62
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ2OQ==",
+        "name": "Recursion",
+        "slug": "recursion",
+        "translatedName": "递归",
+        "questionCount": 62
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU3ODc1",
+        "name": "Monotonic Stack",
+        "slug": "monotonic-stack",
+        "translatedName": "单调栈",
+        "questionCount": 61
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjE0NDc0",
+        "name": "Enumeration",
+        "slug": "enumeration",
+        "translatedName": "枚举",
+        "questionCount": 60
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU1OQ==",
+        "name": "Divide and Conquer",
+        "slug": "divide-and-conquer",
+        "translatedName": "分治",
+        "questionCount": 58
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ2NQ==",
+        "name": "Trie",
+        "slug": "trie",
+        "translatedName": "字典树",
+        "questionCount": 56
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ2OA==",
+        "name": "Binary Search Tree",
+        "slug": "binary-search-tree",
+        "translatedName": "二叉搜索树",
+        "questionCount": 55
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ3NA==",
+        "name": "Queue",
+        "slug": "queue",
+        "translatedName": "队列",
+        "questionCount": 49
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjMxNjM0",
+        "name": "Number Theory",
+        "slug": "number-theory",
+        "translatedName": "数论",
+        "questionCount": 45
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU4Mjc=",
+        "name": "Bitmask",
+        "slug": "bitmask",
+        "translatedName": "状态压缩",
+        "questionCount": 45
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ3Mg==",
+        "name": "Memoization",
+        "slug": "memoization",
+        "translatedName": "记忆化搜索",
+        "questionCount": 43
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ2Nw==",
+        "name": "Segment Tree",
+        "slug": "segment-tree",
+        "translatedName": "线段树",
+        "questionCount": 41
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ5MQ==",
+        "name": "Geometry",
+        "slug": "geometry",
+        "translatedName": "几何",
+        "questionCount": 39
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ2NA==",
+        "name": "Topological Sort",
+        "slug": "topological-sort",
+        "translatedName": "拓扑排序",
+        "questionCount": 37
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ2Ng==",
+        "name": "Binary Indexed Tree",
+        "slug": "binary-indexed-tree",
+        "translatedName": "树状数组",
+        "questionCount": 32
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjYxMjYz",
+        "name": "Hash Function",
+        "slug": "hash-function",
+        "translatedName": "哈希函数",
+        "questionCount": 27
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQxODgx",
+        "name": "Shortest Path",
+        "slug": "shortest-path",
+        "translatedName": "最短路",
+        "questionCount": 26
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjE3MzU0",
+        "name": "Game Theory",
+        "slug": "game-theory",
+        "translatedName": "博弈",
+        "questionCount": 26
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjEwOTUz",
+        "name": "Data Stream",
+        "slug": "data-stream",
+        "translatedName": "数据流",
+        "questionCount": 24
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjkwMDU=",
+        "name": "Combinatorics",
+        "slug": "combinatorics",
+        "translatedName": "组合数学",
+        "questionCount": 23
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ0NDYw",
+        "name": "String Matching",
+        "slug": "string-matching",
+        "translatedName": "字符串匹配",
+        "questionCount": 22
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjYxMjY5",
+        "name": "Rolling Hash",
+        "slug": "rolling-hash",
+        "translatedName": "滚动哈希",
+        "questionCount": 19
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjIyMTQy",
+        "name": "Interactive",
+        "slug": "interactive",
+        "translatedName": "交互",
+        "questionCount": 19
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ3MA==",
+        "name": "Brainteaser",
+        "slug": "brainteaser",
+        "translatedName": "脑筋急转弯",
+        "questionCount": 18
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjYxMjY4",
+        "name": "Randomized",
+        "slug": "randomized",
+        "translatedName": "随机化",
+        "questionCount": 14
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjYxMjY2",
+        "name": "Merge Sort",
+        "slug": "merge-sort",
+        "translatedName": "归并排序",
+        "questionCount": 14
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU3ODc0",
+        "name": "Monotonic Queue",
+        "slug": "monotonic-queue",
+        "translatedName": "单调队列",
+        "questionCount": 14
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjEzMDAx",
+        "name": "Doubly-Linked List",
+        "slug": "doubly-linked-list",
+        "translatedName": "双向链表",
+        "questionCount": 12
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjM3NDk3",
+        "name": "Quickselect",
+        "slug": "quickselect",
+        "translatedName": "快速选择",
+        "questionCount": 11
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjIyODMz",
+        "name": "Iterator",
+        "slug": "iterator",
+        "translatedName": "迭代器",
+        "questionCount": 10
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjYxMjY3",
+        "name": "Probability and Statistics",
+        "slug": "probability-and-statistics",
+        "translatedName": "概率与统计",
+        "questionCount": 9
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjkzMTY=",
+        "name": "Concurrency",
+        "slug": "concurrency",
+        "translatedName": "多线程",
+        "questionCount": 9
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjY1Nzk=",
+        "name": "Bucket Sort",
+        "slug": "bucket-sort",
+        "translatedName": "桶排序",
+        "questionCount": 8
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ0Nzc1",
+        "name": "Suffix Array",
+        "slug": "suffix-array",
+        "translatedName": "后缀数组",
+        "questionCount": 6
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjk5NTc=",
+        "name": "Counting Sort",
+        "slug": "counting-sort",
+        "translatedName": "计数排序",
+        "questionCount": 6
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjI4MzM0",
+        "name": "Minimum Spanning Tree",
+        "slug": "minimum-spanning-tree",
+        "translatedName": "最小生成树",
+        "questionCount": 5
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjU0OTM3",
+        "name": "Line Sweep",
+        "slug": "line-sweep",
+        "translatedName": "扫描线",
+        "questionCount": 4
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQxNzk0",
+        "name": "Shell",
+        "slug": "shell",
+        "translatedName": null,
+        "questionCount": 4
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjQ3Nw==",
+        "name": "Reservoir Sampling",
+        "slug": "reservoir-sampling",
+        "translatedName": "水塘抽样",
+        "questionCount": 4
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjYxMjcw",
+        "name": "Strongly Connected Component",
+        "slug": "strongly-connected-component",
+        "translatedName": "强连通分量",
+        "questionCount": 3
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjYxMjYy",
+        "name": "Eulerian Circuit",
+        "slug": "eulerian-circuit",
+        "translatedName": "欧拉回路",
+        "questionCount": 3
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjM3NzE3",
+        "name": "Radix Sort",
+        "slug": "radix-sort",
+        "translatedName": "基数排序",
+        "questionCount": 3
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjYxMjYw",
+        "name": "Biconnected Component",
+        "slug": "biconnected-component",
+        "translatedName": "双连通分量",
+        "questionCount": 2
+      },
+      {
+        "id": "VG9waWNUYWdOb2RlOjUzMDE3",
+        "name": "Rejection Sampling",
+        "slug": "rejection-sampling",
+        "translatedName": "拒绝采样",
+        "questionCount": 2
+      }
+    ],
+    "dehydratedState": {
+      "mutations": [],
+      "queries": [
+        {
+          "state": {
+            "data": {
+              "companyTagsV2": {
+                "companyTagInfoNodes": [
+                  {
+                    "name": "阿里云",
+                    "slug": "aliyun",
+                    "id": "Q29tcGFueVRhZ0luZm9Ob2RlOjU4ODA1",
+                    "questionCount": 27
+                  },
+                  {
+                    "name": "微软 Microsoft",
+                    "slug": "microsoft",
+                    "id": "Q29tcGFueVRhZ0luZm9Ob2RlOjU0Mw==",
+                    "questionCount": 1841
+                  },
+                  {
+                    "name": "亚马逊",
+                    "slug": "amazon",
+                    "id": "Q29tcGFueVRhZ0luZm9Ob2RlOjU0NA==",
+                    "questionCount": 2328
+                  },
+                  {
+                    "name": "谷歌 Google",
+                    "slug": "google",
+                    "id": "Q29tcGFueVRhZ0luZm9Ob2RlOjU2MA==",
+                    "questionCount": 2109
+                  },
+                  {
+                    "name": "华为",
+                    "slug": "huawei",
+                    "id": "Q29tcGFueVRhZ0luZm9Ob2RlOjUzNzkz",
+                    "questionCount": 860
+                  },
+                  {
+                    "name": "字节跳动",
+                    "slug": "bytedance",
+                    "id": "Q29tcGFueVRhZ0luZm9Ob2RlOjU3Nw==",
+                    "questionCount": 1847
+                  },
+                  {
+                    "name": "高盛集团 Goldman Sachs",
+                    "slug": "goldman-sachs",
+                    "id": "Q29tcGFueVRhZ0luZm9Ob2RlOjUxMg==",
+                    "questionCount": 691
+                  },
+                  {
+                    "name": "腾讯",
+                    "slug": "tencent",
+                    "id": "Q29tcGFueVRhZ0luZm9Ob2RlOjQ5Ng==",
+                    "questionCount": 721
+                  },
+                  {
+                    "name": "小米集团",
+                    "slug": "mi",
+                    "id": "Q29tcGFueVRhZ0luZm9Ob2RlOjU0MTUw",
+                    "questionCount": 332
+                  },
+                  {
+                    "name": "百度",
+                    "slug": "baidu",
+                    "id": "Q29tcGFueVRhZ0luZm9Ob2RlOjQ1OA==",
+                    "questionCount": 610
+                  },
+                  {
+                    "name": "美团",
+                    "slug": "meituan",
+                    "id": "Q29tcGFueVRhZ0luZm9Ob2RlOjU1ODY1",
+                    "questionCount": 469
+                  },
+                  {
+                    "name": "滴滴",
+                    "slug": "didi",
+                    "id": "Q29tcGFueVRhZ0luZm9Ob2RlOjUzMDk5",
+                    "questionCount": 326
+                  },
+                  {
+                    "name": "英伟达 NVIDIA",
+                    "slug": "nvidia",
+                    "id": "Q29tcGFueVRhZ0luZm9Ob2RlOjUyOTUx",
+                    "questionCount": 333
+                  },
+                  {
+                    "name": "Citadel",
+                    "slug": "citadel",
+                    "id": "Q29tcGFueVRhZ0luZm9Ob2RlOjUxOQ==",
+                    "questionCount": 304
+                  },
+                  {
+                    "name": "特斯拉",
+                    "slug": "tesla",
+                    "id": "Q29tcGFueVRhZ0luZm9Ob2RlOjUzNzE0",
+                    "questionCount": 249
+                  }
+                ],
+                "hasMore": true
+              }
+            },
+            "dataUpdateCount": 1,
+            "dataUpdatedAt": 1697611719198,
+            "error": null,
+            "errorUpdateCount": 0,
+            "errorUpdatedAt": 0,
+            "fetchFailureCount": 0,
+            "fetchFailureReason": null,
+            "fetchMeta": null,
+            "isInvalidated": false,
+            "status": "success",
+            "fetchStatus": "idle"
+          },
+          "queryKey": [
+            "questionCompanyTagsV2",
+            {
+              "offset": 0
+            }
+          ],
+          "queryHash": ["questionCompanyTagsV2",{"offset":0}]
+        }
+      ]
+    }
+  },
+  "__N_SSG": true
+}

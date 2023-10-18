@@ -1,6 +1,7 @@
 package com.zzwl.jpkit;
 
 import com.zzwl.jpkit.bean.Options;
+import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.parse.ObjectParse;
 import com.zzwl.jpkit.plugs.BigDecimalPlug;
@@ -590,6 +591,11 @@ public class JSONTest {
 
         result = getMethodNameByFieldType("set", String.class, "name");
         assertEquals("setName", result);
+    }
+    @Test
+    public void testJSON(){
+        JBase load = (JBase) JSON.load("D:\\zz_deploy\\jpkit\\src\\test\\resources\\all.json");
+        System.out.println(load);
     }
 
 }
