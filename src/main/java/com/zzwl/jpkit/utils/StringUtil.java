@@ -179,10 +179,10 @@ public class StringUtil {
             return s;
         }
         String temp = matcher.group(1);
-        s = s.replace("\\\\u" + temp, String.valueOf((char) Integer.parseInt(temp, 16)));
+        s = s.replace("\\u" + temp, String.valueOf((char) Integer.parseInt(temp, 16)));
         while (matcher.find()) {
             String t = matcher.group(1);
-            s = s.replace("\\\\u" + t, String.valueOf((char) Integer.parseInt(t, 16)));
+            s = s.replace("\\u" + t, String.valueOf((char) Integer.parseInt(t, 16)));
         }
         return s;
     }
@@ -200,7 +200,7 @@ public class StringUtil {
         StringBuilder sb = new StringBuilder();
         char[] chars = s.toCharArray();
         for (char c : chars) {
-            sb.append('\\').append('\\').append('u').append(Integer.toHexString(c));
+            sb.append('\\').append('u').append(Integer.toHexString(c));
         }
         return sb.toString();
     }

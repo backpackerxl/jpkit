@@ -102,6 +102,7 @@ public class JSONTest {
         zzwl.setLongList(list);
         String json = JSON.stringify(zzwl).ucpJSON();
         System.out.println(json);
+        System.out.println(JSON.parse(json));
 
 //        JSON.stringify(zzwl).save("src\\test\\resources\\tdb.json");
 
