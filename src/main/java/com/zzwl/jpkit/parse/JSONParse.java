@@ -1,6 +1,7 @@
 package com.zzwl.jpkit.parse;
 
 import com.zzwl.jpkit.core.ITypeof;
+import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.exception.JCharacterException;
 import com.zzwl.jpkit.exception.JTypeofException;
 import com.zzwl.jpkit.typeof.*;
@@ -19,6 +20,7 @@ public class JSONParse {
     private final char[] json_arr;
 
     public JSONParse(String json) {
+        json = json.replaceAll("\\\\\"", "\"");
         this.json_arr = json.toCharArray();
         this.idx = 0;
     }
@@ -130,6 +132,15 @@ public class JSONParse {
                 throw new JCharacterException(String.format("the json character string error at %s defect '\"' the error occurs is %s", s, idx));
             }
             char nextChar = this.json_arr[idx++];
+            char nnChar = this.json_arr[idx];
+            if (nextChar == '{' && nnChar == '"') {
+                s.append(JSON.stringify(this.parse_object().getValue()).terse());
+                continue;
+            }
+            if (nextChar == '[' && nnChar == '"') {
+                s.append(JSON.stringify(this.parse_array().getValue()).terse());
+                continue;
+            }
             if (nextChar == '"') {
                 break;
             }
