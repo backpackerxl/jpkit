@@ -9,7 +9,7 @@
 
 - `jpkit` 可以使用插件支持更多的Java类型的解析，在需要时可以快速添加，在不用时可以快速抛弃，实现了动态增强其解析能力
 - jpkit 应用案列—— `JCurl`
-![](https://backpackerxl.gitee.io/image/img/explain.gif)
+![](explain.gif)
 
 #### 快速开始
 
