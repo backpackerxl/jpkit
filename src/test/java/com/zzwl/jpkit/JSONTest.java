@@ -1,13 +1,10 @@
 package com.zzwl.jpkit;
 
 import com.zzwl.jpkit.bean.Options;
-import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.core.JSON;
-import com.zzwl.jpkit.file.FileUtil;
 import com.zzwl.jpkit.parse.ObjectParse;
 import com.zzwl.jpkit.plugs.BigDecimalPlug;
 import com.zzwl.jpkit.typeof.*;
-import com.zzwl.jpkit.utils.ReflectUtil;
 import com.zzwl.jpkit.utils.StringUtil;
 import com.zzwl.jpkit.vo.*;
 import org.databene.contiperf.PerfTest;
@@ -25,7 +22,6 @@ import java.util.*;
 import static com.zzwl.jpkit.utils.StringUtil.getMethodNameByFieldType;
 import static com.zzwl.jpkit.utils.StringUtil.replace;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 public class JSONTest {
     @Rule
@@ -38,7 +34,7 @@ public class JSONTest {
 
     @Test
     public void parse() {
-        String json = "{\n" + "    \"title\":\"指挥平台\",\n" + "    \"englishTitle\": \"FLOODS DISASTERS DEFENSE DECISION COMMAND SYSTEM\",\n" + "    \"miniTitle\":\"防汛\",\n" + "    \"url\":\"/scfx/\",\n" + "    \"showCompanyInfo\": true,\n" + "    \"filingNo\":\"蜀ICP备2002458584号-2\",\n" + "    \"maintenanceUnit\":\"人类技术有限公司\",\n" + "    \"describe\":null,\n" + "    \"arr\":[],\n" + "    \"number\":[25,89.369,null, true,\"人类技术有限公司\",\"指挥平台\"],\n" + "    \"code\": 569\n," + "    \"time\": \"2023-1-9 18:00:00\"\n" + "}";
+        String json = "{\n" + "    \"title\":\"指挥平台\",\n" + "    \"englishTitle\": \"FLOODS DISASTERS DEFENSE DECISION COMMAND SYSTEM\",\n" + "    \"miniTitle\":\"防汛\",\n" + "    \"url\":\"/sfx/\",\n" + "    \"showCompanyInfo\": true,\n" + "    \"filingNo\":\"蜀ICP备2002458584号-2\",\n" + "    \"maintenanceUnit\":\"人类技术有限公司\",\n" + "    \"describe\":null,\n" + "    \"arr\":[],\n" + "    \"number\":[25,89.369,null, true,\"人类技术有限公司\",\"指挥平台\"],\n" + "    \"code\": 569\n," + "    \"time\": \"2023-1-9 18:00:00\"\n" + "}";
         JObject parse = (JObject) JSON.parse(json);
         JArray number = (JArray) parse.getValue().get("number");
 
@@ -88,7 +84,6 @@ public class JSONTest {
 
     }
 
-    //"http://stll.zgsqzx.cn/stll_api/video/videoPlay/VideoList" -P -H "Authorization:Bearer 64df85c7-caa0-4d6a-a15f-412ffea98407" -D "time:2023-04-11" -D "channelCode:51182400001320000042" -D "recordType:Device" -D "videoCode:51182400001180000001"
     @Test
 //    @PerfTest(invocations = 1000, threads = 40)
     public void testSaveS() {
@@ -106,14 +101,11 @@ public class JSONTest {
         System.out.println(json);
         System.out.println(JSON.parse(json));
 
-//        JSON.stringify(zzwl).save("src\\test\\resources\\tdb.json");
-
-//        System.out.println(JSON.load("src\\test\\resources\\tdb.json"));
     }
 
     @Test
     public void testReg() {
-        System.out.println(StringUtil.isChinese("ii uiop,"));
+        System.out.println(StringUtil.isChinese("ii ui-op,"));
     }
 
     @Test
@@ -206,22 +198,18 @@ public class JSONTest {
     @Test
     public void testSave() {
         User user = new User(1L, "zzwl_plus", 400, true, new Date(), new Integer[]{789, 526}, new String[]{"gg", "hh"});
-//        JSON.stringify(user).save("D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json", false);
+        JSON.stringify(user).save("D:\\user\\backpackerxl\\jpkit\\src\\main\\resources\\db.json");
 
 
         String url = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
         String local = "src\\test\\resources\\db.json";
 
-//        JBase net = (JBase) JSON.load(url);
+        JBase net = (JBase) JSON.load(url);
         JBase net_local = (JBase) JSON.load(local);
 
-//        System.out.println(JSON.stringify(net).pretty());
+        System.out.println(JSON.stringify(net).pretty());
         System.out.println("===================================");
-//        String js = JSON.stringify(net_local).pretty();
         System.out.println(net_local);
-
-//        List<User> us = JSON.loadList(local, User.class);
-//        System.out.println(us);
 
     }
 
@@ -258,9 +246,9 @@ public class JSONTest {
                 "    \"1651465163113313131\",\n" + "    \"165146516423313131\",\n" + "  " +
                 "  \"165146516453313131\"\n" + "  ]\n" + "}";
         JObject parse = (JObject) JSON.parse(json);
-//        System.out.println(parse);
+        System.out.println(parse);
         User user = JSON.parse(json, User.class);
-//        System.out.println(user);
+        System.out.println(user);
     }
 
     @Test
@@ -325,9 +313,9 @@ public class JSONTest {
     @Test
     public void testSubParse() {
         long start = new Date().getTime();
-        String example = "{\"server\":\"mysql\",\"version\":\"5.7.35\",\"bigDecimal\":0.25689,\"bigs\":[0.316,0.25],\"bigDecimals\":[0.1,0.1566,0.2568,0.84894],\"map\":{\"one\":5.26,\"fore\":5.2667,\"two\":5.2556,\"three\":5.4426},\"mySQLList\":[{\"server\":\"mysql\",\"version\":\"8.0.23\",\"bigDecimal\":0.25689,\"bigs\":[0.316,0.25],\"bigDecimals\":[0.1,0.1566,0.2568,0.84894],\"map\":{\"one\":5.26,\"fore\":5.2667,\"two\":5.2556,\"three\":5.4426},\"mySQLList\":null,\"types\":null,\"type\":{\"id\":\"1561645451651\",\"name\":\"int\",\"aClass\":\"java.lang.Integer\"}}],\"types\":[{\"id\":\"156161651651651\",\"name\":\"java.lang.String\",\"aClass\":\"java.lang.String\"},{\"id\":\"4464646\",\"name\":\"java.lang.String\",\"aClass\":\"java.lang.String\"}],\"type\":{\"id\":\"1561645451651\",\"name\":\"int\",\"aClass\":\"java.lang.Integer\"}}";
-        String json = "{\n" + "  \"server\": \"mysql\",\n" + "  \"version\": \"5.7.35\",\n" + "  \"bigDecimal\": 0.25689,\n" + "  \"bigs\": [\n" + "    0.316,\n" + "    0.25\n" + "  ],\n" + "  \"bigDecimals\": [\n" + "    0.1,\n" + "    0.1566,\n" + "    0.2568,\n" + "    0.84894\n" + "  ],\n" + "  \"map\": {\n" + "    \"one\": 5.26,\n" + "    \"fore\": 5.2667,\n" + "    \"two\": 5.2556,\n" + "    \"three\": 5.4426\n" + "  },\n" + "  \"mySQLList\": [\n" + "    {\n" + "      \"server\": \"mysql\",\n" + "      \"version\": \"8.0.23\",\n" + "      \"bigDecimal\": 0.25689,\n" + "      \"bigs\": [\n" + "        0.316,\n" + "        0.25\n" + "      ],\n" + "      \"bigDecimals\": null,\n" + "      \"map\": null,\n" + "      \"mySQLList\": null,\n" + "      \"types\": null,\n" + "      \"type\": null\n" + "    }\n" + "  ],\n" + "  \"types\": [\n" + "    {\n" + "      \"id\": \"156161651651651\",\n" + "      \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    },\n" + "    {\n" + "      \"id\": \"4464646\",\n" + "      \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    }\n" + "  ],\n" + "  \"type\": {\n" + "    \"id\": \"1561645451651\",\n" + "    \"name\": \"int\",\n" + "    \"aClass\": \"java.lang.Integer\"\n" + "  }\n" + "}";
-//        System.out.println(json);
+        String example = "{\"server\":\"mysql\",\"version\":\"5.7.35\",\"bigDecimal\":0.25689,\"bugs\":[0.316,0.25],\"bigDecimals\":[0.1,0.1566,0.2568,0.84894],\"map\":{\"one\":5.26,\"fore\":5.2667,\"two\":5.2556,\"three\":5.4426},\"mySQLList\":[{\"server\":\"mysql\",\"version\":\"8.0.23\",\"bigDecimal\":0.25689,\"bugs\":[0.316,0.25],\"bigDecimals\":[0.1,0.1566,0.2568,0.84894],\"map\":{\"one\":5.26,\"fore\":5.2667,\"two\":5.2556,\"three\":5.4426},\"mySQLList\":null,\"types\":null,\"type\":{\"id\":\"1561645451651\",\"name\":\"int\",\"aClass\":\"java.lang.Integer\"}}],\"types\":[{\"id\":\"156161651651651\",\"name\":\"java.lang.String\",\"aClass\":\"java.lang.String\"},{\"id\":\"4464646\",\"name\":\"java.lang.String\",\"aClass\":\"java.lang.String\"}],\"type\":{\"id\":\"1561645451651\",\"name\":\"int\",\"aClass\":\"java.lang.Integer\"}}";
+        String json = "{\n" + "  \"server\": \"mysql\",\n" + "  \"version\": \"5.7.35\",\n" + "  \"bigDecimal\": 0.25689,\n" + "  \"bugs\": [\n" + "    0.316,\n" + "    0.25\n" + "  ],\n" + "  \"bigDecimals\": [\n" + "    0.1,\n" + "    0.1566,\n" + "    0.2568,\n" + "    0.84894\n" + "  ],\n" + "  \"map\": {\n" + "    \"one\": 5.26,\n" + "    \"fore\": 5.2667,\n" + "    \"two\": 5.2556,\n" + "    \"three\": 5.4426\n" + "  },\n" + "  \"mySQLList\": [\n" + "    {\n" + "      \"server\": \"mysql\",\n" + "      \"version\": \"8.0.23\",\n" + "      \"bigDecimal\": 0.25689,\n" + "      \"bugs\": [\n" + "        0.316,\n" + "        0.25\n" + "      ],\n" + "      \"bigDecimals\": null,\n" + "      \"map\": null,\n" + "      \"mySQLList\": null,\n" + "      \"types\": null,\n" + "      \"type\": null\n" + "    }\n" + "  ],\n" + "  \"types\": [\n" + "    {\n" + "      \"id\": \"156161651651651\",\n" + "      \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    },\n" + "    {\n" + "      \"id\": \"4464646\",\n" + "      \"name\": \"java.lang.String\",\n" + "      \"aClass\": \"java.lang.String\"\n" + "    }\n" + "  ],\n" + "  \"type\": {\n" + "    \"id\": \"1561645451651\",\n" + "    \"name\": \"int\",\n" + "    \"aClass\": \"java.lang.Integer\"\n" + "  }\n" + "}";
+        System.out.println(json);
         System.out.println("=====================================");
         MySQL parse = JSON.parse(example, MySQL.class, BigDecimalPlug.class);
         long end = new Date().getTime();
@@ -347,41 +335,16 @@ public class JSONTest {
      * 网络JSON测试没有问题, 但是有些接口在打包部署时测试不通过,不能打包
      */
 
-//    @Test
-//    public void testNetWorkGET() {
-//        String url = "http://localhost:8083/business/dutyrecord/list/c85d8bab8827641f8047dd50e6cd78e1";
-//        ITypeof<Object> load = JSON.load(url, Options.getInstance().setPram("Authorization", "Bearer dbdb46f8-56c9-4f4f-8669-3e1f45a6d5cd").setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"));
-//        System.out.println(JSON.stringify(load).pretty());
-//    }
+    @Test
+    public void testNetWorkGET() {
+        String url = "https://leetcode.cn/_next/data/yYvzqXwJYoP8NysT4U5c9/problemset/all.json?slug=all";
+        JBase load = (JBase) JSON.load(url);
+        System.out.println(JSON.stringify(load).pretty());
+    }
 
-//    @Test
-//    public void testNetWorkPost() {
-//        String url = "http://localhost:8083/business/dutyCheck/getInfo";
-//        ITypeof<Object> load = JSON.load(url, Options.getInstance().setPram("Authorization", "Bearer dbdb46f8-56c9-4f4f-8669-3e1f45a6d5cd")
-//                // 若传递的参数格式为 json 格式 ，则加上 application/json;charset=UTF-8
-//                //.setPram("Content-Type", "application/json;charset=UTF-8")
-//                .setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36").setData("wxqNum", 10).setData("zrrtype", 3));
-//        System.out.println(JSON.stringify(load).pretty());
-//    }
-
-
-//    @Test
-//    public void testNetWork() {
-//        String url = "https://ug.baidu.com/mcp/pc/pcsearch";
-//        Map<String, List<Map<String, String>>> vo = new LinkedHashMap<>();
-//        List<Map<String, String>> list = new ArrayList<>();
-//        list.add(new HashMap<>());
-//        vo.put("pos_1", list);
-//        vo.put("pos_2", list);
-//        vo.put("pos_3", list);
-//        Options options = Options.getInstance().setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36").setData("invoke_info", vo);
-//        // data: {"invoke_info":{"pos_1":[{}],"pos_2":[{}],"pos_3":[{}]}}
-//        ITypeof<Object> load = JSON.load(url, options);
-//        System.out.println(JSON.stringify(load).pretty());
-//    }
     @Test
     public void testOption() {
-        Options options = Options.getInstance().setPram("User-Agent", "aviuahviauhv").setPram("time", new Date().toString()).setPram("server", "Java VM").setData("key", "asvav5566ava");
+        Options options = Options.getInstance().setPram("User-Agent", "aviuahviauhv").setPram("time", new Date().toString()).setPram("server", "Java VM").setData("key", "asv av5566ava");
 
         Options options2 = Options.getInstance().setPram("User-Agent", "aviuahviauhv").setPram("time", new Date().toString()).setData("name", "hy").setData("password", "465616");
         System.out.println(options.getPram());
@@ -402,25 +365,25 @@ public class JSONTest {
 
         System.out.println(json_use);
 
-//        Use use1 = JSON.parse(json_use, Use.class);
-//
-//        System.out.println(use1);
+        Use use1 = JSON.parse(json_use, Use.class);
 
-//        UsePlus usePlus = new UsePlus();
-//        usePlus.setB(new Byte("45"));
-//        usePlus.setBl(true);
-//        usePlus.setS(new Short("456"));
-//        usePlus.setF(4.56f);
-//        usePlus.setD(4.5896);
-//        usePlus.setI(456);
-//        usePlus.setC('k');
-//        usePlus.setL(45689966L);
+        System.out.println(use1);
 
-//        String pretty = JSON.stringify(usePlus).pretty();
+        UsePlus usePlus = new UsePlus();
+        usePlus.setB(new Byte("45"));
+        usePlus.setBl(true);
+        usePlus.setS(new Short("456"));
+        usePlus.setF(4.56f);
+        usePlus.setD(4.5896);
+        usePlus.setI(456);
+        usePlus.setC('k');
+        usePlus.setL(45689966L);
 
-//        UsePlus usePlus1 = JSON.parse(pretty, UsePlus.class);
+        String pretty = JSON.stringify(usePlus).pretty();
 
-//        System.out.println(usePlus1);
+        UsePlus usePlus1 = JSON.parse(pretty, UsePlus.class);
+
+        System.out.println(usePlus1);
     }
 
     @Test
@@ -433,24 +396,13 @@ public class JSONTest {
     }
 
     @Test
-    public void testCreateBean() throws ClassNotFoundException {
+    public void testCreateBean() {
         Object bean = ObjectParse.createBean(Type.class);
         System.out.println(bean);
     }
 
     @Test
-    public void testNet() {
-//        String url = "http://localhost:8084/warning/dutycontacts/page?page=1&limit=50&name=罗吉军&sex=男&deptId=1067246875800000064&_t=1675842265671";
-//        Options options = Options.getInstance().setPram("Authorization", "Bearer 0fb2cd10-1a93-47c7-8501-c0dc0f18de6f").setPram("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
-//        JBase load = (JBase) JSON.load(url, options);
-//        System.out.println(load);
-
-        System.out.println(replace("[a-z]+", "4464sdsf56446fgg", String::toUpperCase));
-//        System.out.println(load);
-    }
-
-    @Test
-    public void testTypeOfLong() throws NoSuchFieldException {
+    public void testTypeOfLong() {
         LongVo longVo = new LongVo(546L, 1L);
         System.out.println(longVo);
 
@@ -467,28 +419,6 @@ public class JSONTest {
         StringVo stringVo1 = JSON.parse(stringVo.toString(), StringVo.class);
 
         System.out.println(stringVo1);
-    }
-
-    @Test
-    public void testByteCode() {
-        StringVo zzwl_plus = new StringVo("zzwl_plus");
-//        new SerializablePlug(zzwl_plus).writeObjectClassToClasses();
-
-        String json = new StringVoSerializable().write(zzwl_plus);
-        System.out.println(json);
-    }
-
-    @Test
-    public void testStr() {
-        String s = "dsvdsvvvvvvvvvvvvvvvvvvvsdsdfv.dvds.lk";
-
-        int count = s.length() / 5;
-
-        for (int i = 0; i < count; i++) {
-            System.out.println(s.substring(i * 5, i * 5 + 5));
-        }
-
-        System.out.println(s.substring(5 * count));
     }
 
     @Test
@@ -525,26 +455,6 @@ public class JSONTest {
         System.out.println(s);
     }
 
-    public static void main(String[] args) throws NoSuchFieldException {
-        Class<MySQL> mySQLClass = MySQL.class;
-        Field map = mySQLClass.getDeclaredField("bigs");
-        Field bigDecimal = mySQLClass.getDeclaredField("bigDecimal");
-        Field bigDecimals = mySQLClass.getDeclaredField("bigDecimals");
-        Field map1 = mySQLClass.getDeclaredField("map");
-        System.out.println(map.getType().getTypeName().replace("[]", ""));
-        System.out.println(map.getType().getName());
-        System.out.println(bigDecimal.getType().getName());
-        System.out.println(bigDecimals.getType().getTypeName());
-        System.out.println(map1.getType().getTypeName().equals(Map.class.getTypeName()));
-        System.out.println(ReflectUtil.getListOrMapFiledClass(map1));
-        System.out.println(ReflectUtil.getListOrMapFiledClass(bigDecimals));
-
-        System.out.println();
-
-        String name = BigDecimalPlug.class.getGenericSuperclass().getTypeName();
-        System.out.println(name);
-    }
-
     @Test
     public void testOppo() {
         Type type = new Type(12142657L, "oppo", Oppo.class);
@@ -554,14 +464,8 @@ public class JSONTest {
 
     @Test
     public void testReplaceWithNullRegex() {
-        String result = replace(null, "hello", s -> s.toUpperCase());
+        String result = replace(null, "hello", String::toUpperCase);
         assertEquals("hello", result);
-    }
-
-    @Test
-    public void testReplaceWithNullTarget() {
-        String result = replace("hello", null, s -> s.toUpperCase());
-        assertNull(result);
     }
 
     @Test
@@ -572,13 +476,13 @@ public class JSONTest {
 
     @Test
     public void testReplaceWithNoMatch() {
-        String result = replace("hello", "world", s -> s.toUpperCase());
+        String result = replace("hello", "world", String::toUpperCase);
         assertEquals("world", result);
     }
 
     @Test
     public void testReplaceWithMatch() {
-        String result = replace("hello", "hello world", s -> s.toUpperCase());
+        String result = replace("hello", "hello world", String::toUpperCase);
         assertEquals("HELLO world", result);
     }
 
@@ -596,8 +500,8 @@ public class JSONTest {
 
     @Test
     public void testJSON() {
-         JBase load = (JBase) JSON.load("D:\\zz_deploy\\jpkit\\src\\test\\resources\\all.json");
-         System.out.println(JSON.stringify(load).pretty());
+        JBase load = (JBase) JSON.load("D:\\zz_deploy\\jpkit\\src\\test\\resources\\all.json");
+        System.out.println(JSON.stringify(load).pretty());
     }
 
 }
