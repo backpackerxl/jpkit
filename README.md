@@ -8,6 +8,8 @@
 > 这是一个用于Java和JSON之间相互转换的工具。目前，它只针对JSON实现。
 
 - `jpkit` 可以使用插件支持更多的Java类型的解析，在需要时可以快速添加，在不用时可以快速抛弃，实现了动态增强其解析能力
+- jpkit 应用案列—— `JCurl`
+![](docs\gif\explain.gif)
 
 #### 快速开始
 
@@ -110,8 +112,4 @@ mvn install
 </dependency>
 ```
 
-#### 更多用法 [`Doc.md`](docs/Doc.md)
-
 #### `jpkit` [`官方API`](https://backpackerxl.github.io/jpkit/)
-
-#### `jpkit` 应用示例代码 [`JCurlApp`](src/test/java/com/zzwl/jpkit/plug/JCurlApp.java)
