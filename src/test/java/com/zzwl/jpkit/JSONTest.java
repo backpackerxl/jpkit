@@ -5,6 +5,7 @@ import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.parse.ObjectParse;
 import com.zzwl.jpkit.plugs.BigDecimalPlug;
 import com.zzwl.jpkit.typeof.*;
+import com.zzwl.jpkit.utils.JHighlightUtil;
 import com.zzwl.jpkit.utils.StringUtil;
 import com.zzwl.jpkit.vo.*;
 import org.databene.contiperf.PerfTest;
@@ -501,7 +502,7 @@ public class JSONTest {
     @Test
     public void testJSON() {
         JBase load = (JBase) JSON.load("D:\\zz_deploy\\jpkit\\src\\test\\resources\\all.json");
-        System.out.println(JSON.stringify(load).pretty());
+        System.out.println(JHighlightUtil.toHighlight(JSON.stringify(load).pretty()));
     }
 
 }
