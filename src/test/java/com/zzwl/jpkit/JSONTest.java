@@ -112,7 +112,7 @@ public class JSONTest {
     @Test
     @PerfTest(invocations = 1000, threads = 40)
     public void testRead() {
-        JBase load = (JBase) JSON.load("http://10.1.1.51:8104/config.json");
+        JBase load = (JBase) JSON.load("http://cmd.shzhfz.cn/config.json");
         System.out.println(load);
     }
 
@@ -338,7 +338,7 @@ public class JSONTest {
 
     @Test
     public void testNetWorkGET() {
-        String url = "https://leetcode.cn/_next/data/yYvzqXwJYoP8NysT4U5c9/problemset/all.json?slug=all";
+        String url = "http://cmd.shzhfz.cn/config.json";
         JBase load = (JBase) JSON.load(url);
         System.out.println(JSON.stringify(load).pretty());
     }
