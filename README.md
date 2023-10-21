@@ -1,8 +1,8 @@
-<div style="align: center; margin-top: 60px;">
+<p align="center">
     <a href="#">
         <img src="./logo.png" alt="logo">
     </a>
-</div>
+</p>
 <hr>
 
 [![Security Status](https://www.oscs1024.com/platform/badge/murphysecurity/murphysec.svg?t=1)](https://www.murphysec.com/accept?code=a111c7f25ae06b96daa00627832e6b68&type=1&from=2&t=2)
@@ -15,9 +15,9 @@
 - `jpkit` 可以使用插件支持更多的Java类型的解析，在需要时可以快速添加，在不用时可以快速抛弃，实现了动态增强其解析能力
 - jpkit 应用案列—— `JCurl`
 
-<div style="align: center;">
+<p align="center">
     <img style="text-align: center" loading="lazy" src="./jcurl2.0.gif" width="480" height="328"  alt="jcurl2.0"/>
-</div>
+</p>
 
 #### 快速开始
 
