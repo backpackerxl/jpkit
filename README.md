@@ -1,4 +1,4 @@
-<div style="text-align: center; margin-top: 60px;">
+<div style="align: center; margin-top: 60px;">
     <a href="#">
         <img src="./logo.png" alt="logo">
     </a>
@@ -15,7 +15,7 @@
 - `jpkit` 可以使用插件支持更多的Java类型的解析，在需要时可以快速添加，在不用时可以快速抛弃，实现了动态增强其解析能力
 - jpkit 应用案列—— `JCurl`
 
-<div style="text-align: center;">
+<div style="align: center;">
     <img style="text-align: center" loading="lazy" src="./jcurl2.0.gif" width="480" height="328"  alt="jcurl2.0"/>
 </div>
 
