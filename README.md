@@ -1,4 +1,9 @@
-# `jpkit`
+<div style="text-align: center; margin-top: 60px;">
+    <a href="#">
+        <img src="./logo.png" alt="logo">
+    </a>
+</div>
+<hr>
 
 [![Security Status](https://www.oscs1024.com/platform/badge/murphysecurity/murphysec.svg?t=1)](https://www.murphysec.com/accept?code=a111c7f25ae06b96daa00627832e6b68&type=1&from=2&t=2)
 [![](https://badgen.net/badge/releases/v1.0.1/purple?icon=github)](https://github.com/Backpackerxl/jpkit/releases/tag/jpkit1.0.1)
@@ -9,16 +14,22 @@
 
 - `jpkit` 可以使用插件支持更多的Java类型的解析，在需要时可以快速添加，在不用时可以快速抛弃，实现了动态增强其解析能力
 - jpkit 应用案列—— `JCurl`
-![](jcurl2.0.gif)
+
+<div style="text-align: center;">
+    <img style="text-align: center" loading="lazy" src="./jcurl2.0.gif" width="480" height="328"  alt="jcurl2.0"/>
+</div>
 
 #### 快速开始
 
 - 下载导入`jpkit`的jar包
 - 准备java bean
+
 > 这里将会使用到lombok插件
+
 ```java
+
 @Data // lombok插件
-public class B{
+public class B {
     private String name;
     private String desc;
     private Double age;
@@ -26,6 +37,7 @@ public class B{
     private Boolean release;
 }
 ```
+
 ```java
 public class Test {
     /**
@@ -42,21 +54,21 @@ public class Test {
         user.setRelease(true);
         // 常规转化
         /**
-        * 输出：
-        * {"name":"jpkit","desc":"jpkit 是一个JSON转化工具！","age":0.6,"author":"backpackerxl","release":true}
-        **/
+         * 输出：
+         * {"name":"jpkit","desc":"jpkit 是一个JSON转化工具！","age":0.6,"author":"backpackerxl","release":true}
+         **/
         String s = JSON.stringify(user).terse();
         // 格式化转化
         /**
-        * 输出：
-        * {
-        *    "name": "jpkit",
-        *    "desc": "jpkit 是一个JSON转化工具！",
-        *    "age": 0.6,
-        *    "author": "backpackerxl",
-        *    "release": true
-        * }
-        **/
+         * 输出：
+         * {
+         *    "name": "jpkit",
+         *    "desc": "jpkit 是一个JSON转化工具！",
+         *    "age": 0.6,
+         *    "author": "backpackerxl",
+         *    "release": true
+         * }
+         **/
         String s = JSON.stringify(user).pretty();
         // 将中文以Unicode形式转化
         String s = JSON.stringify(user).ucpJSON();
@@ -73,7 +85,7 @@ public class Test {
         String url = "https://fanyi.baidu.com/pc/config";
         // 加载网络json
         JBase net_local = (JBase) JSON.load(url);
-         // 本地json 加载为java对象
+        // 本地json 加载为java对象
         B b = JSON.load(path, B.class);
     }
 }
