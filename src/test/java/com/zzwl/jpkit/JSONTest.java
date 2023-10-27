@@ -1,6 +1,7 @@
 package com.zzwl.jpkit;
 
 import com.zzwl.jpkit.bean.Options;
+import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.parse.ObjectParse;
 import com.zzwl.jpkit.plugs.BigDecimalPlug;
@@ -503,6 +504,17 @@ public class JSONTest {
     public void testJSON() {
         JBase load = (JBase) JSON.load("D:\\zz_deploy\\jpkit\\src\\test\\resources\\all.json");
         System.out.println(JHighlightUtil.toHighlight(JSON.stringify(load).pretty()));
+    }
+
+    @Test
+    public void testJSON2() {
+        String s = "{\"text\": \"I'm in the unique position of asking over 100 industry \\\"experts\\\" the following question on {\\\"hello\\\"}\"}";
+        JBase load = (JBase) JSON.parse(s);
+//        System.out.println(JHighlightUtil.toHighlight(JSON.stringify(load).pretty()));
+
+        JBase base = (JBase) JSON.load("https://resources.jetbrains.com/storage/testimonials/data.json");
+
+        System.out.println(JHighlightUtil.toHighlight(JSON.stringify(base).pretty()));
     }
 
 }
