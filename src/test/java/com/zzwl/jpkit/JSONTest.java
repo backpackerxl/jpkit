@@ -112,7 +112,7 @@ public class JSONTest {
     @Test
     @PerfTest(invocations = 1000, threads = 40)
     public void testRead() {
-        JBase load = (JBase) JSON.load("http://cmd.shzhfz.cn/config.json");
+        JBase load = JSON.load("http://cmd.shzhfz.cn/config.json");
         System.out.println(load);
     }
 
@@ -205,8 +205,8 @@ public class JSONTest {
         String url = "https://www.baidu.com/sugrec?prod=pc_his&from=pc_web&json=1&sid=36547_37647_37556_38057_36920_37989_37920_38040_26350_22157_37881&hisdata=&_t=1674049868387&csor=0";
         String local = "src\\test\\resources\\db.json";
 
-        JBase net = (JBase) JSON.load(url);
-        JBase net_local = (JBase) JSON.load(local);
+        JBase net = JSON.load(url);
+        JBase net_local = JSON.load(local);
 
         System.out.println(JSON.stringify(net).pretty());
         System.out.println("===================================");
@@ -339,7 +339,7 @@ public class JSONTest {
     @Test
     public void testNetWorkGET() {
         String url = "http://cmd.shzhfz.cn/config.json";
-        JBase load = (JBase) JSON.load(url);
+        JBase load = JSON.load(url);
         System.out.println(JSON.stringify(load).pretty());
     }
 
@@ -501,19 +501,29 @@ public class JSONTest {
 
     @Test
     public void testJSON() {
-        JBase load = (JBase) JSON.load("D:\\zz_deploy\\jpkit\\src\\test\\resources\\all.json");
+        JBase load = JSON.load("D:\\zz_deploy\\jpkit\\src\\test\\resources\\all.json");
         System.out.println(JHighlightUtil.toHighlight(JSON.stringify(load).pretty()));
     }
 
     @Test
     public void testJSON2() {
         String s = "{\"text\": \"I'm in the unique position of asking over 100 industry \\\"experts\\\" the following question on {\\\"hello\\\"}\"}";
-        JBase load = (JBase) JSON.parse(s);
-//        System.out.println(JHighlightUtil.toHighlight(JSON.stringify(load).pretty()));
+        JBase load = JSON.parse(s);
+        System.out.println(JHighlightUtil.toHighlight(JSON.stringify(load).pretty()));
 
-        JBase base = (JBase) JSON.load("https://resources.jetbrains.com/storage/testimonials/data.json");
+        JBase base = JSON.load("https://resources.jetbrains.com/storage/testimonials/data.json");
 
         System.out.println(JHighlightUtil.toHighlight(JSON.stringify(base).pretty()));
+    }
+    
+    @Test
+    public void fixBug(){
+        JString bug = new JString("C:\\User\\");
+        System.out.println(bug);
+
+        JBase obj = JSON.parse(bug.toString());
+
+        System.out.println(obj);
     }
 
 }

@@ -70,10 +70,10 @@ public class JSON {
      * </pre></blockquote>
      *
      * @param json JSON字符串
-     * @return ITypeof<Object>
+     * @return JBase
      */
-    public static ITypeof<Object> parse(String json) {
-        return new JSONParse(json).parse();
+    public static JBase parse(String json) {
+        return (JBase) new JSONParse(json).parse();
     }
 
     /**
@@ -95,7 +95,7 @@ public class JSON {
      * @return JSON字符串转化成的Java对象
      */
     public static <B> B parse(String json, Class<B> clazz) {
-        ITypeof<Object> typeof = parse(json);
+        JBase typeof = parse(json);
         if (typeof instanceof JArray) {
             throw new RuntimeException("parse error, please use JSON.parseList(String json, Class<B> clazz)");
         }
@@ -113,7 +113,7 @@ public class JSON {
      */
     @SafeVarargs
     public static <B> B parse(String json, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
-        ITypeof<Object> typeof = parse(json);
+        JBase typeof = parse(json);
         if (typeof instanceof JArray) {
             throw new RuntimeException("parse error, please use JSON.parseList(String json, Class<B> clazz)");
         }
@@ -141,7 +141,7 @@ public class JSON {
      * @return 解析好的对象
      */
     @SafeVarargs
-    public static <B> B parse(ITypeof<Object> typeof, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
+    public static <B> B parse(JBase typeof, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
         if (typeof instanceof JArray) {
             throw new RuntimeException("parse error, please use JSON.parseList(String json, Class<B> clazz)");
         }
@@ -175,7 +175,7 @@ public class JSON {
      * @return 解析好的对象
      */
     public static <B> List<B> parseList(String json, Class<B> clazz) {
-        ITypeof<Object> parse = parse(json);
+        JBase parse = parse(json);
         if (parse instanceof JObject) {
             throw new RuntimeException("parseList error, please use JSON.parseMap(String json, Class<B> clazz)");
         }
@@ -201,7 +201,7 @@ public class JSON {
      */
     @SafeVarargs
     public static <B> List<B> parseList(String json, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
-        ITypeof<Object> parse = parse(json);
+        JBase parse = parse(json);
         if (parse instanceof JObject) {
             throw new RuntimeException("parseList error, please use JSON.parseMap(String json, Class<B> clazz)");
         }
@@ -244,7 +244,7 @@ public class JSON {
      * @return 解析好的Map
      */
     public static <B> Map<String, B> parseMap(String json, Class<B> clazz) {
-        ITypeof<Object> parse = parse(json);
+        JBase parse = parse(json);
         if (parse instanceof JArray) {
             throw new RuntimeException("parseMap error, please use JSON.parseList(String json, Class<B> clazz)");
         }
@@ -271,7 +271,7 @@ public class JSON {
      */
     @SafeVarargs
     public static <B> Map<String, B> parseMap(String json, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
-        ITypeof<Object> parse = parse(json);
+        JBase parse = parse(json);
         if (parse instanceof JArray) {
             throw new RuntimeException("parseMap error, please use JSON.parseList(String json, Class<B> clazz)");
         }
@@ -296,13 +296,13 @@ public class JSON {
      * </pre></blockquote>
      *
      * @param path 路径
-     * @return ITypeof<?>
+     * @return JBase
      */
-    public static ITypeof<Object> load(String path) {
+    public static JBase load(String path) {
         if (path.startsWith(NetUtil.HTTP) || path.startsWith(NetUtil.HTTPS)) {
-            return new JSONParse(NetUtil.getJSON(path)).parse();
+            return (JBase) new JSONParse(NetUtil.getJSON(path)).parse();
         } else {
-            return new JSONParse(FileUtil.getJSON(path)).parse();
+            return (JBase) new JSONParse(FileUtil.getJSON(path)).parse();
         }
     }
 
@@ -319,13 +319,13 @@ public class JSON {
      *
      * @param path 路径
      * @param pram pram
-     * @return ITypeof<?>
+     * @return JBase
      */
-    public static ITypeof<Object> load(String path, Options pram) {
+    public static JBase load(String path, Options pram) {
         if (path.startsWith(NetUtil.HTTP) || path.startsWith(NetUtil.HTTPS)) {
-            return new JSONParse(NetUtil.getJSON(path, pram)).parse();
+            return (JBase) new JSONParse(NetUtil.getJSON(path, pram)).parse();
         } else {
-            return new JSONParse(FileUtil.getJSON(path)).parse();
+            return (JBase) new JSONParse(FileUtil.getJSON(path)).parse();
         }
     }
 
@@ -346,7 +346,7 @@ public class JSON {
      * @return 转化后的类型
      */
     public static <B> B load(String path, Class<B> clazz) {
-        ITypeof<Object> load = load(path);
+        JBase load = load(path);
         if (load instanceof JArray) {
             throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
         }
@@ -371,7 +371,7 @@ public class JSON {
      * @return 转化后的类型
      */
     public static <B> B load(String path, Options pram, Class<B> clazz) {
-        ITypeof<Object> load = load(path, pram);
+        JBase load = load(path, pram);
         if (load instanceof JArray) {
             throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
         }
@@ -395,7 +395,7 @@ public class JSON {
      * @return 转化后的List
      */
     public static <B> List<B> loadList(String path, Class<B> clazz) {
-        ITypeof<Object> load = load(path);
+        JBase load = load(path);
         if (load instanceof JObject) {
             throw new RuntimeException("load error, please use JSON.load(path, Class<B> clazz)");
         }
@@ -425,7 +425,7 @@ public class JSON {
      * @return 转化后的List
      */
     public static <B> List<B> loadList(String path, Options pram, Class<B> clazz) {
-        ITypeof<Object> load = load(path, pram);
+        JBase load = load(path, pram);
         if (load instanceof JObject) {
             throw new RuntimeException("load error, please use JSON.load(path, Class<B> clazz)");
         }
@@ -454,7 +454,7 @@ public class JSON {
      * @return 转化后的Map
      */
     public static <B> Map<String, B> loadMap(String path, Class<B> clazz) {
-        ITypeof<Object> load = load(path);
+        JBase load = load(path);
         if (load instanceof JArray) {
             throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
         }
@@ -485,7 +485,7 @@ public class JSON {
      * @return 转化后的Map
      */
     public static <B> Map<String, B> loadMap(String path, Options pram, Class<B> clazz) {
-        ITypeof<Object> load = load(path, pram);
+        JBase load = load(path, pram);
         if (load instanceof JArray) {
             throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
         }
@@ -512,7 +512,7 @@ public class JSON {
      */
     @SafeVarargs
     public static <B> B load(String path, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
-        ITypeof<Object> load = load(path);
+        JBase load = load(path);
         if (load instanceof JArray) {
             throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
         }
@@ -534,7 +534,7 @@ public class JSON {
      */
     @SafeVarargs
     public static <B> B load(String path, Options pram, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
-        ITypeof<Object> load = load(path, pram);
+        JBase load = load(path, pram);
         if (load instanceof JArray) {
             throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
         }
@@ -555,7 +555,7 @@ public class JSON {
      */
     @SafeVarargs
     public static <B> List<B> loadList(String path, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
-        ITypeof<Object> load = load(path);
+        JBase load = load(path);
         if (load instanceof JObject) {
             throw new RuntimeException("load error, please use JSON.load(path, Class<B> clazz)");
         }
@@ -582,7 +582,7 @@ public class JSON {
      */
     @SafeVarargs
     public static <B> List<B> loadList(String path, Options pram, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
-        ITypeof<Object> load = load(path, pram);
+        JBase load = load(path, pram);
         if (load instanceof JObject) {
             throw new RuntimeException("load error, please use JSON.load(path, Class<B> clazz)");
         }
@@ -608,7 +608,7 @@ public class JSON {
      */
     @SafeVarargs
     public static <B> Map<String, B> loadMap(String path, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
-        ITypeof<Object> load = load(path);
+        JBase load = load(path);
         if (load instanceof JArray) {
             throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
         }
@@ -636,7 +636,7 @@ public class JSON {
      */
     @SafeVarargs
     public static <B> Map<String, B> loadMap(String path, Options pram, Class<B> clazz, Class<? extends JBasePlug<?>>... aux) {
-        ITypeof<Object> load = load(path, pram);
+        JBase load = load(path, pram);
         if (load instanceof JArray) {
             throw new RuntimeException("load error, please use JSON.loadList(path, Class<B> clazz)");
         }
