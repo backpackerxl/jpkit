@@ -34,28 +34,28 @@ public abstract class JBase implements ITypeof<Object> {
      */
     public static Object getBaseValue(Class<?> clazz) {
         if (clazz.equals(long.class)) {
-            return Long.MIN_VALUE;
+            return 0L;
         }
         if (clazz.equals(short.class)) {
-            return Short.MIN_VALUE;
+            return (short) 0;
         }
         if (clazz.equals(byte.class)) {
-            return Byte.MIN_VALUE;
+            return (byte) 0;
         }
         if (clazz.equals(char.class)) {
             return Character.MIN_VALUE;
         }
         if (clazz.equals(boolean.class)) {
-            return Boolean.FALSE;
+            return false;
         }
         if (clazz.equals(int.class)) {
-            return Integer.MIN_VALUE;
+            return 0;
         }
         if (clazz.equals(float.class)) {
-            return Float.MIN_VALUE;
+            return (float) 0.0;
         }
         if (clazz.equals(double.class)) {
-            return Double.MIN_VALUE;
+            return 0.0;
         }
         return null;
     }

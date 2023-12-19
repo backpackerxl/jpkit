@@ -14,6 +14,9 @@ import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -521,9 +524,21 @@ public class JSONTest {
         JString bug = new JString("C:\\User\\");
         System.out.println(bug);
 
+        String json = "{\"extraInfo\": \"{\\\"openType\\\": 2, \\\"frequencyLimit\\\": 0}\"}";
+
+
         JBase obj = JSON.parse(bug.toString());
 
+//        JBase parse = JSON.parse(json);
         System.out.println(obj);
+
+//        System.out.println(parse);
     }
 
+    @Test
+    public void testBean(){
+        Data data = (Data) ObjectParse.createBean(Data.class);
+        System.out.println(data);
+
+    }
 }

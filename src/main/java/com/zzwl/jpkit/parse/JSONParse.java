@@ -132,12 +132,13 @@ public class JSONParse {
             }
             char nextChar = this.json_arr[idx++];
             char[] chars = {oldC, nextChar};
-            if (
-                    (nextChar == '"' && !String.valueOf(chars).equals("\\\""))
-                            || (nextChar == '"' && String.valueOf(chars).equals("\\\""))
-            ) {
+//            if (nextChar == '"' && !String.valueOf(chars).equals("\\\"")) {
+//                break;
+//            }
+            if (nextChar == '"') {
                 break;
             }
+
             s.append(nextChar);
             oldC = nextChar;
         }
