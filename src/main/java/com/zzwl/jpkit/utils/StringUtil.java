@@ -200,7 +200,11 @@ public class StringUtil {
         StringBuilder sb = new StringBuilder();
         char[] chars = s.toCharArray();
         for (char c : chars) {
-            sb.append('\\').append('u').append(Integer.toHexString(c));
+            if (isChinese(c)) {
+                sb.append('\\').append('u').append(Integer.toHexString(c));
+            } else {
+                sb.append(c);
+            }
         }
         return sb.toString();
     }
@@ -239,5 +243,15 @@ public class StringUtil {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public static boolean isChinese(char c) {
+        Character.UnicodeBlock block = Character.UnicodeBlock.of(c);
+        return block == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS ||
+                block == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS ||
+                block == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A ||
+                block == Character.UnicodeBlock.GENERAL_PUNCTUATION ||
+                block == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION ||
+                block == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS;
     }
 }

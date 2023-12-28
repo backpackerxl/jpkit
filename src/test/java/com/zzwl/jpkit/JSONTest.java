@@ -2,6 +2,7 @@ package com.zzwl.jpkit;
 
 import com.zzwl.jpkit.bean.Options;
 import com.zzwl.jpkit.core.JSON;
+import com.zzwl.jpkit.parse.JSONParse;
 import com.zzwl.jpkit.parse.ObjectParse;
 import com.zzwl.jpkit.plugs.BigDecimalPlug;
 import com.zzwl.jpkit.typeof.*;
@@ -19,6 +20,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -104,6 +106,8 @@ public class JSONTest {
         String json = JSON.stringify(zzwl).ucpJSON();
         System.out.println(json);
         System.out.println(JSON.parse(json));
+
+        JSON.stringify(zzwl).save("src\\test\\resources\\tdb.json", false, true);
 
     }
 
@@ -504,7 +508,7 @@ public class JSONTest {
 
     @Test
     public void testJSON() {
-        JBase load = JSON.load("D:\\zz_deploy\\jpkit\\src\\test\\resources\\all.json");
+        JBase load = JSON.load("src\\test\\resources\\all.json");
         System.out.println(JHighlightUtil.toHighlight(JSON.stringify(load).pretty()));
     }
 
@@ -518,25 +522,29 @@ public class JSONTest {
 
         System.out.println(JHighlightUtil.toHighlight(JSON.stringify(base).pretty()));
     }
-    
+
     @Test
-    public void fixBug(){
+    public void fixBug() {
         JString bug = new JString("C:\\User\\");
-        System.out.println(bug);
+//        System.out.println(bug);
 
         String json = "{\"extraInfo\": \"{\\\"openType\\\": 2, \\\"frequencyLimit\\\": 0}\"}";
 
+        json = "\"hi, \\\"i am li-ning\\\"\"";
 
+        JBase parse = JSON.parse(json);
+        System.out.println(parse.getValue());
         JBase obj = JSON.parse(bug.toString());
 
-//        JBase parse = JSON.parse(json);
+
         System.out.println(obj);
 
-//        System.out.println(parse);
+        System.out.println(JSON.load("src\\test\\resources\\tdb.json"));
+
     }
 
     @Test
-    public void testBean(){
+    public void testBean() {
         Data data = (Data) ObjectParse.createBean(Data.class);
         System.out.println(data);
 

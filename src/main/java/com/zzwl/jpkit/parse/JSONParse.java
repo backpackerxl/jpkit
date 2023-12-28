@@ -27,7 +27,7 @@ public class JSONParse {
      * 去除多余的空格或特殊字符
      */
     private void skip_white_char() {
-        while (json_arr[idx] == ' ' || json_arr[idx] == '\n' || json_arr[idx] == '\r' || json_arr[idx] == '\t') {
+        while (json_arr[idx] == ' ' || json_arr[idx] == '\n' || json_arr[idx] == '\r' || json_arr[idx] == '\t' || json_arr[idx] == '\f' || json_arr[idx] == '\b') {
             this.idx++;
         }
     }
@@ -135,14 +135,29 @@ public class JSONParse {
 //            if (nextChar == '"' && !String.valueOf(chars).equals("\\\"")) {
 //                break;
 //            }
+
+            // 处理 Unicode字符
+            if (String.valueOf(chars).equals("\\u")) {
+                s.delete(s.length() - 1, s.length());
+                nextChar = (char) Integer.parseInt(String.valueOf(new char[]{get_next_char(), get_next_char(), get_next_char(), get_next_char()}), 16);
+            }
+            // 判断结束解析的标志
             if (nextChar == '"') {
+
+                if (String.valueOf(chars).equals("\\\"")){
+                    s.append(nextChar);
+                    // 记录上一次解析的字符
+                    oldC = nextChar;
+                    continue;
+                }
                 break;
             }
 
             s.append(nextChar);
+            // 记录上一次解析的字符
             oldC = nextChar;
         }
-        return new JString(StringUtil.unicodeToString(s.toString()));
+        return new JString(s.toString());
     }
 
     /**
