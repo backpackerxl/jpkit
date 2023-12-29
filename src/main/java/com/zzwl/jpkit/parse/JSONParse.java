@@ -4,7 +4,6 @@ import com.zzwl.jpkit.core.ITypeof;
 import com.zzwl.jpkit.exception.JCharacterException;
 import com.zzwl.jpkit.exception.JTypeofException;
 import com.zzwl.jpkit.typeof.*;
-import com.zzwl.jpkit.utils.StringUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -132,9 +131,6 @@ public class JSONParse {
             }
             char nextChar = this.json_arr[idx++];
             char[] chars = {oldC, nextChar};
-//            if (nextChar == '"' && !String.valueOf(chars).equals("\\\"")) {
-//                break;
-//            }
 
             // 处理 Unicode字符
             if (String.valueOf(chars).equals("\\u")) {

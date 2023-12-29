@@ -547,6 +547,5 @@ public class JSONTest {
     public void testBean() {
         Data data = (Data) ObjectParse.createBean(Data.class);
         System.out.println(data);
-
     }
 }
