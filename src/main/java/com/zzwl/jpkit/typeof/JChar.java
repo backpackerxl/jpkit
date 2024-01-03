@@ -62,6 +62,23 @@ public class JChar extends JBase {
     }
 
     /**
+     * char to json string
+     *
+     * @param c char
+     * @return json string
+     */
+    public static String getJSONString(Character c) {
+        switch (c) {
+            case '\'':
+                return "\"\\'\"";
+            case '\"':
+                return "\"\\\\\\\"\"";
+            default:
+                return String.format("\"%s\"", c);
+        }
+    }
+
+    /**
      * Map<String, JBase> 转 Map<String,Character>
      *
      * @param jBase 数据源

@@ -158,7 +158,12 @@ public class ReflectUtil {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(jDateFormat.value());
                 o = String.format("\"%s\"", simpleDateFormat.format(o));
             }
-        } else if (o instanceof Character || o instanceof Date || o instanceof String) {
+        } else if (o instanceof String) {
+            String s = JString.getJSONString((String) o);
+            o = String.format("\"%s\"", s);
+        } else if (o instanceof Character) {
+            o = JChar.getJSONString((Character) o);
+        } else if (o instanceof Date) {
             o = String.format("\"%s\"", o);
         } else if (o.getClass().isArray()) {
             o = ArrayUtil.compileArray(o, isPretty, (o instanceof Long[] || o instanceof long[]) && field.isAnnotationPresent(JFString.class));

@@ -69,12 +69,12 @@ public class JSONTest {
     }
 
     @Test
-    @PerfTest(invocations = 1000, threads = 40)
+//    @PerfTest(invocations = 1000, threads = 40)
 //    @Required(max = 1200, average = 250, totalTime = 60000)
     public void testStringify() {
         Integer[] nums = new Integer[]{4545, 2121, 3636};
         String[] ss = new String[]{"北京，你好！", "xx", "ww"};
-        User zzwl = new User(1L, "zzwl", 300, true, new Date(), nums, ss);
+        User zzwl = new User(1L, "zzwl, \\\" i know\\\" i'm ok.", 300, true, new Date(), nums, ss);
         long[] longs = new long[]{5164161651651165151L, 56156151655616556L, 165156516156156L};
         zzwl.setLongs(longs);
         List<Long> list = new ArrayList<>();
@@ -532,12 +532,26 @@ public class JSONTest {
 
         json = "\"hi, \\\"i am li-ning\\\"\"";
 
+        JObject jObject = new JObject(new HashMap<>());
+        Map<String, JBase> value = jObject.getValue();
+
+        value.put("name", new JString("ddd \\\"zw\\\""));
+        value.put("age", new JString("18 'zw'"));
+
+        System.out.println(JSON.stringify(value).terse());
+        System.out.println(JSON.stringify("ddd \\\"zw\\\"").terse());
+        System.out.println(JSON.stringify('\'').terse());
+        System.out.println(JSON.stringify('\"').terse());
+        System.out.println(JSON.stringify('A').terse());
+        System.out.println();
+
+
         JBase parse = JSON.parse(json);
         System.out.println(parse.getValue());
-        JBase obj = JSON.parse(bug.toString());
+//        JBase obj = JSON.parse(bug.toString());
 
 
-        System.out.println(obj);
+//        System.out.println(obj);
 
         System.out.println(JSON.load("src\\test\\resources\\tdb.json"));
 

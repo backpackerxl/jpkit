@@ -54,8 +54,33 @@ public class JString extends JBase {
         return value;
     }
 
+    /**
+     * String to json string
+     *
+     * @param value char
+     * @return json string
+     */
+    public static String getJSONString(String value) {
+        StringBuilder out = new StringBuilder();
+        char[] array = value.toCharArray();
+        for (char c : array) {
+            switch (c) {
+                case '\'':
+                    out.append("\\'");
+                    break;
+                case '\"':
+                    out.append("\\\\\"");
+                    break;
+                default:
+                    out.append(c);
+                    break;
+            }
+        }
+        return out.toString();
+    }
+
     @Override
     public String toString() {
-        return String.format("\"%s\"", value);
+        return getValue();
     }
 }

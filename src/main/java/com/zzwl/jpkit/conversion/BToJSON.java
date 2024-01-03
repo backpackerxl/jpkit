@@ -3,6 +3,8 @@ package com.zzwl.jpkit.conversion;
 import com.zzwl.jpkit.core.JSON;
 import com.zzwl.jpkit.file.FileUtil;
 import com.zzwl.jpkit.typeof.JBase;
+import com.zzwl.jpkit.typeof.JChar;
+import com.zzwl.jpkit.typeof.JString;
 import com.zzwl.jpkit.utils.ArrayUtil;
 import com.zzwl.jpkit.utils.ReflectUtil;
 import com.zzwl.jpkit.utils.StringUtil;
@@ -84,7 +86,14 @@ public final class BToJSON<B> {
             return ArrayUtil.compileArray(bean, false, false);
         }
         // 处理特殊类型
-        if (bean instanceof String || bean instanceof Character || bean instanceof Date) {
+        if (bean instanceof String) {
+            String s = JString.getJSONString((String) bean);
+            return String.format("\"%s\"", s);
+        }
+        if (bean instanceof Character) {
+            return JChar.getJSONString((Character) bean);
+        }
+        if (bean instanceof Date) {
             return String.format("\"%s\"", bean);
         }
         // 处理Class类型
@@ -115,7 +124,7 @@ public final class BToJSON<B> {
         if (bean instanceof Map) {
             StringBuilder s = new StringBuilder();
             Map<String, B> bs = (Map<String, B>) bean;
-            if (bs.size() == 0) {
+            if (bs.isEmpty()) {
                 return "{}";
             }
             if (longToStr) {
@@ -158,7 +167,7 @@ public final class BToJSON<B> {
         if (bean instanceof List) {
             StringBuilder s = new StringBuilder();
             List<B> bs = (List<B>) bean;
-            if (bs.size() == 0) {
+            if (bs.isEmpty()) {
                 return "[]";
             }
             if (bs.size() <= limit || limit <= 0) {
@@ -190,7 +199,7 @@ public final class BToJSON<B> {
         if (bean instanceof Map) {
             StringBuilder s = new StringBuilder();
             Map<String, B> bs = (Map<String, B>) bean;
-            if (bs.size() == 0) {
+            if (bs.isEmpty()) {
                 return "{}";
             }
             if (bs.size() <= limit || limit <= 0) {
@@ -243,7 +252,14 @@ public final class BToJSON<B> {
             return ArrayUtil.compileArray(bean, true, false);
         }
         // 处理特殊类型
-        if (bean instanceof String || bean instanceof Character || bean instanceof Date) {
+        if (bean instanceof String) {
+            String s = JString.getJSONString((String) bean);
+            return String.format("\"%s\"", s);
+        }
+        if (bean instanceof Character) {
+            return JChar.getJSONString((Character) bean);
+        }
+        if (bean instanceof Date) {
             return String.format("\"%s\"", bean);
         }
         // 处理Class类型
@@ -254,7 +270,7 @@ public final class BToJSON<B> {
         if (bean instanceof List) {
             StringBuilder s = new StringBuilder();
             List<B> bs = (List<B>) bean;
-            if (bs.size() == 0) {
+            if (bs.isEmpty()) {
                 return "[]";
             }
             s.append("[\n");
@@ -282,7 +298,7 @@ public final class BToJSON<B> {
         if (bean instanceof Map) {
             StringBuilder s = new StringBuilder();
             Map<String, B> bs = (Map<String, B>) bean;
-            if (bs.size() == 0) {
+            if (bs.isEmpty()) {
                 return "{}";
             }
             s.append("{\n");
@@ -333,7 +349,7 @@ public final class BToJSON<B> {
         if (bean instanceof List) {
             StringBuilder s = new StringBuilder();
             List<B> bs = (List<B>) bean;
-            if (bs.size() == 0) {
+            if (bs.isEmpty()) {
                 return "[]";
             }
             s.append("[\n");
@@ -374,7 +390,7 @@ public final class BToJSON<B> {
         if (bean instanceof Map) {
             StringBuilder s = new StringBuilder();
             Map<String, B> bs = (Map<String, B>) bean;
-            if (bs.size() == 0) {
+            if (bs.isEmpty()) {
                 return "{}";
             }
             s.append("{\n");
