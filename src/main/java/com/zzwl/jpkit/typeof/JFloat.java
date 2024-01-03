@@ -25,6 +25,10 @@ public class JFloat extends JBase {
         }
     }
 
+    public JFloat(Float f) {
+        this.value = f;
+    }
+
     @Override
     public Float getValue() {
         return value;

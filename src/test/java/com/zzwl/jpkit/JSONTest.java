@@ -532,13 +532,24 @@ public class JSONTest {
 
         json = "\"hi, \\\"i am li-ning\\\"\"";
 
-        JObject jObject = new JObject(new HashMap<>());
-        Map<String, JBase> value = jObject.getValue();
+        JObject jObject = new JObject(new LinkedHashMap<>());
 
-        value.put("name", new JString("ddd \\\"zw\\\""));
-        value.put("age", new JString("18 'zw'"));
+        jObject.put("name", "ddd \\\"zw\\\"");
+        jObject.put("age", 18);
+        jObject.put("id", 18234225325525L);
+        jObject.put("happy", false);
+        jObject.put("desc", "18 'zw'");
+        jObject.put("price", new BigDecimal("123.55"));
+        jObject.put("type", new JObject(), (obj) -> {
+            obj.put("name", "pkj");
+            obj.put("code", 1001);
+            return obj;
+        });
 
-        System.out.println(JSON.stringify(value).terse());
+        jObject.remove("desc");
+
+        System.out.println(JSON.stringify(jObject).terse());
+        System.out.println(JSON.stringify(jObject.get("type")).terse());
         System.out.println(JSON.stringify("ddd \\\"zw\\\"").terse());
         System.out.println(JSON.stringify('\'').terse());
         System.out.println(JSON.stringify('\"').terse());

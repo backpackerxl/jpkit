@@ -25,6 +25,10 @@ public class JChar extends JBase {
         }
     }
 
+    public JChar(Character c) {
+        this.value = c;
+    }
+
 
     /**
      * JArray to Character[]
