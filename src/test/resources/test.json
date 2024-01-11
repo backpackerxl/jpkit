@@ -1,16 +1,3 @@
 {
-  "username": "zzwl",
-  "user_code": 300,
-  "admin": true,
-  "create_time": "2023-01-13",
-  "nums": [
-    4545,
-    2121,
-    3636
-  ],
-  "strings": [
-    "zz",
-    "xx",
-    "ww"
-  ]
+  "extraInfo": "{\"openType\": 2, \"frequencyLimit\": 0}"
 }

@@ -16,9 +16,11 @@ import java.util.Map;
 public class JSONParse {
     private int idx;
     private final char[] json_arr;
+    private final int len;
 
     public JSONParse(String json) {
         this.json_arr = json.toCharArray();
+        len = this.json_arr.length;
         this.idx = 0;
     }
 
@@ -78,7 +80,7 @@ public class JSONParse {
     }
 
     /**
-     * 解析json数字类型
+     * 解析json数字类型（未处理科学计数）
      *
      * @return <b>ITypeof<Object></b>类型
      */
@@ -123,36 +125,39 @@ public class JSONParse {
      * @return <b>JString</b> 对象
      */
     private JString parse_string() {
+        // 先计算出字符串的长度
+        int sIdx = idx;
+        while (true) {
+            if (idx == len) {
+                throw new JCharacterException(String.format("the json character string error defect '\"' the error occurs is %s", idx));
+            }
+            char c = this.json_arr[idx++];
+            if (c == '\\') {
+                idx++;
+            }
+            if (c == '"' || idx == len) {
+                break;
+            }
+        }
+        int eIdx = idx - 1;
+        // 恢复idx
+        idx = sIdx;
+        // 开始解析字符串
         StringBuilder s = new StringBuilder();
         char oldC = ' ';
-        while (true) {
-            if (idx == json_arr.length) {
-                throw new JCharacterException(String.format("the json character string error at %s defect '\"' the error occurs is %s", s, idx));
-            }
+        while (idx < eIdx) {
             char nextChar = this.json_arr[idx++];
             char[] chars = {oldC, nextChar};
-
             // 处理 Unicode字符
             if (String.valueOf(chars).equals("\\u")) {
                 s.delete(s.length() - 1, s.length());
                 nextChar = (char) Integer.parseInt(String.valueOf(new char[]{get_next_char(), get_next_char(), get_next_char(), get_next_char()}), 16);
             }
-            // 判断结束解析的标志
-            if (nextChar == '"') {
-
-                if (String.valueOf(chars).equals("\\\"")){
-                    s.append(nextChar);
-                    // 记录上一次解析的字符
-                    oldC = nextChar;
-                    continue;
-                }
-                break;
-            }
-
             s.append(nextChar);
             // 记录上一次解析的字符
             oldC = nextChar;
         }
+        idx++;
         return new JString(s.toString());
     }
 
@@ -162,8 +167,8 @@ public class JSONParse {
      * @return <b>JBase</b> null 对象
      */
     private JBase parse_null() {
-        if (this.json_arr.length < 4) {
-            throw new JTypeofException(this.get_char_some(this.json_arr.length) + " is not a null, the error occurs is " + this.idx);
+        if (len < 4) {
+            throw new JTypeofException(this.get_char_some(len) + " is not a null, the error occurs is " + this.idx);
         }
         if (this.get_char_some(4).equals("null")) {
             this.idx = this.idx + 4;
@@ -212,8 +217,8 @@ public class JSONParse {
     private JBool parse_bool(char ch) {
         switch (ch) {
             case 't':
-                if (this.json_arr.length < 4) {
-                    throw new JTypeofException(this.get_char_some(this.json_arr.length) + " is not a true the error occurs is " + this.idx);
+                if (len < 4) {
+                    throw new JTypeofException(this.get_char_some(len) + " is not a true the error occurs is " + this.idx);
                 }
                 if (this.get_char_some(4).equals("true")) {
                     this.idx = this.idx + 4;
@@ -222,8 +227,8 @@ public class JSONParse {
                     throw new JTypeofException(this.get_char_some(4) + " is not a true the error occurs is " + this.idx);
                 }
             case 'f':
-                if (this.json_arr.length < 5) {
-                    throw new JTypeofException(this.get_char_some(this.json_arr.length) + " is not a false the error occurs is " + this.idx);
+                if (len < 5) {
+                    throw new JTypeofException(this.get_char_some(len) + " is not a false the error occurs is " + this.idx);
                 }
                 if (this.get_char_some(5).equals("false")) {
                     this.idx = this.idx + 5;
@@ -252,7 +257,7 @@ public class JSONParse {
         while (true) {
             ch = this.get_next_char();
             if (ch != '"') {
-                throw new JCharacterException(String.format("the json character string error at {... \"%s\": %s, ...} following key defect '\"' the error occurs is %s", cacheKey, jsonObjectMap.get(cacheKey).getValue(), this.idx));
+                throw new JCharacterException(String.format("the json character string error at {... \"%s\": ...} following key defect '\"' the error occurs is %s", cacheKey, this.idx));
             }
             String key = this.parse_string().getValue();
             cacheKey = key;
@@ -293,7 +298,7 @@ public class JSONParse {
      * @return 当前字符值
      */
     private char get_char_idx() {
-        if (this.idx < this.json_arr.length) {
+        if (this.idx < len) {
             return this.json_arr[this.idx];
         } else {
             return ' ';

@@ -2,7 +2,6 @@ package com.zzwl.jpkit;
 
 import com.zzwl.jpkit.bean.Options;
 import com.zzwl.jpkit.core.JSON;
-import com.zzwl.jpkit.parse.JSONParse;
 import com.zzwl.jpkit.parse.ObjectParse;
 import com.zzwl.jpkit.plugs.BigDecimalPlug;
 import com.zzwl.jpkit.typeof.*;
@@ -15,12 +14,8 @@ import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -530,8 +525,21 @@ public class JSONTest {
 
         String json = "{\"extraInfo\": \"{\\\"openType\\\": 2, \\\"frequencyLimit\\\": 0}\"}";
 
-        json = "\"hi, \\\"i am li-ning\\\"\"";
+//        json = "\"hi, \\\"i am li-ning\\\"\"";
 
+        JBase parse = JSON.parse(json);
+
+        System.out.println(JSON.stringify(parse).terse());
+
+        JBase obj = JSON.parse(bug.toString());
+
+
+        System.out.println(obj);
+
+    }
+
+    @Test
+    public void testJStr(){
         JObject jObject = new JObject(new LinkedHashMap<>());
 
         jObject.put("name", "ddd \\\"zw\\\"");
@@ -541,14 +549,14 @@ public class JSONTest {
         jObject.put("desc", "18 'zw'");
         jObject.put("price", new BigDecimal("123.55"));
         jObject.put("type", new JObject(), (obj) -> {
-            obj.put("name", "pkj");
+            obj.put("name", "pkj, 'gg'");
             obj.put("code", 1001);
             return obj;
         });
 
         jObject.remove("desc");
 
-        System.out.println(JSON.stringify(jObject).terse());
+        System.out.println(JSON.stringify(jObject).pretty());
         System.out.println(JSON.stringify(jObject.get("type")).terse());
         System.out.println(JSON.stringify("ddd \\\"zw\\\"").terse());
         System.out.println(JSON.stringify('\'').terse());
@@ -556,16 +564,7 @@ public class JSONTest {
         System.out.println(JSON.stringify('A').terse());
         System.out.println();
 
-
-        JBase parse = JSON.parse(json);
-        System.out.println(parse.getValue());
-//        JBase obj = JSON.parse(bug.toString());
-
-
-//        System.out.println(obj);
-
         System.out.println(JSON.load("src\\test\\resources\\tdb.json"));
-
     }
 
     @Test

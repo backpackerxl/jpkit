@@ -81,6 +81,6 @@ public class JString extends JBase {
 
     @Override
     public String toString() {
-        return getValue();
+        return String.format("\"%s\"", value);
     }
 }
