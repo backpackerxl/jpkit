@@ -91,7 +91,7 @@ public class Test {
 }
 ```
 
-#### Maven install
+#### 使用Maven install
 
 **依次执行一下命令**
 
@@ -113,7 +113,7 @@ cd jpkit
 mvn install
 ```
 
-**在需要使用的项目中加入依赖**
+- 在需要使用的项目中加入依赖
 
 ```xml
 
@@ -123,5 +123,35 @@ mvn install
     <version>${version}</version>
 </dependency>
 ```
+
+#### 使用GitHub Package
+
+- 在maven配置文件（settings.xml）中的 `<servers>` 节点中加入如下配置：
+  ```xml
+  <server>
+		<id>github</id>
+		<username>Backpackerxl</username>
+		<password>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</password>
+  </server>
+  ```
+> 注意password为永久有效，不需要频繁更换，若有改动会在此页面体现。
+- 在使用的项目中的pom.xml文件中的 `<project>` 节点中加入如下配置：
+  ```xml
+  <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub Backpackerxl Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/backpackerxl/jpkit</url>
+        </repository>
+  </repositories>
+  ```
+- 使用的项目中加入依赖
+  ```xml
+    <dependency>
+        <groupId>com.zzwl</groupId>
+        <artifactId>jpkit</artifactId>
+        <version>${version}</version>
+    </dependency>
+  ```
 
 #### `jpkit` [`官方API`](https://backpackerxl.github.io/jpkit/)
