@@ -527,6 +527,8 @@ public class JSONTest {
 
 //        json = "\"hi, \\\"i am li-ning\\\"\"";
 
+        json = "{ \"code\": 0, \"msg\": \"success\", \"data\": \"C:\\\\Users\\\\ADMINI~1\\\\AppData\\\\Local\\\\Temp\\\\\" }";
+
         JBase parse = JSON.parse(json);
 
         System.out.println(JSON.stringify(parse).terse());
