@@ -114,7 +114,7 @@ public class JSONTest {
     @Test
     @PerfTest(invocations = 1000, threads = 40)
     public void testRead() {
-        JBase load = JSON.load("http://cmd.shzhfz.cn/config.json");
+        JBase load = JSON.load("http://www.shzhfz.cn/config.json");
         System.out.println(load);
     }
 
