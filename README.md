@@ -131,7 +131,7 @@ mvn install
   <server>
 		<id>github</id>
 		<username>Backpackerxl</username>
-		<password>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</password>
+		<password>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</password>
   </server>
   ```
 > 注意password为永久有效，不需要频繁更换，若有改动会在此页面体现。
