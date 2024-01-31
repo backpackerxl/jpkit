@@ -541,7 +541,7 @@ public class JSONTest {
     }
 
     @Test
-    public void testJStr(){
+    public void testJStr() {
         JObject jObject = new JObject(new LinkedHashMap<>());
 
         jObject.put("name", "ddd \\\"zw\\\"");
@@ -573,5 +573,31 @@ public class JSONTest {
     public void testBean() {
         Data data = (Data) ObjectParse.createBean(Data.class);
         System.out.println(data);
+    }
+
+    @Test
+    public void testExtends() {
+        SVip sVip = new SVip();
+        UserInfo user = new UserInfo();
+        sVip.setSVip(false);
+        sVip.setName("cc");
+        sVip.setAge(23);
+        sVip.setPwd("123321");
+        sVip.setPrice(301.99);
+        sVip.setLgName("福特gt");
+        user.setName("zwh");
+        user.setAge(22);
+        user.setPwd("zwh@123");
+        user.setPrice(399.99);
+        user.setLgName("积木公仔");
+        sVip.setUser(user);
+
+        System.out.println(JSON.stringify(sVip).terse());
+
+        String json = "{\"user\":{\"name\":\"zwh\",\"pwd\":\"zwh@123\",\"age\":22,\"lgName\":\"积木公仔\",\"price\":399.99},\"isSVip\":false,\"name\":\"cc\",\"pwd\":\"123321\",\"age\":23,\"lgName\":\"福特gt\",\"price\":301.99}";
+
+        SVip parse = JSON.parse(json, SVip.class);
+
+        System.out.println("======="+parse);
     }
 }

@@ -15,10 +15,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,6 +37,24 @@ public class ReflectUtil {
     }
 
     /**
+     * 获取包含父类字段的 Fields
+     *
+     * @param clazz 类型
+     * @param store 数据暂存器
+     */
+    public static void getDeclaredSFields(Class<?> clazz, List<Field> store) {
+        store.addAll(Arrays.asList(clazz.getDeclaredFields()));
+        try {
+            if (clazz != Object.class) {
+                Class<?> aClass = Class.forName(clazz.getGenericSuperclass().getTypeName());
+                getDeclaredSFields(aClass, store);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 利用反射处理自定义对象的JSON字符串化
      *
      * @param obj      待处理对象
@@ -48,8 +63,10 @@ public class ReflectUtil {
      */
     public static String doBeanByField(Object obj, CallBack callBack) {
         StringBuilder s = new StringBuilder();
-        Field[] fields = obj.getClass().getDeclaredFields();
-        for (Field field : fields) {
+        List<Field> store = new ArrayList<>();
+        // 收集实体字段
+        getDeclaredSFields(obj.getClass(), store);
+        for (Field field : store) {
             if (!field.isAnnotationPresent(JIgnore.class)) {
                 // 利用反射先通过方法获取属性值
                 FieldBean fieldBean = getValueByMethod(obj, field);
@@ -259,8 +276,9 @@ public class ReflectUtil {
      */
     @SafeVarargs
     public static void setBeanByField(Object obj, Map<String, JBasePlug<?>> res, Function<String, JBase> func, Class<? extends JBasePlug<?>>... auxiliary) {
-        Field[] fields = obj.getClass().getDeclaredFields();
-        for (Field field : fields) {
+        List<Field> store = new ArrayList<>();
+        getDeclaredSFields(obj.getClass(), store);
+        for (Field field : store) {
             if (!field.isAnnotationPresent(JIgnore.class)) {
                 FieldBean fieldBean = setValueByMethod(obj, field);
                 // 利用反射先通过方法设置属性值
