@@ -125,33 +125,6 @@ mvn install
 ```
 
 #### 使用GitHub Package
-
-- 在maven配置文件（settings.xml）中的 `<servers>` 节点中加入如下配置：
-  ```xml
-  <server>
-		<id>github</id>
-		<username>Backpackerxl</username>
-		<password>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</password>
-  </server>
-  ```
-> 注意token的时效性(Expires on Sat, Mar 2 2024.)，需要新token的请通过邮件联系我。
-- 在使用的项目中的pom.xml文件中的 `<project>` 节点中加入如下配置：
-  ```xml
-  <repositories>
-        <repository>
-            <id>github</id>
-            <name>GitHub Backpackerxl Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/backpackerxl/jpkit</url>
-        </repository>
-  </repositories>
-  ```
-- 使用的项目中加入依赖
-  ```xml
-    <dependency>
-        <groupId>com.zzwl</groupId>
-        <artifactId>jpkit</artifactId>
-        <version>${version}</version>
-    </dependency>
-  ```
+> 受GitHub Package 影响在GitHub上发布的包无法开放性的供大家使用
 
 #### `jpkit` [`官方API`](https://backpackerxl.github.io/jpkit/)
