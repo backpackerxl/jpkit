@@ -131,10 +131,10 @@ mvn install
   <server>
 		<id>github</id>
 		<username>Backpackerxl</username>
-		<password>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</password>
+		<password>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</password>
   </server>
   ```
-> 注意password为永久有效，不需要频繁更换，若有改动会在此页面体现。
+> 注意password为30天有效，需要此方式的的请联系我。
 - 在使用的项目中的pom.xml文件中的 `<project>` 节点中加入如下配置：
   ```xml
   <repositories>
