@@ -1,6 +1,6 @@
 <p align="center">
     <a href="#">
-        <img src="./logo.png" alt="logo">
+        <img src="./logo2.0.png" alt="logo">
     </a>
 </p>
 <hr>
