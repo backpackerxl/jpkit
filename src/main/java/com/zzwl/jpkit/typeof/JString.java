@@ -69,7 +69,7 @@ public class JString extends JBase {
                     out.append("\\'");
                     break;
                 case '\"':
-                    out.append("\\\\\"");
+                    out.append("\\\"");
                     break;
                 default:
                     out.append(c);

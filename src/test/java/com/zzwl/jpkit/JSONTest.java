@@ -544,7 +544,7 @@ public class JSONTest {
     public void testJStr() {
         JObject jObject = new JObject(new LinkedHashMap<>());
 
-        jObject.put("name", "ddd \\\"zw\\\"");
+        jObject.put("name", "ddd \"zw\"");
         jObject.put("age", 18);
         jObject.put("id", 18234225325525L);
         jObject.put("happy", false);
@@ -557,14 +557,12 @@ public class JSONTest {
         });
 
         jObject.remove("desc");
-
-        System.out.println(JSON.stringify(jObject).pretty());
+        String terse = JSON.stringify(jObject).terse();
+        System.out.println(terse);
         System.out.println(JSON.stringify(jObject.get("type")).terse());
-        System.out.println(JSON.stringify("ddd \\\"zw\\\"").terse());
-        System.out.println(JSON.stringify('\'').terse());
-        System.out.println(JSON.stringify('\"').terse());
-        System.out.println(JSON.stringify('A').terse());
-        System.out.println();
+        System.out.println(JSON.stringify("ddd \"zw\"").terse());
+        JObject parse = (JObject) JSON.parse(terse);
+        System.out.println(parse.toString());
 
         System.out.println(JSON.load("src\\test\\resources\\tdb.json"));
     }

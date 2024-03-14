@@ -150,8 +150,13 @@ public class JSONParse {
             char[] chars = {oldC, nextChar};
             // 处理 Unicode字符
             if (String.valueOf(chars).equals("\\u")) {
-                s.delete(s.length() - 1, s.length());
                 nextChar = (char) Integer.parseInt(String.valueOf(new char[]{get_next_char(), get_next_char(), get_next_char(), get_next_char()}), 16);
+                s.append(nextChar);
+            }
+            // 特殊字符跳过处理
+            if (nextChar == '\\' || String.valueOf(chars).equals("\\u")) {
+                oldC = nextChar;
+                continue;
             }
             s.append(nextChar);
             // 记录上一次解析的字符
